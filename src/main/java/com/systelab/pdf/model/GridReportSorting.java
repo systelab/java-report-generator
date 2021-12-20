@@ -1,8 +1,12 @@
 package com.systelab.pdf.model;
 
 public class GridReportSorting {
-    private final String column;
-    private final Boolean ascending;
+    private String column;
+    private Boolean ascending;
+
+    public GridReportSorting() {
+
+    }
 
     public GridReportSorting(String column, Boolean ascending) {
         this.column = column;
