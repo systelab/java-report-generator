@@ -15,7 +15,18 @@
     <prerequisites>
         <maven>2.2.0</maven>
     </prerequisites>
-
+    <profiles>
+        <profile>
+            <id>github</id>
+            <distributionManagement>
+                <repository>
+                    <id>github</id>
+                    <name>GitHub Packages</name>
+                    <url>https://maven.pkg.github.com/systelab/java-report-generator</url>
+                </repository>
+            </distributionManagement>
+        </profile>
+    </profiles>
     <licenses>
         <license>
             <name>Unlicense</name>
