@@ -1,4 +1,4 @@
-package com.systelab.pdf.model;
+package com.werfen.report.model;
 
 public class ReportHeaderConfiguration {
     private final String title;

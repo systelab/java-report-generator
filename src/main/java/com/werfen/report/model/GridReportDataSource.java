@@ -1,4 +1,4 @@
-package com.systelab.pdf.model;
+package com.werfen.report.model;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;

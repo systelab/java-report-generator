@@ -1,9 +1,9 @@
-package com.systelab.pdf.service;
+package com.werfen.report.service;
 
-import com.systelab.pdf.model.GridReportConfiguration;
-import com.systelab.pdf.model.GridReportData;
-import com.systelab.pdf.model.GridReportDataSource;
-import com.systelab.pdf.model.PageFormat;
+import com.werfen.report.model.GridReportConfiguration;
+import com.werfen.report.model.GridReportData;
+import com.werfen.report.model.GridReportDataSource;
+import com.werfen.report.model.PageFormat;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.export.JRPdfExporter;

@@ -3,12 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.systelab</groupId>
-    <artifactId>java-pdf-generator</artifactId>
+    <artifactId>report-generator</artifactId>
     <version>1.1.0</version>
     <packaging>jar</packaging>
-    <name>java-pdf-generator</name>
-    <url>https://github.com/systelab/java-pdf-generator</url>
-    <description>PDF Generator Library for Java</description>
+    <name>report-generator</name>
+    <url>https://github.com/systelab/report-generator</url>
+    <description>Report Generator Library</description>
     <scm>
         <url>https://svn.apache.org/viewvc/maven</url>
     </scm>
@@ -24,14 +24,6 @@
         </license>
     </licenses>
 
-    <developers>
-        <developer>
-            <name>Quim Noto</name>
-            <email>jnoto@werfen.com</email>
-            <organization>Werfen</organization>
-            <organizationUrl>http://www.werfen.com</organizationUrl>
-        </developer>
-    </developers>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

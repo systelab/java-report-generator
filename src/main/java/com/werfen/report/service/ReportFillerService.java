@@ -1,4 +1,4 @@
-package com.systelab.pdf.service;
+package com.werfen.report.service;
 
 import net.sf.jasperreports.engine.*;
 import org.slf4j.Logger;

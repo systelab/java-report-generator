@@ -1,7 +1,7 @@
-package com.systelab.pdf;
+package com.werfen.report;
 
-import com.systelab.pdf.model.*;
-import com.systelab.pdf.service.GridReportService;
+import com.werfen.report.model.*;
+import com.werfen.report.service.GridReportService;
 import net.sf.jasperreports.engine.JRException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

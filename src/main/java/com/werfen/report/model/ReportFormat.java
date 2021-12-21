@@ -1,4 +1,4 @@
-package com.systelab.pdf.model;
+package com.werfen.report.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

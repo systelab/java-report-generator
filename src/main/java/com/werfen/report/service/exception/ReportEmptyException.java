@@ -1,4 +1,4 @@
-package com.systelab.pdf.service.exception;
+package com.werfen.report.service.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

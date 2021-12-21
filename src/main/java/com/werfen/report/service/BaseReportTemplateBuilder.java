@@ -1,9 +1,9 @@
-package com.systelab.pdf.service;
+package com.werfen.report.service;
 
-import com.systelab.pdf.model.PageFormat;
-import com.systelab.pdf.model.ReportField;
-import com.systelab.pdf.model.ReportFooterConfiguration;
-import com.systelab.pdf.model.ReportHeaderConfiguration;
+import com.werfen.report.model.PageFormat;
+import com.werfen.report.model.ReportField;
+import com.werfen.report.model.ReportFooterConfiguration;
+import com.werfen.report.model.ReportHeaderConfiguration;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.design.*;
 import net.sf.jasperreports.engine.type.*;

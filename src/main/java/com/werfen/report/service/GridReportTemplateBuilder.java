@@ -1,14 +1,12 @@
-package com.systelab.pdf.service;
+package com.werfen.report.service;
 
-import com.systelab.pdf.model.GridColumnConfiguration;
-import com.systelab.pdf.model.GridReportColumnWidth;
-import com.systelab.pdf.model.PageFormat;
+import com.werfen.report.model.GridColumnConfiguration;
+import com.werfen.report.model.GridReportColumnWidth;
+import com.werfen.report.model.PageFormat;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.design.*;
 import net.sf.jasperreports.engine.type.HorizontalTextAlignEnum;
 import net.sf.jasperreports.engine.type.SplitTypeEnum;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 
 import java.util.List;
