@@ -9,7 +9,6 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.design.*;
 import net.sf.jasperreports.engine.type.HorizontalTextAlignEnum;
 import net.sf.jasperreports.engine.type.SplitTypeEnum;
-import org.springframework.context.MessageSource;
 
 import java.util.List;
 import java.util.Locale;
@@ -27,16 +26,6 @@ public class GridReportTemplateBuilder extends BaseReportTemplateBuilder {
     private static final int CELL_VALUE_OFFSET_Y = 17;
     private static final String FIELD_TEXT_PDF_FONT = "Helvetica-Bold";
     private static final String FIELD_TEXT_PDF_ENCODING = "UTF-8";
-    private final MessageSource messageSource;
-    private Locale locale;
-
-    public GridReportTemplateBuilder(MessageSource messageSource) {
-        this.messageSource = messageSource;
-    }
-
-    public void setLocale(Locale locale) {
-        this.locale = locale;
-    }
 
     public void addGrid(List<GridColumnConfiguration> gridColumnConfigurations) throws JRException {
         JRDesignBand rowBand = new JRDesignBand();
@@ -72,7 +61,7 @@ public class GridReportTemplateBuilder extends BaseReportTemplateBuilder {
     private void addCell(JRDesignBand rowBand, GridColumnConfiguration gridColumnConfiguration, int currentColumn, int currentRow) throws JRException {
 
         JRDesignStaticText titleText = new DesignTextBuilder()
-                .text(messageSource.getMessage(gridColumnConfiguration.getTranslationKey(), new Object[0], gridColumnConfiguration.getName(), locale))
+                .text(gridColumnConfiguration.getTranslation())
                 .position(currentColumn * CELL_UNIT_WIDTH, (currentRow * CELL_UNIT_HEIGHT) + CELL_TITLE_OFFSET_Y, gridColumnConfiguration.getWidth().getValue() * CELL_UNIT_WIDTH, CELL_ITEM_HEIGHT)
                 .horizontalTextAlign(HorizontalTextAlignEnum.LEFT)
                 .buildStaticText();

@@ -13,32 +13,21 @@ import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 import net.sf.jasperreports.export.SimplePdfReportConfiguration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.MessageSource;
-import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Logger;
 
-@Service
 public class GridReportService {
 
-    Logger log = LoggerFactory.getLogger(GridReportService.class);
+    Logger log = Logger.getLogger(GridReportService.class.getName());
 
-    private final MessageSource messageSource;
+    public File build(GridReportConfiguration gridReportConfiguration, GridReportData gridReportData) throws JRException {
 
-    public GridReportService(MessageSource messageSource) {
-        this.messageSource=messageSource;
-    }
+        GridReportTemplateBuilder template = new GridReportTemplateBuilder();
 
-    public File build(GridReportConfiguration gridReportConfiguration, GridReportData gridReportData, Locale locale) throws JRException {
-
-        GridReportTemplateBuilder template = new GridReportTemplateBuilder(messageSource);
-
-        template.setLocale(locale);
         template.initJasperDesign("gridReport", PageFormat.A4);
         template.addHeader(gridReportConfiguration.getHeaderConfiguration());
         template.addFooter(gridReportConfiguration.getFooterConfiguration());
@@ -61,7 +50,8 @@ public class GridReportService {
         try {
             exporter.exportReport();
         } catch (JRException ex) {
-            log.error("Error exporting to PDF", ex);
+            log.info("Error exporting to PDF");
+            ex.printStackTrace();
         }
     }
 

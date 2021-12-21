@@ -4,11 +4,6 @@ import com.werfen.report.model.*;
 import com.werfen.report.service.GridReportService;
 import net.sf.jasperreports.engine.JRException;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 import java.io.File;
 import java.io.IOException;
 import java.time.ZonedDateTime;
@@ -18,21 +13,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
-@ExtendWith(SpringExtension.class)
 public class MainTest {
     public static String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
-
-    @Autowired
-    MessageSource messageSource;
 
     @Test
     public void generateSampleReport() {
         try {
-            GridReportService gridReportService = new GridReportService(messageSource);
-            File file = gridReportService.build(this.getConfiguration("sample1"), this.getData(), Locale.US);
+            GridReportService gridReportService = new GridReportService();
+            File file = gridReportService.build(this.getConfiguration("sample1"), this.getData());
             file.createNewFile();
         } catch (JRException | IOException e) {
             e.printStackTrace();
@@ -50,7 +40,7 @@ public class MainTest {
         ReportHeaderConfiguration header = this.buildHeaderConfiguration();
         ReportFooterConfiguration footer = this.buildReportFooterConfiguration();
         List<GridColumnConfiguration> columns = new ArrayList<>();
-        columns.add(new GridColumnConfiguration("col1", GridReportColumnWidth.COLUMN_WIDTH_3, "col1"));
+        columns.add(new GridColumnConfiguration("col1", GridReportColumnWidth.COLUMN_WIDTH_3, "col2"));
         return new GridReportConfiguration(fileName, header, footer, columns);
     }
 

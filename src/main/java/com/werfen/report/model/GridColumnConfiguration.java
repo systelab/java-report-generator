@@ -4,20 +4,20 @@ public class GridColumnConfiguration {
 
     private final String name;
     private final GridReportColumnWidth width;
-    private final String translationKey;
+    private final String translation;
 
-    public GridColumnConfiguration(String name, GridReportColumnWidth width, String translationKey) {
+    public GridColumnConfiguration(String name, GridReportColumnWidth width, String translation) {
         this.name = name;
         this.width = width;
-        this.translationKey = translationKey;
+        this.translation = translation;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getTranslationKey() {
-        return translationKey;
+    public String getTranslation() {
+        return translation;
     }
 
     public GridReportColumnWidth getWidth() {
