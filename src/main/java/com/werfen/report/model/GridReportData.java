@@ -5,7 +5,7 @@ import java.util.List;
 
 public class GridReportData {
 
-    private List<GridReportRow> rows;
+    private final List<GridReportRow> rows;
 
     public GridReportData(List<GridReportRow> rows) {
         this.rows = Collections.unmodifiableList(rows);

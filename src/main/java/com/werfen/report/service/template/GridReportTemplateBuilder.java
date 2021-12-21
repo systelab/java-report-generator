@@ -3,6 +3,8 @@ package com.werfen.report.service.template;
 import com.werfen.report.model.GridColumnConfiguration;
 import com.werfen.report.model.GridReportColumnWidth;
 import com.werfen.report.model.PageFormat;
+import com.werfen.report.util.DesignLineBuilder;
+import com.werfen.report.util.DesignTextBuilder;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.design.*;
 import net.sf.jasperreports.engine.type.HorizontalTextAlignEnum;
@@ -41,11 +43,7 @@ public class GridReportTemplateBuilder extends BaseReportTemplateBuilder {
         rowBand.setHeight(CELL_UNIT_HEIGHT);
         rowBand.setSplitType(SplitTypeEnum.STRETCH);
 
-        JRDesignLine rowSeparator = new JRDesignLine();
-        rowSeparator.setX(0);
-        rowSeparator.setY(0);
-        rowSeparator.setWidth(BAND_WIDTH);
-        rowSeparator.setHeight(ROW_SEPARATOR_LINE_THICKNESS);
+        JRDesignLine rowSeparator = new DesignLineBuilder().position(0, 0, BAND_WIDTH, ROW_SEPARATOR_LINE_THICKNESS).build();
         rowBand.addElement(rowSeparator);
 
         int currentColumn = 0;
@@ -72,13 +70,13 @@ public class GridReportTemplateBuilder extends BaseReportTemplateBuilder {
     }
 
     private void addCell(JRDesignBand rowBand, GridColumnConfiguration gridColumnConfiguration, int currentColumn, int currentRow) throws JRException {
-        JRDesignStaticText titleText = new JRDesignStaticText();
-        titleText.setX(currentColumn * CELL_UNIT_WIDTH);
-        titleText.setY((currentRow * CELL_UNIT_HEIGHT) + CELL_TITLE_OFFSET_Y);
-        titleText.setWidth(gridColumnConfiguration.getWidth().getValue() * CELL_UNIT_WIDTH);
-        titleText.setHeight(CELL_ITEM_HEIGHT);
-        titleText.setHorizontalTextAlign(HorizontalTextAlignEnum.LEFT);
-        titleText.setText(messageSource.getMessage(gridColumnConfiguration.getTranslationKey(), new Object[0], gridColumnConfiguration.getName(), locale));
+
+        JRDesignStaticText titleText = new DesignTextBuilder()
+                .text(messageSource.getMessage(gridColumnConfiguration.getTranslationKey(), new Object[0], gridColumnConfiguration.getName(), locale))
+                .position(currentColumn * CELL_UNIT_WIDTH, (currentRow * CELL_UNIT_HEIGHT) + CELL_TITLE_OFFSET_Y, gridColumnConfiguration.getWidth().getValue() * CELL_UNIT_WIDTH, CELL_ITEM_HEIGHT)
+                .horizontalTextAlign(HorizontalTextAlignEnum.LEFT)
+                .buildStaticText();
+
         rowBand.addElement(titleText);
 
         JRDesignField fieldValue = new JRDesignField();
@@ -89,16 +87,14 @@ public class GridReportTemplateBuilder extends BaseReportTemplateBuilder {
         JRDesignExpression fieldValueExpression = new JRDesignExpression();
         fieldValueExpression.setText("$F{" + gridColumnConfiguration.getName() + "}");
 
-        JRDesignTextField valueText = new JRDesignTextField();
-        valueText.setX(currentColumn * CELL_UNIT_WIDTH);
-        valueText.setY((currentRow * CELL_UNIT_HEIGHT) + CELL_VALUE_OFFSET_Y);
-        valueText.setWidth(gridColumnConfiguration.getWidth().getValue() * CELL_UNIT_WIDTH);
-        valueText.setHeight(CELL_ITEM_HEIGHT);
-        valueText.setBold(Boolean.TRUE);
-        valueText.setPdfFontName(FIELD_TEXT_PDF_FONT);
-        valueText.setPdfEncoding(FIELD_TEXT_PDF_ENCODING);
-        valueText.setHorizontalTextAlign(HorizontalTextAlignEnum.LEFT);
-        valueText.setExpression(fieldValueExpression);
+        JRDesignTextField valueText = new DesignTextBuilder()
+                .expression(fieldValueExpression)
+                .position(currentColumn * CELL_UNIT_WIDTH, (currentRow * CELL_UNIT_HEIGHT) + CELL_VALUE_OFFSET_Y, gridColumnConfiguration.getWidth().getValue() * CELL_UNIT_WIDTH, CELL_ITEM_HEIGHT)
+                .font(FIELD_TEXT_PDF_FONT).bold()
+                .encoding(FIELD_TEXT_PDF_ENCODING)
+                .horizontalTextAlign(HorizontalTextAlignEnum.LEFT)
+                .buildTextField();
+
         rowBand.addElement(valueText);
     }
 

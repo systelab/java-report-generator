@@ -4,6 +4,10 @@ import com.werfen.report.model.PageFormat;
 import com.werfen.report.model.ReportField;
 import com.werfen.report.model.ReportFooterConfiguration;
 import com.werfen.report.model.ReportHeaderConfiguration;
+import com.werfen.report.util.DesignImageBuilder;
+import com.werfen.report.util.DesignLineBuilder;
+import com.werfen.report.util.DesignRectangleBuilder;
+import com.werfen.report.util.DesignTextBuilder;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.design.*;
 import net.sf.jasperreports.engine.type.*;
@@ -108,26 +112,19 @@ public class BaseReportTemplateBuilder {
     }
 
     public void addHeader(ReportHeaderConfiguration reportHeaderConfiguration) throws JRException {
-        JRDesignRectangle titleFrame = new JRDesignRectangle();
-        titleFrame.setWidth(TITLE_FRAME_WIDTH);
-        titleFrame.setHeight(TITLE_FRAME_HEIGHT);
-        titleFrame.setX(TITLE_FRAME_X);
-        titleFrame.setY(TITLE_FRAME_Y);
 
-        JRDesignLine titleFrameSeparator = new JRDesignLine();
-        titleFrameSeparator.setWidth(TITLE_LINE_SEPARATOR_WIDTH);
-        titleFrameSeparator.setHeight(TITLE_LINE_SEPARATOR_HEIGHT);
-        titleFrameSeparator.setX(TITLE_LINE_SEPARATOR_X);
-        titleFrameSeparator.setY(TITLE_LINE_SEPARATOR_Y);
+        JRDesignRectangle titleFrame = new DesignRectangleBuilder()
+                .position(TITLE_FRAME_X, TITLE_FRAME_Y, TITLE_FRAME_WIDTH, TITLE_FRAME_HEIGHT).build();
 
-        JRDesignStaticText titleText = new JRDesignStaticText();
-        titleText.setFontSize(TITLE_TEXT_FONT_SIZE);
-        titleText.setWidth(TITLE_TEXT_WIDTH);
-        titleText.setHeight(TITLE_TEXT_HEIGHT);
-        titleText.setX(TITLE_X);
-        titleText.setY(TITLE_Y);
-        titleText.setHorizontalTextAlign(HorizontalTextAlignEnum.LEFT);
-        titleText.setText(reportHeaderConfiguration.getTitle());
+        JRDesignLine titleFrameSeparator = new DesignLineBuilder()
+                .position(TITLE_LINE_SEPARATOR_X, TITLE_LINE_SEPARATOR_Y, TITLE_LINE_SEPARATOR_WIDTH, TITLE_LINE_SEPARATOR_HEIGHT).build();
+
+        JRDesignStaticText titleText = new DesignTextBuilder()
+                .text(reportHeaderConfiguration.getTitle())
+                .position(TITLE_X, TITLE_Y, TITLE_TEXT_WIDTH, TITLE_TEXT_HEIGHT)
+                .horizontalTextAlign(HorizontalTextAlignEnum.LEFT)
+                .fontSize(TITLE_TEXT_FONT_SIZE)
+                .buildStaticText();
 
         JRDesignParameter titleLogoParameter = new JRDesignParameter();
         titleLogoParameter.setName(TITLE_LOGO_PARAMETER);
@@ -136,12 +133,9 @@ public class BaseReportTemplateBuilder {
         JRDesignExpression titleLogoExpression = new JRDesignExpression();
         titleLogoExpression.setText("$P{" + TITLE_LOGO_PARAMETER + "}");
 
-        JRDesignImage titleLogoImage = new JRDesignImage(this.jasperDesign);
-        titleLogoImage.setWidth(TITLE_LOGO_WIDTH);
-        titleLogoImage.setHeight(TITLE_LOGO_HEIGHT);
-        titleLogoImage.setX(TITLE_LOGO_X);
-        titleLogoImage.setY(TITLE_LOGO_Y);
-        titleLogoImage.setExpression(titleLogoExpression);
+        JRDesignImage titleLogoImage = new DesignImageBuilder(this.jasperDesign)
+                .expression(titleLogoExpression)
+                .position(TITLE_LOGO_X, TITLE_LOGO_Y, TITLE_LOGO_WIDTH, TITLE_LOGO_HEIGHT).build();
 
         JRDesignBand titleBand = new JRDesignBand();
         titleBand.setHeight(TITLE_HEIGHT);
@@ -158,11 +152,8 @@ public class BaseReportTemplateBuilder {
         headerBand.setHeight(HEADER_HEIGHT);
         headerBand.setSplitType(SplitTypeEnum.STRETCH);
 
-        JRDesignRectangle headerFrame = new JRDesignRectangle();
-        headerFrame.setWidth(HEADER_FRAME_WIDTH);
-        headerFrame.setHeight(HEADER_FRAME_HEIGHT);
-        headerFrame.setX(HEADER_FRAME_X);
-        headerFrame.setY(HEADER_FRAME_Y);
+        JRDesignRectangle headerFrame = new DesignRectangleBuilder()
+                .position(HEADER_FRAME_X, HEADER_FRAME_Y, HEADER_FRAME_WIDTH, HEADER_FRAME_HEIGHT).build();
 
         headerBand.addElement(headerFrame);
 
@@ -185,23 +176,19 @@ public class BaseReportTemplateBuilder {
     }
 
     private void addField(JRDesignBand headerBand, ReportField field, int xPos) {
-        JRDesignStaticText headerField1TitleText = new JRDesignStaticText();
-        headerField1TitleText.setWidth(HEADER_FIELDS_WIDTH);
-        headerField1TitleText.setHeight(HEADER_FIELDS_HEIGHT);
-        headerField1TitleText.setX(xPos);
-        headerField1TitleText.setY(HEADER_FIELDS_TITLE_Y);
-        headerField1TitleText.setHorizontalTextAlign(HorizontalTextAlignEnum.LEFT);
-        headerField1TitleText.setText(field.getName());
+        JRDesignStaticText headerField1TitleText = new DesignTextBuilder()
+                .text(field.getName())
+                .position(xPos, HEADER_FIELDS_TITLE_Y, HEADER_FIELDS_WIDTH, HEADER_FIELDS_HEIGHT)
+                .horizontalTextAlign(HorizontalTextAlignEnum.LEFT)
+                .buildStaticText();
 
-        JRDesignStaticText headerField1Text = new JRDesignStaticText();
-        headerField1Text.setWidth(HEADER_FIELDS_WIDTH);
-        headerField1Text.setHeight(HEADER_FIELDS_HEIGHT);
-        headerField1Text.setX(xPos);
-        headerField1Text.setY(HEADER_FIELDS_Y);
-        headerField1Text.setPdfFontName("Helvetica-Bold");
-        headerField1Text.setBold(Boolean.TRUE);
-        headerField1Text.setHorizontalTextAlign(HorizontalTextAlignEnum.LEFT);
-        headerField1Text.setText(field.getValue());
+        JRDesignStaticText headerField1Text = new DesignTextBuilder()
+                .text(field.getValue())
+                .position(xPos, HEADER_FIELDS_Y, HEADER_FIELDS_WIDTH, HEADER_FIELDS_HEIGHT)
+                .font("Helvetica-Bold")
+                .bold()
+                .horizontalTextAlign(HorizontalTextAlignEnum.LEFT)
+                .buildStaticText();
 
         headerBand.addElement(headerField1TitleText);
         headerBand.addElement(headerField1Text);
@@ -213,76 +200,63 @@ public class BaseReportTemplateBuilder {
         footerBand.setHeight(FOOTER_HEIGHT);
         footerBand.setSplitType(SplitTypeEnum.STRETCH);
 
-        JRDesignRectangle footerFrame = new JRDesignRectangle();
-        footerFrame.setWidth(FOOTER_FRAME_WIDTH);
-        footerFrame.setHeight(FOOTER_FRAME_HEIGHT);
-        footerFrame.setX(FOOTER_FRAME_X);
-        footerFrame.setY(FOOTER_FRAME_Y);
+        JRDesignRectangle footerFrame = new DesignRectangleBuilder()
+                .position(FOOTER_FRAME_X, FOOTER_FRAME_Y, FOOTER_FRAME_WIDTH, FOOTER_FRAME_HEIGHT).build();
 
         footerBand.addElement(footerFrame);
 
-        JRDesignStaticText footerCreatedAtTitleText = new JRDesignStaticText();
-        footerCreatedAtTitleText.setWidth(FOOTER_CREATED_AT_WIDTH);
-        footerCreatedAtTitleText.setHeight(FOOTER_TEXT_FIELD_HEIGHT);
-        footerCreatedAtTitleText.setX(FOOTER_CREATED_AT_X);
-        footerCreatedAtTitleText.setY(FOOTER_TITLE_TEXT_FIELD_Y);
-        footerCreatedAtTitleText.setHorizontalTextAlign(HorizontalTextAlignEnum.LEFT);
-        footerCreatedAtTitleText.setText(FOOTER_CREATED_AT_TITLE_TEXT);
+        JRDesignStaticText footerCreatedAtTitleText = new DesignTextBuilder()
+                .text(FOOTER_CREATED_AT_TITLE_TEXT)
+                .position(FOOTER_CREATED_AT_X, FOOTER_TITLE_TEXT_FIELD_Y, FOOTER_CREATED_AT_WIDTH, FOOTER_TEXT_FIELD_HEIGHT)
+                .horizontalTextAlign(HorizontalTextAlignEnum.LEFT)
+                .buildStaticText();
 
-        JRDesignStaticText footerCreatedAtText = new JRDesignStaticText();
-        footerCreatedAtText.setWidth(FOOTER_CREATED_AT_WIDTH);
-        footerCreatedAtText.setHeight(FOOTER_TEXT_FIELD_HEIGHT);
-        footerCreatedAtText.setX(FOOTER_CREATED_AT_X);
-        footerCreatedAtText.setY(FOOTER_TEXT_FIELD_Y);
-        footerCreatedAtText.setPdfFontName("Helvetica-Bold");
-        footerCreatedAtText.setBold(Boolean.TRUE);
-        footerCreatedAtText.setHorizontalTextAlign(HorizontalTextAlignEnum.LEFT);
-        footerCreatedAtText.setText(reportFooterConfiguration.getCreatedAt());
+        JRDesignStaticText footerCreatedAtText = new DesignTextBuilder()
+                .text(reportFooterConfiguration.getCreatedAt())
+                .position(FOOTER_CREATED_AT_X, FOOTER_TEXT_FIELD_Y, FOOTER_CREATED_AT_WIDTH, FOOTER_TEXT_FIELD_HEIGHT)
+                .font("Helvetica-Bold")
+                .bold()
+                .horizontalTextAlign(HorizontalTextAlignEnum.LEFT)
+                .buildStaticText();
 
         footerBand.addElement(footerCreatedAtTitleText);
         footerBand.addElement(footerCreatedAtText);
 
         if (nonNull(reportFooterConfiguration.getAdditionalField1())) {
-            JRDesignStaticText footerAdditionalField1TitleText = new JRDesignStaticText();
-            footerAdditionalField1TitleText.setWidth(FOOTER_ADDITIONAL_FIELD_1_WIDTH);
-            footerAdditionalField1TitleText.setHeight(FOOTER_TEXT_FIELD_HEIGHT);
-            footerAdditionalField1TitleText.setX(FOOTER_ADDITIONAL_FIELD_1_X);
-            footerAdditionalField1TitleText.setY(FOOTER_TITLE_TEXT_FIELD_Y);
-            footerAdditionalField1TitleText.setHorizontalTextAlign(HorizontalTextAlignEnum.LEFT);
-            footerAdditionalField1TitleText.setText(reportFooterConfiguration.getAdditionalField1().getName());
 
-            JRDesignStaticText footerAdditionalField1Text = new JRDesignStaticText();
-            footerAdditionalField1Text.setWidth(FOOTER_ADDITIONAL_FIELD_1_WIDTH);
-            footerAdditionalField1Text.setHeight(FOOTER_TEXT_FIELD_HEIGHT);
-            footerAdditionalField1Text.setX(FOOTER_ADDITIONAL_FIELD_1_X);
-            footerAdditionalField1Text.setY(FOOTER_TEXT_FIELD_Y);
-            footerAdditionalField1Text.setPdfFontName("Helvetica-Bold");
-            footerAdditionalField1Text.setBold(Boolean.TRUE);
-            footerAdditionalField1Text.setHorizontalTextAlign(HorizontalTextAlignEnum.LEFT);
-            footerAdditionalField1Text.setText(reportFooterConfiguration.getAdditionalField1().getValue());
+            JRDesignStaticText footerAdditionalField1TitleText = new DesignTextBuilder()
+                    .text(reportFooterConfiguration.getAdditionalField1().getName())
+                    .position(FOOTER_ADDITIONAL_FIELD_1_X, FOOTER_TITLE_TEXT_FIELD_Y, FOOTER_ADDITIONAL_FIELD_1_WIDTH, FOOTER_TEXT_FIELD_HEIGHT)
+                    .horizontalTextAlign(HorizontalTextAlignEnum.LEFT)
+                    .buildStaticText();
+
+            JRDesignStaticText footerAdditionalField1Text = new DesignTextBuilder()
+                    .text(reportFooterConfiguration.getAdditionalField1().getValue())
+                    .position(FOOTER_ADDITIONAL_FIELD_1_X, FOOTER_TEXT_FIELD_Y, FOOTER_ADDITIONAL_FIELD_1_WIDTH, FOOTER_TEXT_FIELD_HEIGHT)
+                    .font("Helvetica-Bold")
+                    .bold()
+                    .horizontalTextAlign(HorizontalTextAlignEnum.LEFT)
+                    .buildStaticText();
 
             footerBand.addElement(footerAdditionalField1TitleText);
             footerBand.addElement(footerAdditionalField1Text);
         }
 
         if (nonNull(reportFooterConfiguration.getAdditionalField2())) {
-            JRDesignStaticText footerAdditionalField2TitleText = new JRDesignStaticText();
-            footerAdditionalField2TitleText.setWidth(FOOTER_ADDITIONAL_FIELD_2_WIDTH);
-            footerAdditionalField2TitleText.setHeight(FOOTER_TEXT_FIELD_HEIGHT);
-            footerAdditionalField2TitleText.setX(FOOTER_ADDITIONAL_FIELD_2_X);
-            footerAdditionalField2TitleText.setY(FOOTER_TITLE_TEXT_FIELD_Y);
-            footerAdditionalField2TitleText.setHorizontalTextAlign(HorizontalTextAlignEnum.LEFT);
-            footerAdditionalField2TitleText.setText(reportFooterConfiguration.getAdditionalField2().getName());
 
-            JRDesignStaticText footerAdditionalField2Text = new JRDesignStaticText();
-            footerAdditionalField2Text.setWidth(FOOTER_ADDITIONAL_FIELD_2_WIDTH);
-            footerAdditionalField2Text.setHeight(FOOTER_TEXT_FIELD_HEIGHT);
-            footerAdditionalField2Text.setX(FOOTER_ADDITIONAL_FIELD_2_X);
-            footerAdditionalField2Text.setY(FOOTER_TEXT_FIELD_Y);
-            footerAdditionalField2Text.setPdfFontName("Helvetica-Bold");
-            footerAdditionalField2Text.setBold(Boolean.TRUE);
-            footerAdditionalField2Text.setHorizontalTextAlign(HorizontalTextAlignEnum.LEFT);
-            footerAdditionalField2Text.setText(reportFooterConfiguration.getAdditionalField2().getValue());
+            JRDesignStaticText footerAdditionalField2TitleText = new DesignTextBuilder()
+                    .text(reportFooterConfiguration.getAdditionalField2().getName())
+                    .position(FOOTER_ADDITIONAL_FIELD_2_X, FOOTER_TITLE_TEXT_FIELD_Y, FOOTER_ADDITIONAL_FIELD_2_WIDTH, FOOTER_TEXT_FIELD_HEIGHT)
+                    .horizontalTextAlign(HorizontalTextAlignEnum.LEFT)
+                    .buildStaticText();
+
+            JRDesignStaticText footerAdditionalField2Text = new DesignTextBuilder()
+                    .text(reportFooterConfiguration.getAdditionalField2().getValue())
+                    .position(FOOTER_ADDITIONAL_FIELD_2_X, FOOTER_TEXT_FIELD_Y, FOOTER_ADDITIONAL_FIELD_2_WIDTH, FOOTER_TEXT_FIELD_HEIGHT)
+                    .font("Helvetica-Bold")
+                    .bold()
+                    .horizontalTextAlign(HorizontalTextAlignEnum.LEFT)
+                    .buildStaticText();
 
             footerBand.addElement(footerAdditionalField2TitleText);
             footerBand.addElement(footerAdditionalField2Text);
@@ -303,13 +277,13 @@ public class BaseReportTemplateBuilder {
         pageNumberExpression.setText("Page $V{MASTER_CURRENT_PAGE} / $V{MASTER_TOTAL_PAGES}");
         pageNumberExpression.setType(ExpressionTypeEnum.SIMPLE_TEXT);
 
-        JRDesignTextField pageNumberText = new JRDesignTextField();
-        pageNumberText.setWidth(FOOTER_PAGE_NUMBER_TEXT_WIDTH);
-        pageNumberText.setHeight(FOOTER_TEXT_FIELD_HEIGHT);
-        pageNumberText.setX(FOOTER_PAGE_NUMBER_TEXT_X);
-        pageNumberText.setY(FOOTER_PAGE_NUMBER_TEXT_Y);
-        pageNumberText.setExpression(pageNumberExpression);
-        pageNumberText.setEvaluationTime(EvaluationTimeEnum.MASTER);
+
+        JRDesignTextField pageNumberText = new DesignTextBuilder()
+                .expression(pageNumberExpression)
+                .evaluationTime(EvaluationTimeEnum.MASTER)
+                .position(FOOTER_PAGE_NUMBER_TEXT_X, FOOTER_PAGE_NUMBER_TEXT_Y, FOOTER_PAGE_NUMBER_TEXT_WIDTH, FOOTER_TEXT_FIELD_HEIGHT)
+                .horizontalTextAlign(HorizontalTextAlignEnum.LEFT)
+                .buildTextField();
 
         footerBand.addElement(pageNumberText);
 
