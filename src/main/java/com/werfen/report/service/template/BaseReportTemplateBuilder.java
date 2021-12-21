@@ -1,4 +1,4 @@
-package com.werfen.report.service;
+package com.werfen.report.service.template;
 
 import com.werfen.report.model.PageFormat;
 import com.werfen.report.model.ReportField;
@@ -78,7 +78,7 @@ public class BaseReportTemplateBuilder {
     protected PageFormat pageFormat;
     protected JasperDesign jasperDesign;
 
-    private void setDefaultWerfenStyle() {
+    private void setDefaultStyle() {
         JRDesignStyle defaultStyle = new JRDesignStyle();
         defaultStyle.setDefault(true);
         defaultStyle.setName(STYLE_NAME);
@@ -104,7 +104,7 @@ public class BaseReportTemplateBuilder {
         this.jasperDesign.setLeftMargin(PAGE_MARGIN);
         this.jasperDesign.setRightMargin(PAGE_MARGIN);
 
-        setDefaultWerfenStyle();
+        setDefaultStyle();
     }
 
     public void addHeader(ReportHeaderConfiguration reportHeaderConfiguration) throws JRException {

@@ -1,4 +1,4 @@
-package com.werfen.report.service;
+package com.werfen.report.service.template;
 
 import com.werfen.report.model.GridColumnConfiguration;
 import com.werfen.report.model.GridReportColumnWidth;

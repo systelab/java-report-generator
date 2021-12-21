@@ -8,7 +8,7 @@ public class ReportEmptyException extends RuntimeException {
 
     @Override
     public String getLocalizedMessage() {
-        return String.format("Report is empty.");
+        return "Report is empty.";
     }
 }
 
