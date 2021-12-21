@@ -5,21 +5,21 @@ This is a Java libraries with some utilities ....
 
 ## Getting Started
 
-To get you started you can simply clone the `report-generator` repository and install the dependencies.
+To get you started you can simply clone the `java-report-generator` repository and install the dependencies.
 
 ### Prerequisites
 
-You need [git][git] to clone the `report-generator` repository.
+You need [git][git] to clone the `java-report-generator` repository.
 
 You will need [Java™ SE Development Kit 8][jdk-download] and [Maven][maven].
 
 ### Clone
 
-Clone the `report-generator` repository using git:
+Clone the `java-report-generator` repository using git:
 
 ```bash
-git clone https://github.com/systelab/report-generator.git
-cd report-generator
+git clone https://github.com/systelab/java-report-generator.git
+cd java-report-generator
 ```
 
 ### Install Dependencies
@@ -44,7 +44,7 @@ Step 2. Commit and push in the master branch, and generate a new Release by pres
 
 In the example use v.1.0.2 as the Tag version, and 1.0.2 as the release title.
 
-Step 3. Head to https://jitpack.io and look up "systelab/report-generator". Choose the new version and press the button "Get it". Check the log to verify that everything is fine.
+Step 3. Head to https://jitpack.io and look up "systelab/java-report-generator". Choose the new version and press the button "Get it". Check the log to verify that everything is fine.
 
 
 ## Using the library
@@ -70,7 +70,7 @@ Step 2. Add the dependency
 
 ```
 dependencies {
-    implementation 'com.github.systelab:report-generator:v1.0.2'
+    implementation 'com.github.systelab:java-report-generator:v1.0.2'
 }
 ```
 
@@ -92,7 +92,7 @@ Step 2. Add the dependency
 ```
 	<dependency>
 	    <groupId>com.github.systelab</groupId>
-	    <artifactId>report-generator</artifactId>
+	    <artifactId>java-report-generator</artifactId>
 	    <version>v1.0.2</version>
 	</dependency>
 ```

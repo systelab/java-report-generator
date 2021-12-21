@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.systelab</groupId>
-    <artifactId>report-generator</artifactId>
+    <artifactId>java-report-generator</artifactId>
     <version>1.1.0</version>
     <packaging>jar</packaging>
-    <name>report-generator</name>
-    <url>https://github.com/systelab/report-generator</url>
+    <name>java-report-generator</name>
+    <url>https://github.com/systelab/java-report-generator</url>
     <description>Report Generator Library</description>
     <scm>
         <url>https://svn.apache.org/viewvc/maven</url>
@@ -41,16 +41,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>${spring.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <version>${spring.version}</version>
-            <scope>provided</scope>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
+            <version>${spring.boot.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -62,12 +55,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
             <version>${spring.boot.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-data-rest</artifactId>
-            <version>1.3.9</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
