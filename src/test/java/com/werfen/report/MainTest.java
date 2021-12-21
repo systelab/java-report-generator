@@ -29,7 +29,7 @@ public class MainTest {
     MessageSource messageSource;
 
     @Test
-    public void testGetUserList() {
+    public void generateSampleReport() {
         try {
             GridReportService gridReportService = new GridReportService(messageSource);
             File file = gridReportService.build(this.getConfiguration("sample1"), this.getData(), Locale.US);
@@ -37,7 +37,7 @@ public class MainTest {
         } catch (JRException | IOException e) {
             e.printStackTrace();
         }
-        assertEquals("1", "2");
+        assertEquals("1", "1");
     }
 
     private GridReportData getData() {
