@@ -3,11 +3,13 @@ package com.systelab.pdf.service;
 import net.sf.jasperreports.engine.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+@Service
 public class ReportFillerService {
 
     private final Map<String, Object> parameters = new HashMap<>();

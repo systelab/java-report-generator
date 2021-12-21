@@ -8,10 +8,12 @@ import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.export.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.util.Map;
 
+@Service
 public class ReportExporterService {
 
     Logger log = LoggerFactory.getLogger(ReportExporterService.class);

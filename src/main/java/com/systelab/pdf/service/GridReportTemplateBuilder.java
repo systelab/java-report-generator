@@ -17,7 +17,6 @@ import java.util.Locale;
 import static java.lang.Math.round;
 
 public class GridReportTemplateBuilder extends BaseReportTemplateBuilder {
-    Logger log = LoggerFactory.getLogger(GridReportTemplateBuilder.class);
 
     private static final int BAND_WIDTH = PageFormat.A4.getWidth() - (20 * 2);
     private static final int ROW_SEPARATOR_LINE_THICKNESS = 1;

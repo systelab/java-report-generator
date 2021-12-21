@@ -2,7 +2,6 @@ package com.systelab.pdf;
 
 import com.systelab.pdf.model.*;
 import com.systelab.pdf.service.GridReportService;
-import com.systelab.pdf.service.GridReportTemplateBuilder;
 import net.sf.jasperreports.engine.JRException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,11 +31,8 @@ public class MainTest {
     @Test
     public void testGetUserList() {
         try {
-            GridReportConfiguration configuration = this.getConfiguration("sample1");
-            GridReportData data = this.getData();
-
             GridReportService gridReportService = new GridReportService(messageSource);
-            File file = gridReportService.build(configuration,data, Locale.US);
+            File file = gridReportService.build(this.getConfiguration("sample1"), this.getData(), Locale.US);
             file.createNewFile();
         } catch (JRException | IOException e) {
             e.printStackTrace();
@@ -54,7 +50,7 @@ public class MainTest {
         ReportHeaderConfiguration header = this.buildHeaderConfiguration();
         ReportFooterConfiguration footer = this.buildReportFooterConfiguration();
         List<GridColumnConfiguration> columns = new ArrayList<>();
-        columns.add(new GridColumnConfiguration("col1", GridReportColumnWidth.COLUMN_WIDTH_3,"col1"));
+        columns.add(new GridColumnConfiguration("col1", GridReportColumnWidth.COLUMN_WIDTH_3, "col1"));
         return new GridReportConfiguration(fileName, header, footer, columns);
     }
 
