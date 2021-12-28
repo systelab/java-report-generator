@@ -31,38 +31,38 @@ public class FormReportTest {
     }
 
     private FormReportData getData() {
-        return new FormReportData.FormReportDataBuilder()
-                .addSection(new FormReportSection.FormReportSectionBuilder()
+        return FormReportData.builder()
+                .section(FormReportSection.builder()
                         .title("Section 1 title")
-                        .addField(new FormReportField.FormReportFieldBuilder()
+                        .field(FormReportField.builder()
                                 .label("Field 1 label")
                                 .value("Field 1 value")
-                                .addSubfield(new FormReportField.FormReportFieldBuilder()
+                                .subfield(FormReportField.builder()
                                         .label("Field 2 label")
                                         .value("Field 2 value")
                                         .build())
-                                .addSubfield(new FormReportField.FormReportFieldBuilder()
+                                .subfield(FormReportField.builder()
                                         .label("Field 3 label")
                                         .value("Field 3 value")
                                         .build()
                                 ).build()
                         )
-                        .addField(new FormReportField.FormReportFieldBuilder()
+                        .field(FormReportField.builder()
                                 .label("Field 4 label")
                                 .value("Field 4 value")
                                 .build())
-                        .addSubsection(new FormReportSection.FormReportSectionBuilder()
+                        .subsection(FormReportSection.builder()
                                 .title("Subsection 1.1 title")
-                                .addField(new FormReportField.FormReportFieldBuilder()
+                                .field(FormReportField.builder()
                                         .label("Field 5 label")
                                         .value("Field 5 value")
                                         .build()
                                 ).build()
                         ).build()
                 )
-                .addSection(new FormReportSection.FormReportSectionBuilder()
+                .section(FormReportSection.builder()
                         .title("Section 2 title")
-                        .addField(new FormReportField.FormReportFieldBuilder()
+                        .field(FormReportField.builder()
                                 .label("Field 6 label")
                                 .value("Field 6 value")
                                 .build()
@@ -79,20 +79,20 @@ public class FormReportTest {
     }
 
     private ReportHeaderConfiguration buildHeaderConfiguration() {
-        return new ReportHeaderConfiguration.ReportHeaderConfigurationBuilder()
+        return ReportHeaderConfiguration.builder()
                 .title("Grid report")
-                .field1(new ReportField.ReportFieldBuilder().name("Lab name").value("Name").build())
-                .field2(new ReportField.ReportFieldBuilder().name("Second").value("Another").build())
-                .field3(new ReportField.ReportFieldBuilder().name("Third").value("Another one").build())
-                .field4(new ReportField.ReportFieldBuilder().name("Fourth").value("Last one").build())
+                .field1(ReportField.builder().name("Lab name").value("Name").build())
+                .field2(ReportField.builder().name("Second").value("Another").build())
+                .field3(ReportField.builder().name("Third").value("Another one").build())
+                .field4(ReportField.builder().name("Fourth").value("Last one").build())
                 .build();
     }
 
     private ReportFooterConfiguration buildReportFooterConfiguration() {
-        return new ReportFooterConfiguration.ReportFooterConfigurationBuilder()
+        return ReportFooterConfiguration.builder()
                 .createdAt(ZonedDateTime.now().toOffsetDateTime().format(DateTimeFormatter.ofPattern(DATE_FORMAT)))
-                .additionalField1(new ReportField.ReportFieldBuilder().name("User").value("My self").build())
-                .additionalField2(new ReportField.ReportFieldBuilder().name("Second").value("Another").build())
+                .additionalField1(ReportField.builder().name("User").value("My self").build())
+                .additionalField2(ReportField.builder().name("Second").value("Another").build())
                 .build();
     }
 }

@@ -1,32 +1,14 @@
 package com.werfen.report.model;
 
-import java.util.ArrayList;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Singular;
+
 import java.util.List;
 
+@Builder
+@Getter
 public class FormReportData {
-
+    @Singular
     private final List<FormReportSection> sections;
-
-    public List<FormReportSection> getSections() {
-        return sections;
-    }
-
-    public FormReportData(FormReportDataBuilder builder) {
-        this.sections = builder.sections;
-    }
-
-    public static class FormReportDataBuilder{
-        private List<FormReportSection> sections = new ArrayList<>();
-
-        public FormReportDataBuilder addSection(FormReportSection section) {
-            this.sections.add(section);
-            return this;
-        }
-
-        public FormReportData build() {
-            return new FormReportData(this);
-        }
-    }
-
-
 }
