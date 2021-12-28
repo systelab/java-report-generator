@@ -1,9 +1,10 @@
 package com.werfen.report.service.template;
 
-import com.werfen.report.model.FormReportContent;
+import com.werfen.report.model.FormReportData;
 import com.werfen.report.model.FormReportField;
 import com.werfen.report.model.FormReportSection;
 import com.werfen.report.model.PageFormat;
+import com.werfen.report.util.DesignTextBuilder;
 import net.sf.jasperreports.engine.design.JRDesignBand;
 import net.sf.jasperreports.engine.design.JRDesignSection;
 import net.sf.jasperreports.engine.design.JRDesignStaticText;
@@ -27,39 +28,36 @@ public class FormReportTemplateBuilder extends BaseReportTemplateBuilder {
     public static final int FIELD_LABEL_X = 10;
     public static final int FIELD_VALUE_X = 134;
 
-    public void addForm(FormReportContent formReportContent) {
-        formReportContent.getSections().stream().forEach(section -> this.addSection(section, 0));
+    public void addForm(FormReportData formReportData) {
+        formReportData.getSections().forEach(section -> this.addSection(section, 0));
     }
 
     private void addSection(FormReportSection formReportSection, int sectionDepth) {
         this.addTitle(formReportSection.getTitle(), sectionDepth);
 
         this.addSeparator(formReportSection.getFields().isEmpty() ? 0 : SECTION_SEPARATOR_BEGIN);
-        formReportSection.getFields().stream().forEach(field -> this.addField(field, 0));
+        formReportSection.getFields().forEach(field -> this.addField(field, 0));
         this.addSeparator(formReportSection.getFields().isEmpty() ? 0 : SECTION_SEPARATOR_END);
 
-        formReportSection.getSubsections().stream().forEach(subsection -> this.addSection(subsection, sectionDepth + 1));
+        formReportSection.getSubsections().forEach(subsection -> this.addSection(subsection, sectionDepth + 1));
     }
 
     private void addTitle(String title, int sectionDepth) {
-        JRDesignStaticText titleBox = new JRDesignStaticText();
-        titleBox.setX(0);
-        titleBox.setY(0);
-        titleBox.setWidth(BAND_WIDTH);
-        titleBox.setHeight(TITLE_HEIGHT);
-        titleBox.setMode(ModeEnum.OPAQUE);
-        titleBox.setBackcolor(this.getTitleColor(sectionDepth));
 
-        JRDesignStaticText titleText = new JRDesignStaticText();
-        titleText.setX(TITLE_LEFT_PADDING);
-        titleText.setY(0);
-        titleText.setWidth(BAND_WIDTH - TITLE_LEFT_PADDING);
-        titleText.setHeight(TITLE_HEIGHT);
-        titleText.setHorizontalTextAlign(HorizontalTextAlignEnum.LEFT);
-        titleText.setVerticalTextAlign(VerticalTextAlignEnum.MIDDLE);
-        titleText.setText(title);
-        titleText.setMode(ModeEnum.TRANSPARENT);
-        titleText.setPdfFontName(TITLE_FONT_NAME);
+        JRDesignStaticText titleBox = new DesignTextBuilder()
+                .position(0,0, BAND_WIDTH, TITLE_HEIGHT)
+                .mode(ModeEnum.OPAQUE)
+                .backgroundColor(this.getTitleColor(sectionDepth))
+                .buildStaticText();
+
+        JRDesignStaticText titleText = new DesignTextBuilder()
+                .position(TITLE_LEFT_PADDING, 0, BAND_WIDTH - TITLE_LEFT_PADDING, TITLE_HEIGHT)
+                .horizontalTextAlign(HorizontalTextAlignEnum.LEFT)
+                .verticalTextAlign(VerticalTextAlignEnum.MIDDLE)
+                .mode(ModeEnum.TRANSPARENT)
+                .font(TITLE_FONT_NAME)
+                .text(title)
+                .buildStaticText();
 
         JRDesignBand titleBand = new JRDesignBand();
         titleBand.setHeight(TITLE_HEIGHT);
@@ -84,21 +82,17 @@ public class FormReportTemplateBuilder extends BaseReportTemplateBuilder {
     }
 
     private void addField(FormReportField formReportField, int fieldDepth) {
-        JRDesignStaticText labelText = new JRDesignStaticText();
-        labelText.setX(FIELD_LABEL_X * (fieldDepth + 1));
-        labelText.setY(0);
-        labelText.setHeight(FIELD_HEIGHT);
-        labelText.setWidth(BAND_WIDTH / 4);
-        labelText.setHorizontalTextAlign(HorizontalTextAlignEnum.LEFT);
-        labelText.setText(formReportField.getLabel());
+        JRDesignStaticText labelText = new DesignTextBuilder()
+                .position(FIELD_LABEL_X * (fieldDepth + 1), 0, BAND_WIDTH / 4, FIELD_HEIGHT)
+                .horizontalTextAlign(HorizontalTextAlignEnum.LEFT)
+                .text(formReportField.getLabel())
+                .buildStaticText();
 
-        JRDesignStaticText valueText = new JRDesignStaticText();
-        valueText.setX(FIELD_VALUE_X);
-        valueText.setY(0);
-        valueText.setHeight(FIELD_HEIGHT);
-        valueText.setWidth(BAND_WIDTH / 4);
-        valueText.setHorizontalTextAlign(HorizontalTextAlignEnum.LEFT);
-        valueText.setText(formReportField.getValue());
+        JRDesignStaticText valueText = new DesignTextBuilder()
+                .position(FIELD_VALUE_X, 0, BAND_WIDTH / 4, FIELD_HEIGHT)
+                .horizontalTextAlign(HorizontalTextAlignEnum.LEFT)
+                .text(formReportField.getValue())
+                .buildStaticText();
 
         JRDesignBand fieldBand = new JRDesignBand();
         fieldBand.setHeight(FIELD_HEIGHT);
@@ -108,7 +102,7 @@ public class FormReportTemplateBuilder extends BaseReportTemplateBuilder {
 
         ((JRDesignSection) this.jasperDesign.getDetailSection()).addBand(fieldBand);
 
-        formReportField.getSubfields().stream().forEach(subfield -> this.addField(subfield, fieldDepth + 1));
+        formReportField.getSubfields().forEach(subfield -> this.addField(subfield, fieldDepth + 1));
     }
 
     private void addSeparator(int height) {

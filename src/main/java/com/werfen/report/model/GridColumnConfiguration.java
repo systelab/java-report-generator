@@ -6,10 +6,10 @@ public class GridColumnConfiguration {
     private final GridReportColumnWidth width;
     private final String translation;
 
-    public GridColumnConfiguration(String name, GridReportColumnWidth width, String translation) {
-        this.name = name;
-        this.width = width;
-        this.translation = translation;
+    private GridColumnConfiguration(GridColumnConfigurationBuilder builder) {
+        this.name = builder.name;
+        this.width = builder.width;
+        this.translation = builder.translation;
     }
 
     public String getName() {
@@ -22,5 +22,30 @@ public class GridColumnConfiguration {
 
     public GridReportColumnWidth getWidth() {
         return width;
+    }
+
+    public static class GridColumnConfigurationBuilder {
+        private String name;
+        private GridReportColumnWidth width;
+        private String translation;
+
+        public GridColumnConfigurationBuilder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public GridColumnConfigurationBuilder width(GridReportColumnWidth width) {
+            this.width = width;
+            return this;
+        }
+
+        public GridColumnConfigurationBuilder translation(String translation) {
+            this.translation = translation;
+            return this;
+        }
+
+        public GridColumnConfiguration build() {
+            return new GridColumnConfiguration(this);
+        }
     }
 }

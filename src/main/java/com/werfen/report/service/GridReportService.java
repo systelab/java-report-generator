@@ -16,7 +16,6 @@ import net.sf.jasperreports.export.SimplePdfReportConfiguration;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Logger;
 

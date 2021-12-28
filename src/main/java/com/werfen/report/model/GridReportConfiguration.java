@@ -1,5 +1,6 @@
 package com.werfen.report.model;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -10,12 +11,11 @@ public class GridReportConfiguration {
     private final ReportFooterConfiguration footerConfiguration;
     private final List<GridColumnConfiguration> gridColumnConfigurations;
 
-    public GridReportConfiguration(String outputFilePath, ReportHeaderConfiguration headerConfiguration,
-                                   ReportFooterConfiguration footerConfiguration, List<GridColumnConfiguration> gridColumnConfigurations) {
-        this.outputFilePath = outputFilePath;
-        this.headerConfiguration = headerConfiguration;
-        this.footerConfiguration = footerConfiguration;
-        this.gridColumnConfigurations = Collections.unmodifiableList(gridColumnConfigurations);
+    private GridReportConfiguration(GridReportConfigurationBuilder builder) {
+        this.outputFilePath = builder.outputFilePath;
+        this.headerConfiguration = builder.headerConfiguration;
+        this.footerConfiguration = builder.footerConfiguration;
+        this.gridColumnConfigurations = builder.gridColumnConfigurations;
     }
 
     public String getOutputFilePath() {
@@ -32,6 +32,38 @@ public class GridReportConfiguration {
 
     public List<GridColumnConfiguration> getGridColumnConfigurations() {
         return gridColumnConfigurations;
+    }
+
+    public static class GridReportConfigurationBuilder {
+        private String outputFilePath;
+        private ReportHeaderConfiguration headerConfiguration;
+        private ReportFooterConfiguration footerConfiguration;
+        private List<GridColumnConfiguration> gridColumnConfigurations = new ArrayList<>();
+
+        public GridReportConfigurationBuilder outputFilePath(String outputFilePath) {
+            this.outputFilePath = outputFilePath;
+            return this;
+        }
+
+        public GridReportConfigurationBuilder headerConfiguration(ReportHeaderConfiguration headerConfiguration) {
+            this.headerConfiguration = headerConfiguration;
+            return this;
+        }
+
+        public GridReportConfigurationBuilder footerConfiguration(ReportFooterConfiguration footerConfiguration) {
+            this.footerConfiguration = footerConfiguration;
+            return this;
+        }
+
+        public GridReportConfigurationBuilder addGridColumnConfiguration(GridColumnConfiguration gridColumnConfiguration) {
+            this.gridColumnConfigurations.add(gridColumnConfiguration);
+            return this;
+        }
+
+        public GridReportConfiguration build() {
+            return new GridReportConfiguration(this);
+        }
+
     }
 
 }

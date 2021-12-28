@@ -3,8 +3,9 @@ package com.werfen.report.util;
 import net.sf.jasperreports.engine.JRExpression;
 import net.sf.jasperreports.engine.design.JRDesignStaticText;
 import net.sf.jasperreports.engine.design.JRDesignTextField;
-import net.sf.jasperreports.engine.type.EvaluationTimeEnum;
-import net.sf.jasperreports.engine.type.HorizontalTextAlignEnum;
+import net.sf.jasperreports.engine.type.*;
+
+import java.awt.*;
 
 public class DesignTextBuilder {
     private String text;
@@ -21,6 +22,19 @@ public class DesignTextBuilder {
     private Float fontSize;
     private Boolean bold;
     private HorizontalTextAlignEnum horizontalTextAlign;
+    private VerticalTextAlignEnum verticalTextAlign;
+    private ModeEnum mode;
+    private Color backgroudColor;
+
+    public DesignTextBuilder mode(ModeEnum mode){
+        this.mode = mode;
+        return this;
+    }
+
+    public DesignTextBuilder backgroundColor(Color backgroundColor){
+        this.backgroudColor = backgroundColor;
+        return this;
+    }
 
     public DesignTextBuilder text(String text) {
         this.text = text;
@@ -50,12 +64,15 @@ public class DesignTextBuilder {
         return this;
     }
 
+    public DesignTextBuilder verticalTextAlign(VerticalTextAlignEnum verticalTextAlign) {
+        this.verticalTextAlign = verticalTextAlign;
+        return this;
+    }
+
     public DesignTextBuilder font(String font) {
         this.font = font;
         return this;
     }
-
-
 
     public DesignTextBuilder encoding(String encoding) {
         this.encoding = encoding;
@@ -91,6 +108,10 @@ public class DesignTextBuilder {
             staticText.setFontSize(fontSize);
         if (bold != null)
             staticText.setBold(bold);
+        if (mode != null)
+            staticText.setMode(mode);
+        if (backgroudColor != null)
+            staticText.setBackcolor(backgroudColor);
 
         return staticText;
     }
@@ -118,6 +139,10 @@ public class DesignTextBuilder {
             textField.setFontSize(fontSize);
         if (bold != null)
             textField.setBold(bold);
+        if (mode != null)
+            textField.setMode(mode);
+        if (backgroudColor != null)
+            textField.setBackcolor(backgroudColor);
 
         return textField;
     }

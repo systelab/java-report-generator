@@ -1,9 +1,6 @@
 package com.werfen.report.service;
 
-import com.werfen.report.model.FormReportConfiguration;
-import com.werfen.report.model.FormReportContent;
-import com.werfen.report.model.PageFormat;
-import com.werfen.report.service.GridReportService;
+import com.werfen.report.model.*;
 import com.werfen.report.service.template.BaseReportTemplateBuilder;
 import com.werfen.report.service.template.FormReportTemplateBuilder;
 import net.sf.jasperreports.engine.*;
@@ -23,70 +20,53 @@ public class FormReportService {
 
     Logger log = Logger.getLogger(GridReportService.class.getName());
 
-    private FormReportContent content;
-    private FormReportConfiguration configuration;
-
-    public void setContent(FormReportContent content) {
-        this.content = content;
+    public File build(FormReportConfiguration formReportConfiguration, FormReportData formReportData) throws JRException {
+        FormReportTemplateBuilder template = new FormReportTemplateBuilder();
+        template.initJasperDesign("formReport", PageFormat.A4);
+        template.addHeader(formReportConfiguration.getHeaderConfiguration());
+        template.addFooter(formReportConfiguration.getFooterConfiguration());
+        template.addForm(formReportData);
+        this.exportToPdf(formReportConfiguration.getOutputFilePath(), template.getJasperDesign(), getProperties(formReportConfiguration), new JREmptyDataSource());
+        return new File(formReportConfiguration.getOutputFilePath() + ".pdf");
     }
 
-    public void setConfiguration(FormReportConfiguration configuration) {
-        this.configuration = configuration;
-    }
+    private void exportToPdf(String filePath, JasperDesign jasperDesign, Map<String, Object> parameters, JRDataSource ds) throws JRException {
 
-    public File buildPDF() {
+        JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, ds);
+
+        JRPdfExporter exporter = new JRPdfExporter();
+        exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+        exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(filePath + ".pdf"));
+        exporter.setConfiguration(getBreakConfiguration());
+        exporter.setConfiguration(getSecurityConfiguration());
+
         try {
-            JasperDesign designTemplate = this.buildReportTemplate();
-            JasperReport compiledTemplate = JasperCompileManager.compileReport(designTemplate);
-            JasperPrint printTemplate = this.fillReportTemplate(compiledTemplate);
-            return this.buildReportPDFFile(printTemplate);
+            exporter.exportReport();
         } catch (JRException ex) {
-            log.info("Error generating PDF report");
-            return null;
+            log.info("Error exporting to PDF");
+            ex.printStackTrace();
         }
     }
 
-    private JasperDesign buildReportTemplate() throws JRException {
-        FormReportTemplateBuilder templateBuilder = new FormReportTemplateBuilder();
-        templateBuilder.initJasperDesign("formReport", PageFormat.A4);
-        templateBuilder.addHeader(this.configuration.getHeaderConfiguration());
-        templateBuilder.addFooter(this.configuration.getFooterConfiguration());
-        templateBuilder.addForm(this.content);
-        return templateBuilder.getJasperDesign();
-    }
-
-    JasperPrint fillReportTemplate(JasperReport compiledTemplate) throws JRException {
-        Map<String, Object> parametersMap = this.getParametersMap();
-        JRDataSource emptyDataSource = new JREmptyDataSource();
-        return JasperFillManager.fillReport(compiledTemplate, parametersMap, emptyDataSource);
-    }
-
-    private Map<String, Object> getParametersMap() {
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put(BaseReportTemplateBuilder.TITLE_LOGO_PARAMETER, configuration.getHeaderConfiguration().getLogoPath());
-        return parameters;
-    }
-
-    private File buildReportPDFFile(JasperPrint printTemplate) throws JRException {
-        String outputFilePath = this.configuration.getOutputFilePath();
-
-        JRPdfExporter exporter = new JRPdfExporter();
-        exporter.setExporterInput(new SimpleExporterInput(printTemplate));
-        exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(outputFilePath));
-
+    private SimplePdfReportConfiguration getBreakConfiguration() {
         SimplePdfReportConfiguration reportConfig = new SimplePdfReportConfiguration();
         reportConfig.setSizePageToContent(true);
         reportConfig.setForceLineBreakPolicy(false);
-        exporter.setConfiguration(reportConfig);
+        return reportConfig;
+    }
 
+    private SimplePdfExporterConfiguration getSecurityConfiguration() {
         SimplePdfExporterConfiguration exportConfig = new SimplePdfExporterConfiguration();
         exportConfig.setEncrypted(true);
         exportConfig.setAllowedPermissionsHint("PRINTING");
-        exporter.setConfiguration(exportConfig);
+        return exportConfig;
+    }
 
-        exporter.exportReport();
-
-        return new File(outputFilePath);
+    private Map<String, Object> getProperties(FormReportConfiguration formReportConfiguration) {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put(BaseReportTemplateBuilder.TITLE_LOGO_PARAMETER, formReportConfiguration.getHeaderConfiguration().getLogoPath());
+        return parameters;
     }
 
 }

@@ -1,12 +1,8 @@
 package com.werfen.report.model;
 
 public class GridReportSorting {
-    private String column;
-    private Boolean ascending;
-
-    public GridReportSorting() {
-
-    }
+    private final String column;
+    private final Boolean ascending;
 
     public GridReportSorting(String column, Boolean ascending) {
         this.column = column;

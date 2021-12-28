@@ -5,12 +5,6 @@ public class FormReportConfiguration {
     private final ReportHeaderConfiguration headerConfiguration;
     private final ReportFooterConfiguration footerConfiguration;
 
-    public FormReportConfiguration(String outputFilePath, ReportHeaderConfiguration headerConfiguration, ReportFooterConfiguration footerConfiguration) {
-        this.outputFilePath = outputFilePath;
-        this.headerConfiguration = headerConfiguration;
-        this.footerConfiguration = footerConfiguration;
-    }
-
     public String getOutputFilePath() {
         return outputFilePath;
     }
@@ -21,5 +15,36 @@ public class FormReportConfiguration {
 
     public ReportFooterConfiguration getFooterConfiguration() {
         return footerConfiguration;
+    }
+
+    private FormReportConfiguration(FormReportConfigurationBuilder builder) {
+        this.outputFilePath = builder.outputFilePath;
+        this.headerConfiguration = builder.headerConfiguration;
+        this.footerConfiguration = builder.footerConfiguration;
+    }
+
+    public static class FormReportConfigurationBuilder {
+        private String outputFilePath;
+        private ReportHeaderConfiguration headerConfiguration;
+        private ReportFooterConfiguration footerConfiguration;
+
+        public FormReportConfigurationBuilder outputFilePath(String outputFilePath) {
+            this.outputFilePath = outputFilePath;
+            return this;
+        }
+
+        public FormReportConfigurationBuilder headerConfiguration(ReportHeaderConfiguration headerConfiguration) {
+            this.headerConfiguration = headerConfiguration;
+            return this;
+        }
+
+        public  FormReportConfigurationBuilder footerConfiguration(ReportFooterConfiguration footerConfiguration) {
+            this.footerConfiguration = footerConfiguration;
+            return this;
+        }
+
+        public FormReportConfiguration build() {
+            return new FormReportConfiguration(this);
+        }
     }
 }
