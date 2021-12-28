@@ -3,10 +3,13 @@ package com.werfen.report;
 import com.werfen.report.model.*;
 import com.werfen.report.service.FormReportService;
 import net.sf.jasperreports.engine.JRException;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -22,13 +25,18 @@ public class FormReportTest {
     public void generateFormReport() {
         try {
             FormReportService formReportService = new FormReportService();
-            File file = formReportService.build(this.getConfiguration("sample1"), this.getData());
+            File file = formReportService.build(this.getConfiguration("form_report"), this.getData());
             file.createNewFile();
         } catch (JRException | IOException e) {
             e.printStackTrace();
         }
-        assertEquals("1", "1");
-    }
+        try (PDDocument original = PDDocument.load(new File("form_report_golden.pdf"));
+             PDDocument generated = PDDocument.load(new File("form_report.pdf"));) {
+            PDFTextStripper textStripper = new PDFTextStripper();
+            assertEquals(textStripper.getText(original), textStripper.getText(generated));
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }    }
 
     private FormReportData getData() {
         return FormReportData.builder()
@@ -90,7 +98,7 @@ public class FormReportTest {
 
     private ReportFooterConfiguration buildReportFooterConfiguration() {
         return ReportFooterConfiguration.builder()
-                .createdAt(ZonedDateTime.now().toOffsetDateTime().format(DateTimeFormatter.ofPattern(DATE_FORMAT)))
+                .createdAt(ZonedDateTime.of(2021,12,1,10,1,1,1, ZoneId.systemDefault()).toOffsetDateTime().format(DateTimeFormatter.ofPattern(DATE_FORMAT)))
                 .additionalField1(ReportField.builder().name("User").value("My self").build())
                 .additionalField2(ReportField.builder().name("Second").value("Another").build())
                 .build();
