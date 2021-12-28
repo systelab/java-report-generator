@@ -1,5 +1,11 @@
 package com.werfen.report.model;
 
+
+import lombok.Builder;
+import lombok.Getter;
+
+@Builder
+@Getter
 public class FormReportConfiguration {
     private final String outputFilePath;
     private final ReportHeaderConfiguration headerConfiguration;
@@ -17,34 +23,6 @@ public class FormReportConfiguration {
         return footerConfiguration;
     }
 
-    private FormReportConfiguration(FormReportConfigurationBuilder builder) {
-        this.outputFilePath = builder.outputFilePath;
-        this.headerConfiguration = builder.headerConfiguration;
-        this.footerConfiguration = builder.footerConfiguration;
-    }
 
-    public static class FormReportConfigurationBuilder {
-        private String outputFilePath;
-        private ReportHeaderConfiguration headerConfiguration;
-        private ReportFooterConfiguration footerConfiguration;
 
-        public FormReportConfigurationBuilder outputFilePath(String outputFilePath) {
-            this.outputFilePath = outputFilePath;
-            return this;
-        }
-
-        public FormReportConfigurationBuilder headerConfiguration(ReportHeaderConfiguration headerConfiguration) {
-            this.headerConfiguration = headerConfiguration;
-            return this;
-        }
-
-        public  FormReportConfigurationBuilder footerConfiguration(ReportFooterConfiguration footerConfiguration) {
-            this.footerConfiguration = footerConfiguration;
-            return this;
-        }
-
-        public FormReportConfiguration build() {
-            return new FormReportConfiguration(this);
-        }
-    }
 }

@@ -71,7 +71,7 @@ public class FormReportTest {
     }
 
     private FormReportConfiguration getConfiguration(String fileName) throws IOException {
-       return new FormReportConfiguration.FormReportConfigurationBuilder()
+       return FormReportConfiguration.builder()
                 .outputFilePath(fileName)
                 .headerConfiguration(this.buildHeaderConfiguration())
                 .footerConfiguration(this.buildReportFooterConfiguration())
