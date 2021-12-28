@@ -1,11 +1,8 @@
 package com.werfen.report.service;
 
-import com.werfen.report.model.GridReportConfiguration;
-import com.werfen.report.model.GridReportData;
-import com.werfen.report.model.GridReportDataSource;
-import com.werfen.report.model.PageFormat;
+import com.werfen.report.model.*;
 import com.werfen.report.service.template.BaseReportTemplateBuilder;
-import com.werfen.report.service.template.GridReportTemplateBuilder;
+import com.werfen.report.service.template.FormReportTemplateBuilder;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
@@ -19,20 +16,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-public class GridReportService {
+public class FormReportService {
 
     Logger log = Logger.getLogger(GridReportService.class.getName());
 
-    public File build(GridReportConfiguration gridReportConfiguration, GridReportData gridReportData) throws JRException {
-
-        GridReportTemplateBuilder template = new GridReportTemplateBuilder();
-
-        template.initJasperDesign("gridReport", PageFormat.A4);
-        template.addHeader(gridReportConfiguration.getHeaderConfiguration());
-        template.addFooter(gridReportConfiguration.getFooterConfiguration());
-        template.addGrid(gridReportConfiguration.getGridColumnConfigurations());
-        this.exportToPdf(gridReportConfiguration.getOutputFilePath(), template.getJasperDesign(), getProperties(gridReportConfiguration), new GridReportDataSource(gridReportData));
-        return new File(gridReportConfiguration.getOutputFilePath() + ".pdf");
+    public File build(FormReportConfiguration formReportConfiguration, FormReportData formReportData) throws JRException {
+        FormReportTemplateBuilder template = new FormReportTemplateBuilder();
+        template.initJasperDesign("formReport", PageFormat.A4);
+        template.addHeader(formReportConfiguration.getHeaderConfiguration());
+        template.addFooter(formReportConfiguration.getFooterConfiguration());
+        template.addForm(formReportData);
+        this.exportToPdf(formReportConfiguration.getOutputFilePath(), template.getJasperDesign(), getProperties(formReportConfiguration), new JREmptyDataSource());
+        return new File(formReportConfiguration.getOutputFilePath() + ".pdf");
     }
 
     private void exportToPdf(String filePath, JasperDesign jasperDesign, Map<String, Object> parameters, JRDataSource ds) throws JRException {
@@ -54,12 +49,6 @@ public class GridReportService {
         }
     }
 
-    private Map<String, Object> getProperties(GridReportConfiguration gridReportConfiguration) {
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put(BaseReportTemplateBuilder.TITLE_LOGO_PARAMETER, gridReportConfiguration.getHeaderConfiguration().getLogoPath());
-        return parameters;
-    }
-
     private SimplePdfReportConfiguration getBreakConfiguration() {
         SimplePdfReportConfiguration reportConfig = new SimplePdfReportConfiguration();
         reportConfig.setSizePageToContent(true);
@@ -72,6 +61,12 @@ public class GridReportService {
         exportConfig.setEncrypted(true);
         exportConfig.setAllowedPermissionsHint("PRINTING");
         return exportConfig;
+    }
+
+    private Map<String, Object> getProperties(FormReportConfiguration formReportConfiguration) {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put(BaseReportTemplateBuilder.TITLE_LOGO_PARAMETER, formReportConfiguration.getHeaderConfiguration().getLogoPath());
+        return parameters;
     }
 
 }

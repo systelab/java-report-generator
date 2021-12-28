@@ -1,19 +1,13 @@
 package com.werfen.report.model;
 
+
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Singular;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 @Builder
 @Getter
-public class GridReportConfiguration {
+public class FormReportConfiguration {
     private final String outputFilePath;
     private final ReportHeaderConfiguration headerConfiguration;
     private final ReportFooterConfiguration footerConfiguration;
-    @Singular
-    private final List<GridColumnConfiguration> gridColumnConfigurations;
 }

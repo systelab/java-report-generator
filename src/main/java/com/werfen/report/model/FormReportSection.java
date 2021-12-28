@@ -5,12 +5,14 @@ import lombok.Getter;
 import lombok.Singular;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Builder
 @Getter
-public class GridReportData {
+public class FormReportSection {
+    private final String title;
     @Singular
-    private final List<GridReportRow> rows;
+    private final List<FormReportSection> subsections;
+    @Singular
+    private final List<FormReportField> fields;
 }
