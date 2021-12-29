@@ -1,19 +1,13 @@
 package com.werfen.report.model;
 
+import lombok.*;
+
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class GridReportSorting {
-    private final String column;
-    private final Boolean ascending;
-
-    public GridReportSorting(String column, Boolean ascending) {
-        this.column = column;
-        this.ascending = ascending;
-    }
-
-    public String getColumn() {
-        return column;
-    }
-
-    public Boolean getAscending() {
-        return ascending;
-    }
+    private String column;
+    private Boolean ascending;
 }
