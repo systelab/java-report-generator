@@ -2,10 +2,10 @@ package com.werfen.report;
 
 import com.werfen.report.model.*;
 import com.werfen.report.service.GridReportService;
+import com.werfen.report.service.template.BaseXlsxReportTemplateBuilder;
 import net.sf.jasperreports.engine.JRException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
-import org.apache.pdfbox.text.PDFTextStripperByArea;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -20,21 +20,32 @@ public class GridReportTest {
     public static String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     @Test
-    public void generateGridReport() {
+    public void generateGridPdfReport() {
         try {
             GridReportService gridReportService = new GridReportService();
-            File file = gridReportService.build(this.getConfiguration("grid_report"), this.getData());
+            File file = gridReportService.build(this.getConfiguration("grid_report"), this.getData(), ReportFormat.PDF);
             file.createNewFile();
         } catch (JRException | IOException e) {
             e.printStackTrace();
         }
 
         try (PDDocument original = PDDocument.load(new File("grid_report_golden.pdf"));
-             PDDocument generated = PDDocument.load(new File("grid_report.pdf"));) {
+             PDDocument generated = PDDocument.load(new File("grid_report.pdf"))) {
                 PDFTextStripper textStripper = new PDFTextStripper();
                 assertEquals(textStripper.getText(original), textStripper.getText(generated));
         } catch(Exception ex) {
             ex.printStackTrace();
+        }
+    }
+
+    @Test
+    public void generateGridXlsxReport() {
+        try {
+            GridReportService gridReportService = new GridReportService();
+            File file = gridReportService.build(this.getConfiguration("grid_report"), this.getData(), ReportFormat.EXCEL);
+            file.createNewFile();
+        } catch (JRException | IOException e) {
+            e.printStackTrace();
         }
     }
 
