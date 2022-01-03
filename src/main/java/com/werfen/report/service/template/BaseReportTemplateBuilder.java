@@ -78,8 +78,6 @@ public class BaseReportTemplateBuilder {
     private static final String STYLE_ENCODING = "UTF-8";
     private static final Float STYLE_FONT_SIZE = 7f;
 
-    protected String reportName;
-    protected PageFormat pageFormat;
     protected JasperDesign jasperDesign;
 
     private void setDefaultStyle() {
