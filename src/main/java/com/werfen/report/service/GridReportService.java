@@ -9,10 +9,8 @@ import com.werfen.report.service.template.GridReportTemplateBuilder;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.export.SimpleExporterInput;
-import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
-import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
-import net.sf.jasperreports.export.SimplePdfReportConfiguration;
+import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
+import net.sf.jasperreports.export.*;
 
 import java.io.File;
 import java.util.HashMap;
@@ -49,7 +47,7 @@ public class GridReportService {
         try {
             exporter.exportReport();
         } catch (JRException ex) {
-            log.info("Error exporting to PDF");
+            log.info("Error exporting to PDF: " + ex.getMessage());
             ex.printStackTrace();
         }
     }
