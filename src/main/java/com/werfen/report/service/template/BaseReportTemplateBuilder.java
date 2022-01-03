@@ -37,8 +37,6 @@ public class BaseReportTemplateBuilder {
     private static final Float TITLE_TEXT_FONT_SIZE = 14f;
 
     private static final int HEADER_HEIGHT = 48;
-    private static final int HEADER_X = 10;
-    private static final int HEADER_Y = 12;
     private static final int HEADER_FIELDS_WIDTH = 139;
     private static final int HEADER_FIELDS_HEIGHT = 11;
     private static final int HEADER_FIELDS_TITLE_Y = 7;
@@ -74,7 +72,6 @@ public class BaseReportTemplateBuilder {
     private static final int PAGE_MARGIN = 20;
 
     private static final String STYLE_NAME = "default";
-    private static final String STYLE_FONT_NAME = "Helvetica";
     private static final String STYLE_ENCODING = "UTF-8";
     private static final Float STYLE_FONT_SIZE = 7f;
 
