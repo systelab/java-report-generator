@@ -26,7 +26,6 @@ public class BaseReportTemplateBuilder {
     private static final int TITLE_LOGO_Y = 9;
     private static final int TITLE_TEXT_WIDTH = 116;
     private static final int TITLE_TEXT_HEIGHT = 18;
-    private static final int TITLE_FRAME_WIDTH = 556;
     private static final int TITLE_FRAME_HEIGHT = 42;
     private static final int TITLE_FRAME_X = 0;
     private static final int TITLE_FRAME_Y = 0;
@@ -45,7 +44,6 @@ public class BaseReportTemplateBuilder {
     private static final int HEADER_FIELD_2_X = 144;
     private static final int HEADER_FIELD_3_X = 278;
     private static final int HEADER_FIELD_4_X = 412;
-    private static final int HEADER_FRAME_WIDTH = 556;
     private static final int HEADER_FRAME_HEIGHT = 38;
     private static final int HEADER_FRAME_X = 0;
     private static final int HEADER_FRAME_Y = 0;
@@ -63,13 +61,12 @@ public class BaseReportTemplateBuilder {
     private static final int FOOTER_PAGE_NUMBER_TEXT_WIDTH = 32;
     private static final int FOOTER_PAGE_NUMBER_TEXT_X = 510;
     private static final int FOOTER_PAGE_NUMBER_TEXT_Y = 13;
-    private static final int FOOTER_FRAME_WIDTH = 556;
     private static final int FOOTER_FRAME_HEIGHT = 34;
     private static final int FOOTER_FRAME_X = 0;
     private static final int FOOTER_FRAME_Y = 0;
     private static final int FOOTER_HEIGHT = 34;
 
-    private static final int PAGE_MARGIN = 20;
+    protected static final int PAGE_MARGIN = 20;
 
     private static final String STYLE_NAME = "default";
     private static final String STYLE_ENCODING = "UTF-8";
@@ -107,9 +104,9 @@ public class BaseReportTemplateBuilder {
     }
 
     public void addHeader(ReportHeaderConfiguration reportHeaderConfiguration) throws JRException {
-
+        final int BAND_WIDTH = this.jasperDesign.getPageWidth() - (PAGE_MARGIN * 2);
         JRDesignRectangle titleFrame = new DesignRectangleBuilder()
-                .position(TITLE_FRAME_X, TITLE_FRAME_Y, TITLE_FRAME_WIDTH, TITLE_FRAME_HEIGHT).build();
+                .position(TITLE_FRAME_X, TITLE_FRAME_Y, BAND_WIDTH, TITLE_FRAME_HEIGHT).build();
 
         JRDesignLine titleFrameSeparator = new DesignLineBuilder()
                 .position(TITLE_LINE_SEPARATOR_X, TITLE_LINE_SEPARATOR_Y, TITLE_LINE_SEPARATOR_WIDTH, TITLE_LINE_SEPARATOR_HEIGHT).build();
@@ -148,7 +145,7 @@ public class BaseReportTemplateBuilder {
         headerBand.setSplitType(SplitTypeEnum.STRETCH);
 
         JRDesignRectangle headerFrame = new DesignRectangleBuilder()
-                .position(HEADER_FRAME_X, HEADER_FRAME_Y, HEADER_FRAME_WIDTH, HEADER_FRAME_HEIGHT).build();
+                .position(HEADER_FRAME_X, HEADER_FRAME_Y, BAND_WIDTH, HEADER_FRAME_HEIGHT).build();
 
         headerBand.addElement(headerFrame);
 
@@ -190,13 +187,13 @@ public class BaseReportTemplateBuilder {
     }
 
     public void addFooter(ReportFooterConfiguration reportFooterConfiguration) {
-
+        final int BAND_WIDTH = this.jasperDesign.getPageWidth() - (PAGE_MARGIN * 2);
         JRDesignBand footerBand = new JRDesignBand();
         footerBand.setHeight(FOOTER_HEIGHT);
         footerBand.setSplitType(SplitTypeEnum.STRETCH);
 
         JRDesignRectangle footerFrame = new DesignRectangleBuilder()
-                .position(FOOTER_FRAME_X, FOOTER_FRAME_Y, FOOTER_FRAME_WIDTH, FOOTER_FRAME_HEIGHT).build();
+                .position(FOOTER_FRAME_X, FOOTER_FRAME_Y, BAND_WIDTH, FOOTER_FRAME_HEIGHT).build();
 
         footerBand.addElement(footerFrame);
 

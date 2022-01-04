@@ -18,16 +18,16 @@ public class GridReportService {
 
     Logger log = Logger.getLogger(GridReportService.class.getName());
 
-    public File build(GridReportConfiguration gridReportConfiguration, GridReportData gridReportData, ReportFormat reportFormat) throws JRException {
+    public File build(GridReportConfiguration gridReportConfiguration, GridReportData gridReportData, ReportFormat reportFormat, PageFormat pageFormat) throws JRException {
 
         String filePath = gridReportConfiguration.getOutputFilePath() + reportFormat.getFileExtension();
         GridReportTemplateBuilder template = new GridReportTemplateBuilder();
 
-        template.initJasperDesign("gridReport", PageFormat.A4);
+        template.initJasperDesign("gridReport", pageFormat);
         template.addHeader(gridReportConfiguration.getHeaderConfiguration());
         template.addFooter(gridReportConfiguration.getFooterConfiguration());
         template.addGrid(gridReportConfiguration.getGridColumnConfigurations());
-        switch (reportFormat){
+        switch (reportFormat) {
             case PDF:
                 this.exportToPdf(filePath, template.getJasperDesign(), this.getProperties(gridReportConfiguration), new GridReportDataSource(gridReportData));
                 break;

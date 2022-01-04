@@ -2,7 +2,6 @@ package com.werfen.report.service.template;
 
 import com.werfen.report.model.GridColumnConfiguration;
 import com.werfen.report.model.GridReportColumnWidth;
-import com.werfen.report.model.PageFormat;
 import com.werfen.report.util.DesignLineBuilder;
 import com.werfen.report.util.DesignTextBuilder;
 import net.sf.jasperreports.engine.JRException;
@@ -11,15 +10,12 @@ import net.sf.jasperreports.engine.type.HorizontalTextAlignEnum;
 import net.sf.jasperreports.engine.type.SplitTypeEnum;
 
 import java.util.List;
-import java.util.Locale;
 
 import static java.lang.Math.round;
 
 public class GridReportTemplateBuilder extends BaseReportTemplateBuilder {
 
-    private static final int BAND_WIDTH = PageFormat.A4.getWidth() - (20 * 2);
     private static final int ROW_SEPARATOR_LINE_THICKNESS = 1;
-    private static final int CELL_UNIT_WIDTH = round((float) BAND_WIDTH / 12);
     private static final int CELL_UNIT_HEIGHT = 32;
     private static final int CELL_ITEM_HEIGHT = 9;
     private static final int CELL_TITLE_OFFSET_Y = 8;
@@ -28,6 +24,8 @@ public class GridReportTemplateBuilder extends BaseReportTemplateBuilder {
     private static final String FIELD_TEXT_PDF_ENCODING = "UTF-8";
 
     public void addGrid(List<GridColumnConfiguration> gridColumnConfigurations) throws JRException {
+        final int BAND_WIDTH = this.jasperDesign.getPageWidth() - (PAGE_MARGIN * 2);
+
         JRDesignBand rowBand = new JRDesignBand();
         rowBand.setHeight(CELL_UNIT_HEIGHT);
         rowBand.setSplitType(SplitTypeEnum.STRETCH);
@@ -59,6 +57,8 @@ public class GridReportTemplateBuilder extends BaseReportTemplateBuilder {
     }
 
     private void addCell(JRDesignBand rowBand, GridColumnConfiguration gridColumnConfiguration, int currentColumn, int currentRow) throws JRException {
+        final int BAND_WIDTH = this.jasperDesign.getPageWidth() - (PAGE_MARGIN * 2);
+        final int CELL_UNIT_WIDTH = round((float) BAND_WIDTH / 12);
 
         JRDesignStaticText titleText = new DesignTextBuilder()
                 .text(gridColumnConfiguration.getTranslation())
