@@ -22,7 +22,7 @@ public class GridReportTest {
     public void generateGridPdfReport() {
         try {
             GridReportService gridReportService = new GridReportService();
-            File file = gridReportService.build(this.getConfiguration("grid_report"), this.getData(), ReportFormat.PDF);
+            File file = gridReportService.build(this.getConfiguration("grid_report"), this.getData(), ReportFormat.PDF, PageFormat.A4);
             file.createNewFile();
         } catch (JRException | IOException e) {
             e.printStackTrace();
@@ -41,7 +41,7 @@ public class GridReportTest {
     public void generateGridXlsxReport() {
         try {
             GridReportService gridReportService = new GridReportService();
-            File file = gridReportService.build(this.getConfiguration("grid_report"), this.getData(), ReportFormat.EXCEL);
+            File file = gridReportService.build(this.getConfiguration("grid_report"), this.getData(), ReportFormat.EXCEL, PageFormat.A4);
             file.createNewFile();
         } catch (JRException | IOException e) {
             e.printStackTrace();
@@ -67,6 +67,7 @@ public class GridReportTest {
     private ReportHeaderConfiguration buildHeaderConfiguration() {
         return ReportHeaderConfiguration.builder()
                 .title("Grid report")
+                .logoPath("src/main/resources/AF_WERFEN_BLUE_POS_RGB.png")
                 .field1(ReportField.builder().name("Lab name").value("Name").build())
                 .field2(ReportField.builder().name("Second").value("Another").build())
                 .field3(ReportField.builder().name("Third").value("Another one").build())

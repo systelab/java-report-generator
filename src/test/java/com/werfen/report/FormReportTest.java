@@ -12,9 +12,6 @@ import java.io.IOException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -31,10 +28,10 @@ public class FormReportTest {
             e.printStackTrace();
         }
         try (PDDocument original = PDDocument.load(new File("form_report_golden.pdf"));
-             PDDocument generated = PDDocument.load(new File("form_report.pdf"));) {
+             PDDocument generated = PDDocument.load(new File("form_report.pdf"))) {
             PDFTextStripper textStripper = new PDFTextStripper();
             assertEquals(textStripper.getText(original), textStripper.getText(generated));
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }    }
 
@@ -89,6 +86,7 @@ public class FormReportTest {
     private ReportHeaderConfiguration buildHeaderConfiguration() {
         return ReportHeaderConfiguration.builder()
                 .title("Grid report")
+                .logoPath("src/main/resources/AF_WERFEN_BLUE_POS_RGB.png")
                 .field1(ReportField.builder().name("Lab name").value("Name").build())
                 .field2(ReportField.builder().name("Second").value("Another").build())
                 .field3(ReportField.builder().name("Third").value("Another one").build())
