@@ -1,5 +1,10 @@
 package com.werfen.report.model;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@Getter
 public enum PageFormat {
 
     A4(595, 842),
@@ -8,17 +13,4 @@ public enum PageFormat {
 
     private final int width;
     private final int height;
-
-    PageFormat(int width, int height) {
-        this.width = width;
-        this.height = height;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
 }
