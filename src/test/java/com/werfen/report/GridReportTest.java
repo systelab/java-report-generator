@@ -77,9 +77,10 @@ public class GridReportTest {
 
     private ReportFooterConfiguration buildReportFooterConfiguration() {
         return ReportFooterConfiguration.builder()
-                .createdAt(ZonedDateTime.of(2021,12,1,10,1,1,1, ZoneId.systemDefault()).toOffsetDateTime().format(DateTimeFormatter.ofPattern(DATE_FORMAT)))
-                .additionalField1(ReportField.builder().name("User").value("My self").build())
-                .additionalField2(ReportField.builder().name("Second").value("Another").build())
+                .field1(ReportField.builder().name("Created at: ").value(ZonedDateTime.of(2021, 12, 1, 10, 1, 1, 1, ZoneId.systemDefault()).toOffsetDateTime().format(DateTimeFormatter.ofPattern(DATE_FORMAT))).build())
+                .field2(ReportField.builder().name("Created by: ").value("My self").build())
+                .field3(ReportField.builder().name("Third: ").value("Another").build())
                 .build();
+
     }
 }

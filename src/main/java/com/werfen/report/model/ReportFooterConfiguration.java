@@ -6,7 +6,7 @@ import lombok.Getter;
 @Builder
 @Getter
 public class ReportFooterConfiguration {
-    private final String createdAt;
-    private final ReportField additionalField1;
-    private final ReportField additionalField2;
+    private final ReportField field1;
+    private final ReportField field2;
+    private final ReportField field3;
 }
