@@ -30,7 +30,6 @@ public class BaseReportTemplateBuilder {
     private static final int TITLE_LOGO_WIDTH = 81;
     private static final int TITLE_LOGO_HEIGHT = 26;
     private static final int TITLE_LOGO_Y = 9;
-    private static final int TITLE_TEXT_WIDTH = 116;
     private static final int TITLE_TEXT_HEIGHT = 18;
     private static final int TITLE_FRAME_HEIGHT = 42;
     private static final int TITLE_FRAME_X = 0;
@@ -100,6 +99,7 @@ public class BaseReportTemplateBuilder {
         final int BAND_WIDTH = this.jasperDesign.getPageWidth() - (PAGE_MARGIN * 2);
         final int TITLE_LINE_SEPARATOR_X = BAND_WIDTH - TITLE_LOGO_WIDTH - (TITLE_MARGIN_X * 2);
         final int TITLE_LOGO_X = TITLE_LINE_SEPARATOR_X + TITLE_MARGIN_X;
+        final int TITLE_TEXT_WIDTH = TITLE_LINE_SEPARATOR_X - (TITLE_MARGIN_X * 2);
         final int HEADER_FIELDS_WIDTH = round((float) (BAND_WIDTH - (HEADER_MARGIN_X * 5)) / 4);
         final int HEADER_FIELD_2_X = HEADER_FIELD_1_X + HEADER_FIELDS_WIDTH + HEADER_MARGIN_X;
         final int HEADER_FIELD_3_X = HEADER_FIELD_2_X + HEADER_FIELDS_WIDTH + HEADER_MARGIN_X;
