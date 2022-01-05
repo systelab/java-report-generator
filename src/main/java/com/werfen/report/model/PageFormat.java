@@ -8,13 +8,8 @@ import lombok.RequiredArgsConstructor;
 public enum PageFormat {
 
     A4(595, 842),
-    LETTER(612, 792),
-    DATA_DEFINED(-1, -1);
+    LETTER(612, 792);
 
     private final int width;
     private final int height;
-
-    public boolean isDataDefined() {
-        return width < 0 && height < 0;
-    }
 }
