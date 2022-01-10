@@ -5,7 +5,6 @@ import com.werfen.report.service.GridReportService;
 import net.sf.jasperreports.engine.JRException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
-import org.apache.pdfbox.text.PDFTextStripperByArea;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -20,21 +19,32 @@ public class GridReportTest {
     public static String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     @Test
-    public void generateGridReport() {
+    public void generateGridPdfReport() {
         try {
             GridReportService gridReportService = new GridReportService();
-            File file = gridReportService.build(this.getConfiguration("grid_report"), this.getData());
+            File file = gridReportService.build(this.getConfiguration("grid_report"), this.getData(), ReportFormat.PDF, PageFormat.A4);
             file.createNewFile();
         } catch (JRException | IOException e) {
             e.printStackTrace();
         }
 
         try (PDDocument original = PDDocument.load(new File("grid_report_golden.pdf"));
-             PDDocument generated = PDDocument.load(new File("grid_report.pdf"));) {
+             PDDocument generated = PDDocument.load(new File("grid_report.pdf"))) {
                 PDFTextStripper textStripper = new PDFTextStripper();
                 assertEquals(textStripper.getText(original), textStripper.getText(generated));
         } catch(Exception ex) {
             ex.printStackTrace();
+        }
+    }
+
+    @Test
+    public void generateGridXlsxReport() {
+        try {
+            GridReportService gridReportService = new GridReportService();
+            File file = gridReportService.build(this.getConfiguration("grid_report"), this.getData(), ReportFormat.EXCEL, PageFormat.A4);
+            file.createNewFile();
+        } catch (JRException | IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -57,6 +67,7 @@ public class GridReportTest {
     private ReportHeaderConfiguration buildHeaderConfiguration() {
         return ReportHeaderConfiguration.builder()
                 .title("Grid report")
+                .logoPath("src/main/resources/AF_WERFEN_BLUE_POS_RGB.png")
                 .field1(ReportField.builder().name("Lab name").value("Name").build())
                 .field2(ReportField.builder().name("Second").value("Another").build())
                 .field3(ReportField.builder().name("Third").value("Another one").build())
@@ -66,9 +77,10 @@ public class GridReportTest {
 
     private ReportFooterConfiguration buildReportFooterConfiguration() {
         return ReportFooterConfiguration.builder()
-                .createdAt(ZonedDateTime.of(2021,12,1,10,1,1,1, ZoneId.systemDefault()).toOffsetDateTime().format(DateTimeFormatter.ofPattern(DATE_FORMAT)))
-                .additionalField1(ReportField.builder().name("User").value("My self").build())
-                .additionalField2(ReportField.builder().name("Second").value("Another").build())
+                .field1(ReportField.builder().name("Created at: ").value(ZonedDateTime.of(2021, 12, 1, 10, 1, 1, 1, ZoneId.systemDefault()).toOffsetDateTime().format(DateTimeFormatter.ofPattern(DATE_FORMAT))).build())
+                .field2(ReportField.builder().name("Created by: ").value("My self").build())
+                .field3(ReportField.builder().name("Third: ").value("Another").build())
                 .build();
+
     }
 }

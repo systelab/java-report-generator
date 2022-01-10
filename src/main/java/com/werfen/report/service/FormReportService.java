@@ -44,7 +44,7 @@ public class FormReportService {
         try {
             exporter.exportReport();
         } catch (JRException ex) {
-            log.info("Error exporting to PDF");
+            log.info("Error exporting to PDF: " + ex.getMessage());
             ex.printStackTrace();
         }
     }

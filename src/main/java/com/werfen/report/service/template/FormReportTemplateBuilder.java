@@ -3,7 +3,6 @@ package com.werfen.report.service.template;
 import com.werfen.report.model.FormReportData;
 import com.werfen.report.model.FormReportField;
 import com.werfen.report.model.FormReportSection;
-import com.werfen.report.model.PageFormat;
 import com.werfen.report.util.DesignTextBuilder;
 import net.sf.jasperreports.engine.design.JRDesignBand;
 import net.sf.jasperreports.engine.design.JRDesignSection;
@@ -19,7 +18,6 @@ public class FormReportTemplateBuilder extends BaseReportTemplateBuilder {
 
     public static final int SECTION_SEPARATOR_BEGIN = 5;
     public static final int SECTION_SEPARATOR_END = 10;
-    private static final int BAND_WIDTH = PageFormat.A4.getWidth() - (20 * 2);
     private static final String TITLE_FONT_NAME = "Helvetica-Bold";
     private static final int TITLE_HEIGHT = 23;
     private static final int TITLE_LEFT_PADDING = 9;
@@ -43,6 +41,7 @@ public class FormReportTemplateBuilder extends BaseReportTemplateBuilder {
     }
 
     private void addTitle(String title, int sectionDepth) {
+        final int BAND_WIDTH = this.jasperDesign.getPageWidth() - (PAGE_MARGIN * 2);
 
         JRDesignStaticText titleBox = new DesignTextBuilder()
                 .position(0,0, BAND_WIDTH, TITLE_HEIGHT)
@@ -82,6 +81,7 @@ public class FormReportTemplateBuilder extends BaseReportTemplateBuilder {
     }
 
     private void addField(FormReportField formReportField, int fieldDepth) {
+        final int BAND_WIDTH = this.jasperDesign.getPageWidth() - (PAGE_MARGIN * 2);
         JRDesignStaticText labelText = new DesignTextBuilder()
                 .position(FIELD_LABEL_X * (fieldDepth + 1), 0, BAND_WIDTH / 4, FIELD_HEIGHT)
                 .horizontalTextAlign(HorizontalTextAlignEnum.LEFT)
