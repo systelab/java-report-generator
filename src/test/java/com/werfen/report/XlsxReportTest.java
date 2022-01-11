@@ -1,7 +1,6 @@
 package com.werfen.report;
 
 import com.werfen.report.model.*;
-import com.werfen.report.service.GridReportService;
 import com.werfen.report.service.XlsxService;
 import net.sf.jasperreports.engine.JRException;
 import org.junit.jupiter.api.Test;
@@ -16,10 +15,10 @@ public class XlsxReportTest {
     public static String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     @Test
-    public void generateGridPdfReport() {
+    public void generateColumnXlsxReport() {
         try {
             XlsxService xlsxService = new XlsxService();
-            File file = xlsxService.build(this.getConfiguration("excel_report"), this.getData(), ReportFormat.EXCEL, PageFormat.FULL_SCREEN_720P);
+            File file = xlsxService.build(this.getConfiguration("excel_summary_report"), this.getData(), ReportFormat.EXCEL, PageFormat.FULL_SCREEN_720P);
             file.createNewFile();
         } catch (JRException | IOException e) {
             e.printStackTrace();
@@ -32,17 +31,6 @@ public class XlsxReportTest {
 //        } catch(Exception ex) {
 //            ex.printStackTrace();
 //        }
-    }
-
-    @Test
-    public void generateGridXlsxReport() {
-        try {
-            GridReportService gridReportService = new GridReportService();
-            File file = gridReportService.build(this.getConfiguration("excel_report"), this.getData(), ReportFormat.EXCEL, PageFormat.A4);
-            file.createNewFile();
-        } catch (JRException | IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private GridReportData getData() {
@@ -76,7 +64,7 @@ public class XlsxReportTest {
         return ReportFooterConfiguration.builder()
                 .field1(GridReportField.builder().name("Created at: ").value(ZonedDateTime.of(2021, 12, 1, 10, 1, 1, 1, ZoneId.systemDefault()).toOffsetDateTime().format(DateTimeFormatter.ofPattern(DATE_FORMAT))).build())
                 .field2(GridReportField.builder().name("Created by: ").value("My self").build())
-                .field3(GridReportField.builder().name("Third: ").value("Another").build())
+                .field3(GridReportField.builder().name("Persecuted by: ").value(":_S").build())
                 .build();
 
     }
