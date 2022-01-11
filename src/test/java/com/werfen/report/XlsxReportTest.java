@@ -2,9 +2,8 @@ package com.werfen.report;
 
 import com.werfen.report.model.*;
 import com.werfen.report.service.GridReportService;
+import com.werfen.report.service.XlsxService;
 import net.sf.jasperreports.engine.JRException;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -13,35 +12,33 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-public class GridReportTest {
+public class XlsxReportTest {
     public static String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     @Test
     public void generateGridPdfReport() {
         try {
-            GridReportService gridReportService = new GridReportService();
-            File file = gridReportService.build(this.getConfiguration("grid_report"), this.getData(), ReportFormat.PDF, PageFormat.A4);
+            XlsxService xlsxService = new XlsxService();
+            File file = xlsxService.build(this.getConfiguration("excel_report"), this.getData(), ReportFormat.EXCEL, PageFormat.FULL_SCREEN_720P);
             file.createNewFile();
         } catch (JRException | IOException e) {
             e.printStackTrace();
         }
 
-        try (PDDocument original = PDDocument.load(new File("grid_report_golden.pdf"));
-             PDDocument generated = PDDocument.load(new File("grid_report.pdf"))) {
-                PDFTextStripper textStripper = new PDFTextStripper();
-                assertEquals(textStripper.getText(original), textStripper.getText(generated));
-        } catch(Exception ex) {
-            ex.printStackTrace();
-        }
+//        try (PDDocument original = PDDocument.load(new File("grid_report_golden.pdf"));
+//             PDDocument generated = PDDocument.load(new File("excel_report.pdf"))) {
+//                PDFTextStripper textStripper = new PDFTextStripper();
+//                assertEquals(textStripper.getText(original), textStripper.getText(generated));
+//        } catch(Exception ex) {
+//            ex.printStackTrace();
+//        }
     }
 
     @Test
     public void generateGridXlsxReport() {
         try {
             GridReportService gridReportService = new GridReportService();
-            File file = gridReportService.build(this.getConfiguration("grid_report"), this.getData(), ReportFormat.EXCEL, PageFormat.A4);
+            File file = gridReportService.build(this.getConfiguration("excel_report"), this.getData(), ReportFormat.EXCEL, PageFormat.A4);
             file.createNewFile();
         } catch (JRException | IOException e) {
             e.printStackTrace();
@@ -56,7 +53,7 @@ public class GridReportTest {
     }
 
     private GridReportConfiguration getConfiguration(String fileName) throws IOException {
-         return GridReportConfiguration.builder()
+        return GridReportConfiguration.builder()
                 .outputFilePath(fileName)
                 .headerConfiguration(this.buildHeaderConfiguration())
                 .footerConfiguration(this.buildReportFooterConfiguration())
@@ -66,7 +63,7 @@ public class GridReportTest {
 
     private ReportHeaderConfiguration buildHeaderConfiguration() {
         return ReportHeaderConfiguration.builder()
-                .title("Grid report")
+                .title("Excel report")
                 .logoPath("src/main/resources/AF_WERFEN_BLUE_POS_RGB.png")
                 .field1(GridReportField.builder().name("Lab name").value("Name").build())
                 .field2(GridReportField.builder().name("Second").value("Another").build())

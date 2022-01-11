@@ -8,8 +8,8 @@ import lombok.Getter;
 public class ReportHeaderConfiguration {
     private final String title;
     private final String logoPath;
-    private final ReportField field1;
-    private final ReportField field2;
-    private final ReportField field3;
-    private final ReportField field4;
+    private final GridReportField field1;
+    private final GridReportField field2;
+    private final GridReportField field3;
+    private final GridReportField field4;
 }

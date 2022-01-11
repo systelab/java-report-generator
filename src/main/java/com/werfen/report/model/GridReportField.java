@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class ReportField {
+public class GridReportField {
     private final String name;
     private final String value;
 }
