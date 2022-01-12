@@ -1,7 +1,7 @@
 package com.werfen.report.service.template;
 
 import com.werfen.report.model.PageFormat;
-import com.werfen.report.model.ReportField;
+import com.werfen.report.model.GridReportField;
 import com.werfen.report.model.ReportFooterConfiguration;
 import com.werfen.report.model.ReportHeaderConfiguration;
 import com.werfen.report.util.DesignImageBuilder;
@@ -230,7 +230,7 @@ public class BaseReportTemplateBuilder {
         footerBand.addElement(pageNumberText);
     }
 
-    private void addField(JRDesignBand band, ReportField field, int xPos, int yTilePos, int yFieldPos, int fieldWidth) {
+    private void addField(JRDesignBand band, GridReportField field, int xPos, int yTilePos, int yFieldPos, int fieldWidth) {
         JRDesignStaticText headerField1TitleText = new DesignTextBuilder()
                 .text(field.getName())
                 .position(xPos, yTilePos, fieldWidth, HEADER_FIELDS_HEIGHT)

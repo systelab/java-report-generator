@@ -6,7 +6,7 @@ import lombok.Getter;
 @Builder
 @Getter
 public class ReportFooterConfiguration {
-    private final ReportField field1;
-    private final ReportField field2;
-    private final ReportField field3;
+    private final GridReportField field1;
+    private final GridReportField field2;
+    private final GridReportField field3;
 }

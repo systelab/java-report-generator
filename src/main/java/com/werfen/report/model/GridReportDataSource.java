@@ -46,7 +46,7 @@ public class GridReportDataSource extends JRAbstractBeanDataSource {
     public Object getFieldValue(JRField jrField) {
         String name = jrField.getName();
 
-        Optional<ReportField> currentReportField = this.currentRow.getValues().stream().filter(reportField -> name.equals(reportField.getName())).findFirst();
+        Optional<GridReportField> currentReportField = this.currentRow.getValues().stream().filter(reportField -> name.equals(reportField.getName())).findFirst();
         return currentReportField.orElseThrow(() -> new RuntimeException("The field name '" + name + "' in the Jasper Report is not valid")).getValue();
     }
 }
