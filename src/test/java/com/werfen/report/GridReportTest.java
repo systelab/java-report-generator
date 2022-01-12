@@ -80,9 +80,12 @@ public class GridReportTest {
             @Override
             public boolean nextPage() {
                 currentIndex += PAGE_SIZE;
-                this.currentRows = rows.subList(currentIndex, currentIndex + PAGE_SIZE);
-                return !this.currentRows.isEmpty();
-
+                if (currentIndex < this.rows.size()) {
+                    this.currentRows = this.rows.subList(currentIndex, (currentIndex + PAGE_SIZE) < this.rows.size() ? currentIndex + PAGE_SIZE : this.rows.size() - 1);
+                    return true;
+                } else {
+                    return false;
+                }
             }
 
             @Override
@@ -106,7 +109,9 @@ public class GridReportTest {
                 .outputFilePath(fileName)
                 .headerConfiguration(this.buildHeaderConfiguration())
                 .footerConfiguration(this.buildReportFooterConfiguration())
-                .gridColumnConfiguration(GridColumnConfiguration.builder().name("col1").width(GridReportColumnWidth.COLUMN_WIDTH_3).translation("col2").build())
+                .gridColumnConfiguration(GridColumnConfiguration.builder().name("col1").width(GridReportColumnWidth.COLUMN_WIDTH_2).translation("column 1").build())
+                .gridColumnConfiguration(GridColumnConfiguration.builder().name("col2").width(GridReportColumnWidth.COLUMN_WIDTH_3).translation("column 2").build())
+                .gridColumnConfiguration(GridColumnConfiguration.builder().name("col3").width(GridReportColumnWidth.COLUMN_WIDTH_4).translation("column 3").build())
                 .build();
     }
 

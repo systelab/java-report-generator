@@ -17,6 +17,9 @@ public class GridReportDataSource extends JRAbstractBeanDataSource {
     public GridReportDataSource(GridPageDataSource dataSource) {
         super(true);
         this.dataSource = dataSource;
+        if (this.dataSource.getRowCount() > 0) {
+            this.dataSource.moveFirst();
+        }
     }
 
 
@@ -24,27 +27,23 @@ public class GridReportDataSource extends JRAbstractBeanDataSource {
     public void moveFirst() {
         if (dataSource.getRowCount() > 0) {
             this.dataSource.moveFirst();
-            rowIterator = this.dataSource.getCurrentPageRows().listIterator();
+            this.rowIterator = this.dataSource.getCurrentPageRows().listIterator();
+            this.currentRow = this.rowIterator.next();
         }
     }
 
     @Override
     public boolean next() {
-        boolean hasNext;
-        if (nonNull(rowIterator)) {
-            hasNext = rowIterator.hasNext();
-            if (hasNext) {
-                this.currentRow = rowIterator.next();
-            }
-        } else {
-            this.dataSource.moveFirst();
+        if (nonNull(this.rowIterator) && this.rowIterator.hasNext()) {
+            this.currentRow = this.rowIterator.next();
+            return true;
+        } else if (this.dataSource.nextPage()) {
             this.rowIterator = this.dataSource.getCurrentPageRows().listIterator();
-            hasNext = this.rowIterator.hasNext();
-            if (hasNext) {
-                this.currentRow = rowIterator.next();
-            }
+            this.currentRow = this.rowIterator.next();
+            return true;
+        } else {
+            return false;
         }
-        return hasNext;
     }
 
     @Override
