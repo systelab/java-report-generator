@@ -5,6 +5,7 @@ import com.werfen.report.service.GridReportService;
 import net.sf.jasperreports.engine.JRException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -38,6 +39,7 @@ public class GridReportTest {
     }
 
     @Test
+    @Disabled
     public void generateGridXlsxReport() {
         try {
             GridReportService gridReportService = new GridReportService();
@@ -50,7 +52,7 @@ public class GridReportTest {
 
     private GridReportData getData() {
         return GridReportData.builder()
-                .row(GridReportRow.builder().value(ReportField.builder().name("col1").value("val1").build())
+                .row(GridReportRow.builder().value(GridReportField.builder().name("col1").value("val1").build())
                         .build()
                 ).build();
     }
@@ -68,18 +70,18 @@ public class GridReportTest {
         return ReportHeaderConfiguration.builder()
                 .title("Grid report")
                 .logoPath("src/main/resources/AF_WERFEN_BLUE_POS_RGB.png")
-                .field1(ReportField.builder().name("Lab name").value("Name").build())
-                .field2(ReportField.builder().name("Second").value("Another").build())
-                .field3(ReportField.builder().name("Third").value("Another one").build())
-                .field4(ReportField.builder().name("Fourth").value("Last one").build())
+                .field1(GridReportField.builder().name("Lab name").value("Name").build())
+                .field2(GridReportField.builder().name("Second").value("Another").build())
+                .field3(GridReportField.builder().name("Third").value("Another one").build())
+                .field4(GridReportField.builder().name("Fourth").value("Last one").build())
                 .build();
     }
 
     private ReportFooterConfiguration buildReportFooterConfiguration() {
         return ReportFooterConfiguration.builder()
-                .field1(ReportField.builder().name("Created at: ").value(ZonedDateTime.of(2021, 12, 1, 10, 1, 1, 1, ZoneId.systemDefault()).toOffsetDateTime().format(DateTimeFormatter.ofPattern(DATE_FORMAT))).build())
-                .field2(ReportField.builder().name("Created by: ").value("My self").build())
-                .field3(ReportField.builder().name("Third: ").value("Another").build())
+                .field1(GridReportField.builder().name("Created at: ").value(ZonedDateTime.of(2021, 12, 1, 10, 1, 1, 1, ZoneId.systemDefault()).toOffsetDateTime().format(DateTimeFormatter.ofPattern(DATE_FORMAT))).build())
+                .field2(GridReportField.builder().name("Created by: ").value("My self").build())
+                .field3(GridReportField.builder().name("Third: ").value("Another").build())
                 .build();
 
     }

@@ -87,18 +87,18 @@ public class FormReportTest {
         return ReportHeaderConfiguration.builder()
                 .title("Grid report")
                 .logoPath("src/main/resources/AF_WERFEN_BLUE_POS_RGB.png")
-                .field1(ReportField.builder().name("Lab name").value("Name").build())
-                .field2(ReportField.builder().name("Second").value("Another").build())
-                .field3(ReportField.builder().name("Third").value("Another one").build())
-                .field4(ReportField.builder().name("Fourth").value("Last one").build())
+                .field1(GridReportField.builder().name("Lab name").value("Name").build())
+                .field2(GridReportField.builder().name("Second").value("Another").build())
+                .field3(GridReportField.builder().name("Third").value("Another one").build())
+                .field4(GridReportField.builder().name("Fourth").value("Last one").build())
                 .build();
     }
 
     private ReportFooterConfiguration buildReportFooterConfiguration() {
         return ReportFooterConfiguration.builder()
-                .field1(ReportField.builder().name("Created at: ").value(ZonedDateTime.of(2021, 12, 1, 10, 1, 1, 1, ZoneId.systemDefault()).toOffsetDateTime().format(DateTimeFormatter.ofPattern(DATE_FORMAT))).build())
-                .field2(ReportField.builder().name("Created by: ").value("My self").build())
-                .field3(ReportField.builder().name("Third: ").value("Another").build())
+                .field1(GridReportField.builder().name("Created at: ").value(ZonedDateTime.of(2021, 12, 1, 10, 1, 1, 1, ZoneId.systemDefault()).toOffsetDateTime().format(DateTimeFormatter.ofPattern(DATE_FORMAT))).build())
+                .field2(GridReportField.builder().name("Created by: ").value("My self").build())
+                .field3(GridReportField.builder().name("Third: ").value("Another").build())
                 .build();
     }
 }
