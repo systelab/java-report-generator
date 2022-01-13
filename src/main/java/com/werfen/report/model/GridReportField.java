@@ -1,5 +1,6 @@
 package com.werfen.report.model;
 
+
 import com.werfen.report.util.GeneralConfiguration;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,7 +31,4 @@ public class GridReportField {
     public String getValue() {
         return nonNull(value) ? value : defaultNullValue;
     }
-
-
-
 }

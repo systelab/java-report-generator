@@ -6,6 +6,7 @@ import com.werfen.report.util.GeneralConfiguration;
 import net.sf.jasperreports.engine.JRException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -60,6 +61,7 @@ public class GridReportTest {
     }
 
     @Test
+    @Disabled
     public void generateGridXlsxReport() {
         try {
             GridReportService gridReportService = new GridReportService();
