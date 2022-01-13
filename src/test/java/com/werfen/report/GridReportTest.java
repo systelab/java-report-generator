@@ -2,6 +2,7 @@ package com.werfen.report;
 
 import com.werfen.report.model.*;
 import com.werfen.report.service.GridReportService;
+import com.werfen.report.util.GeneralConfiguration;
 import net.sf.jasperreports.engine.JRException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -18,10 +19,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class GridReportTest {
     public static String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
-    @Test
+   @Test
     public void generateGridPdfReport() {
         try {
             GridReportService gridReportService = new GridReportService();
+            GeneralConfiguration.setDefaultNullString("-");
             File file = gridReportService.build(this.getConfiguration("grid_report"), this.getData(), ReportFormat.PDF, PageFormat.A4);
             file.createNewFile();
         } catch (JRException | IOException e) {
@@ -32,6 +34,26 @@ public class GridReportTest {
              PDDocument generated = PDDocument.load(new File("grid_report.pdf"))) {
                 PDFTextStripper textStripper = new PDFTextStripper();
                 assertEquals(textStripper.getText(original), textStripper.getText(generated));
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Test
+    public void generateGridPdfReportModifyDefault() {
+        try {
+            GridReportService gridReportService = new GridReportService();
+            GeneralConfiguration.setDefaultNullString("Nop");
+            File file = gridReportService.build(this.getConfiguration("grid_report"), this.getData(), ReportFormat.PDF, PageFormat.A4);
+            file.createNewFile();
+        } catch (JRException | IOException e) {
+            e.printStackTrace();
+        }
+
+        try (PDDocument original = PDDocument.load(new File("grid_report_golden_2.pdf"));
+             PDDocument generated = PDDocument.load(new File("grid_report.pdf"))) {
+            PDFTextStripper textStripper = new PDFTextStripper();
+            assertEquals(textStripper.getText(original), textStripper.getText(generated));
         } catch(Exception ex) {
             ex.printStackTrace();
         }
