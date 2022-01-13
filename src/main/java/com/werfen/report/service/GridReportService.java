@@ -8,9 +8,16 @@ import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.export.*;
+import org.apache.commons.io.IOUtils;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -74,6 +81,44 @@ public class GridReportService {
         } catch (JRException ex) {
             log.info("Error generating xls : " + ex.getMessage());
         }
+    }
+    private void exportToXlsx(String filePath, String sheetName,GridReportConfiguration gridReportConfiguration, List<GridReportRow> rows) {
+        Workbook workbook = new XSSFWorkbook();
+
+        Sheet sheet = workbook.createSheet(sheetName);
+        createHeader(gridReportConfiguration.getHeaderConfiguration(), sheet, workbook);
+
+    }
+
+    private void createHeader(ReportHeaderConfiguration headerConfiguration, Sheet sheet, Workbook workbook)  {
+        Row header = sheet.createRow(0);
+        Cell headerCell  = header.createCell(0) ;
+        headerCell.setCellValue(headerConfiguration.getTitle());
+        FileInputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream( headerConfiguration.getLogoPath() );
+
+            int pictureIndex = workbook.addPicture(IOUtils.toByteArray(inputStream), Workbook.PICTURE_TYPE_PNG);
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        CreationHelper helper = workbook.getCreationHelper();
+        Drawing drawing = sheet.createDrawingPatriarch();
+        ClientAnchor anchor = helper.createClientAnchor();
+        anchor.setCol1(1); //Column B
+        anchor.setRow1(0); //Row 3
+        anchor.setCol2(2); //Column C
+        anchor.setRow2(1);
+        //Picture pict = drawing.createPicture(anchor, pictureIndex);
+
+        headerCell  = header.createCell(1) ;
+
+        header = sheet.createRow(2);
+
+
+
+
     }
 
     private Map<String, Object> getProperties(GridReportConfiguration gridReportConfiguration) {
