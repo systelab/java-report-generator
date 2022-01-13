@@ -1,45 +1,42 @@
 package com.werfen.report.model;
 
-import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
 import net.sf.jasperreports.engine.data.JRAbstractBeanDataSource;
 
 import java.util.Iterator;
 import java.util.Optional;
 
-import static java.util.Objects.nonNull;
-
 public class GridReportDataSource extends JRAbstractBeanDataSource {
 
-    private final GridReportData rows;
-    private Iterator<GridReportRow> rowIterator;
+    private final GridPageDataSource dataSource;
+    private Iterator<GridReportRow> currentPageRowIterator;
     private GridReportRow currentRow;
 
-    public GridReportDataSource(GridReportData rows) {
+    public GridReportDataSource(GridPageDataSource dataSource) {
         super(true);
-        this.rows = rows;
-        if (nonNull(rows)) {
-            this.rowIterator = this.rows.getRows().listIterator();
-        }
+        this.dataSource = dataSource;
+        this.moveFirst();
     }
+
 
     @Override
     public void moveFirst() {
-        if (nonNull(rows)) {
-            rowIterator = rows.getRows().listIterator();
-        }
+        this.dataSource.moveFirst();
+        this.currentPageRowIterator = this.dataSource.getCurrentPageRows().listIterator();
     }
 
     @Override
-    public boolean next() throws JRException {
-        boolean hasNext = false;
-        if (nonNull(rowIterator)) {
-            hasNext = rowIterator.hasNext();
-            if (hasNext) {
-                this.currentRow = rowIterator.next();
-            }
+    public boolean next() {
+        if (this.currentPageRowIterator.hasNext()) {
+            this.currentRow = this.currentPageRowIterator.next();
+            return true;
+        } else if (this.dataSource.nextPage()) {
+            this.currentPageRowIterator = this.dataSource.getCurrentPageRows().listIterator();
+            this.currentRow = this.currentPageRowIterator.next();
+            return true;
+        } else {
+            return false;
         }
-        return hasNext;
     }
 
     @Override

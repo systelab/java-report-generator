@@ -13,17 +13,37 @@ import java.io.IOException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class GridReportTest {
-    public static String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    private static final String COLUMN_PREFIX_NAME = "col";
+    private static final String COLUMN_PREFIX_TRANSLATION = "column ";
+    private static final String COORDINATES_SEPARATOR = ".";
+
+    public static List<GridReportRow> getListReportData(int columnCount, int rowCount) {
+
+
+        List<GridReportRow> gridReportRows = new ArrayList<>();
+        for (int row = 1; row <= rowCount; row++) {
+            List<GridReportField> gridReportFields = new ArrayList<>();
+            for (int column = 1; column <= columnCount; column++) {
+                gridReportFields.add(GridReportField.builder().name(COLUMN_PREFIX_NAME + column).value(column + COORDINATES_SEPARATOR + row).build());
+            }
+            gridReportRows.add(GridReportRow.builder().values(gridReportFields).build());
+        }
+
+        return gridReportRows;
+    }
 
     @Test
     public void generateGridPdfReport() {
         try {
             GridReportService gridReportService = new GridReportService();
-            File file = gridReportService.build(this.getConfiguration("grid_report"), this.getData(), ReportFormat.PDF, PageFormat.A4);
+            File file = gridReportService.build(this.getConfiguration("grid_report", 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
             file.createNewFile();
         } catch (JRException | IOException e) {
             e.printStackTrace();
@@ -31,9 +51,9 @@ public class GridReportTest {
 
         try (PDDocument original = PDDocument.load(new File("grid_report_golden.pdf"));
              PDDocument generated = PDDocument.load(new File("grid_report.pdf"))) {
-                PDFTextStripper textStripper = new PDFTextStripper();
-                assertEquals(textStripper.getText(original), textStripper.getText(generated));
-        } catch(Exception ex) {
+            PDFTextStripper textStripper = new PDFTextStripper();
+            assertEquals(textStripper.getText(original), textStripper.getText(generated));
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -43,26 +63,28 @@ public class GridReportTest {
     public void generateGridXlsxReport() {
         try {
             GridReportService gridReportService = new GridReportService();
-            File file = gridReportService.build(this.getConfiguration("grid_report"), this.getData(), ReportFormat.EXCEL, PageFormat.A4);
+            File file = gridReportService.build(this.getConfiguration("grid_report", 12), this.getDataSource(), ReportFormat.EXCEL, PageFormat.A4);
             file.createNewFile();
         } catch (JRException | IOException e) {
             e.printStackTrace();
         }
     }
 
-    private GridReportData getData() {
-        return GridReportData.builder()
-                .row(GridReportRow.builder().value(GridReportField.builder().name("col1").value("val1").build())
-                        .build()
-                ).build();
+    private GridPageDataSource getDataSource() {
+        return new ListGridPageDataSource(10, GridReportTest.getListReportData(12, 50));
     }
 
-    private GridReportConfiguration getConfiguration(String fileName) throws IOException {
-         return GridReportConfiguration.builder()
+    private GridReportConfiguration getConfiguration(String fileName, int columnCount) throws IOException {
+
+        List<GridColumnConfiguration> gridColumnConfigurations = new ArrayList<>();
+        for (int column = 1; column <= columnCount; column++) {
+            gridColumnConfigurations.add(GridColumnConfiguration.builder().name(COLUMN_PREFIX_NAME + column).width(GridReportColumnWidth.findByValue(column)).translation(COLUMN_PREFIX_TRANSLATION + column).build());
+        }
+        return GridReportConfiguration.builder()
                 .outputFilePath(fileName)
                 .headerConfiguration(this.buildHeaderConfiguration())
                 .footerConfiguration(this.buildReportFooterConfiguration())
-                .gridColumnConfiguration(GridColumnConfiguration.builder().name("col1").width(GridReportColumnWidth.COLUMN_WIDTH_3).translation("col2").build())
+                .gridColumnConfigurations(gridColumnConfigurations)
                 .build();
     }
 

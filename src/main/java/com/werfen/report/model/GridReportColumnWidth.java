@@ -1,5 +1,10 @@
 package com.werfen.report.model;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@Getter
 public enum GridReportColumnWidth {
 
     COLUMN_WIDTH_1(1),
@@ -17,11 +22,12 @@ public enum GridReportColumnWidth {
 
     private final int value;
 
-    GridReportColumnWidth(int value) {
-        this.value = value;
-    }
-
-    public int getValue() {
-        return value;
+    public static GridReportColumnWidth findByValue(int value) {
+        for (GridReportColumnWidth v : values()) {
+            if (v.value == value) {
+                return v;
+            }
+        }
+        return null;
     }
 }
