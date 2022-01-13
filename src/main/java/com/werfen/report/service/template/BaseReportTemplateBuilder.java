@@ -231,6 +231,7 @@ public class BaseReportTemplateBuilder {
     }
 
     private void addField(JRDesignBand band, GridReportField field, int xPos, int yTilePos, int yFieldPos, int fieldWidth, int fieldHeight) {
+
         JRDesignStaticText headerField1TitleText = new DesignTextBuilder()
                 .text(field.getName())
                 .position(xPos, yTilePos, fieldWidth, fieldHeight)
