@@ -31,11 +31,15 @@ public class GridReportTest {
         List<GridReportRow> gridReportRows = new ArrayList<>();
         for (int row = 1; row <= rowCount; row++) {
             List<GridReportField> gridReportFields = new ArrayList<>();
-            for (int column = 1; column <= columnCount; column++) {
-                gridReportFields.add(GridReportField.builder().name(COLUMN_PREFIX_NAME + column).value(column + COORDINATES_SEPARATOR + row).build());
+            for (int column = 1; column <= columnCount-2; column++) {
+                gridReportFields.add(GridReportField.of(COLUMN_PREFIX_NAME + column, column + COORDINATES_SEPARATOR + row));
             }
+            gridReportFields.add(GridReportField.of(COLUMN_PREFIX_NAME + (columnCount - 1), null));
+            gridReportFields.add(GridReportField.of(COLUMN_PREFIX_NAME + columnCount, null,"N/A"));
+
             gridReportRows.add(GridReportRow.builder().values(gridReportFields).build());
         }
+
 
         return gridReportRows;
     }
@@ -65,14 +69,14 @@ public class GridReportTest {
         try {
             GridReportService gridReportService = new GridReportService();
             GeneralConfiguration.setDefaultNullString("Nop");
-            File file = gridReportService.build(this.getConfiguration("grid_report"), this.getData(), ReportFormat.PDF, PageFormat.A4);
+            File file = gridReportService.build(this.getConfiguration("grid_report_2", 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
             file.createNewFile();
         } catch (JRException | IOException e) {
             e.printStackTrace();
         }
 
-        try (PDDocument original = PDDocument.load(new File("grid_report_golden_2.pdf"));
-             PDDocument generated = PDDocument.load(new File("grid_report.pdf"))) {
+        try (PDDocument original = PDDocument.load(new File("grid_report_golden_null_values.pdf"));
+             PDDocument generated = PDDocument.load(new File("grid_report_2.pdf"))) {
             PDFTextStripper textStripper = new PDFTextStripper();
             assertEquals(textStripper.getText(original), textStripper.getText(generated));
         } catch(Exception ex) {
@@ -100,13 +104,13 @@ public class GridReportTest {
 
         List<GridColumnConfiguration> gridColumnConfigurations = new ArrayList<>();
         for (int column = 1; column <= columnCount; column++) {
-            gridColumnConfigurations.add(GridColumnConfiguration.builder().name(COLUMN_PREFIX_NAME + column).width(GridReportColumnWidth.findByValue(column)).translation(COLUMN_PREFIX_TRANSLATION + column).build());
+            gridColumnConfigurations.add(GridColumnConfiguration.builder().name(COLUMN_PREFIX_NAME + column).width(GridReportColumnWidth.findByValue((column%7)+1)).translation(COLUMN_PREFIX_TRANSLATION + column).build());
         }
         return GridReportConfiguration.builder()
                 .outputFilePath(fileName)
                 .headerConfiguration(this.buildHeaderConfiguration())
                 .footerConfiguration(this.buildReportFooterConfiguration())
-                .gridColumnConfiguration(GridColumnConfiguration.builder().name("col1").width(GridReportColumnWidth.COLUMN_WIDTH_3).translation("col2").build())
+                .gridColumnConfigurations(gridColumnConfigurations)
                 .build();
     }
 
