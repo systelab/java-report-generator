@@ -25,7 +25,7 @@ public class GridReportService {
 
     Logger log = Logger.getLogger(GridReportService.class.getName());
 
-    public File build(GridReportConfiguration gridReportConfiguration, GridReportData gridReportData, ReportFormat reportFormat, PageFormat pageFormat) throws JRException {
+    public File build(GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource, ReportFormat reportFormat, PageFormat pageFormat) throws JRException {
 
         String filePath = gridReportConfiguration.getOutputFilePath() + reportFormat.getFileExtension();
         GridReportTemplateBuilder template = new GridReportTemplateBuilder();
@@ -36,10 +36,7 @@ public class GridReportService {
         template.addGrid(gridReportConfiguration.getGridColumnConfigurations());
         switch (reportFormat) {
             case PDF:
-                this.exportToPdf(filePath, template.getJasperDesign(), this.getProperties(gridReportConfiguration), new GridReportDataSource(gridReportData));
-                break;
-            case EXCEL:
-                this.exportToXlsx(filePath, gridReportConfiguration.getHeaderConfiguration().getTitle(), template.getJasperDesign(), this.getProperties(gridReportConfiguration), new GridReportDataSource(gridReportData));
+                this.exportToPdf(filePath, template.getJasperDesign(), this.getProperties(gridReportConfiguration), new GridReportDataSource(gridPageDataSource));
                 break;
             default:
                 throw new RuntimeException("Report Format " + reportFormat + " is not currently supported");
@@ -140,16 +137,4 @@ public class GridReportService {
         exportConfig.setAllowedPermissionsHint("PRINTING");
         return exportConfig;
     }
-
-    private SimpleXlsxReportConfiguration getXlsxReportConfiguration(String sheetName) {
-        SimpleXlsxReportConfiguration reportConfig = new SimpleXlsxReportConfiguration();
-        reportConfig.setOnePagePerSheet(true);
-        reportConfig.setWhitePageBackground(false);
-        reportConfig.setRemoveEmptySpaceBetweenColumns(true);
-        reportConfig.setColumnWidthRatio((float) (1 / 12));
-        reportConfig.setCollapseRowSpan(true);
-        reportConfig.setSheetNames(new String[] { sheetName });
-        return reportConfig;
-    }
-
 }

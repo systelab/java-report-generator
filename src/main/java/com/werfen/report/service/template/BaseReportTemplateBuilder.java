@@ -1,7 +1,7 @@
 package com.werfen.report.service.template;
 
-import com.werfen.report.model.PageFormat;
 import com.werfen.report.model.GridReportField;
+import com.werfen.report.model.PageFormat;
 import com.werfen.report.model.ReportFooterConfiguration;
 import com.werfen.report.model.ReportHeaderConfiguration;
 import com.werfen.report.util.DesignImageBuilder;
@@ -151,19 +151,19 @@ public class BaseReportTemplateBuilder {
         headerBand.addElement(headerFrame);
 
         if (nonNull(reportHeaderConfiguration.getField1())) {
-            addField(headerBand, reportHeaderConfiguration.getField1(), HEADER_FIELD_1_X, HEADER_FIELDS_TITLE_Y, HEADER_FIELDS_Y, HEADER_FIELDS_WIDTH);
+            addField(headerBand, reportHeaderConfiguration.getField1(), HEADER_FIELD_1_X, HEADER_FIELDS_TITLE_Y, HEADER_FIELDS_Y, HEADER_FIELDS_WIDTH, HEADER_FIELDS_HEIGHT);
         }
 
         if (nonNull(reportHeaderConfiguration.getField2())) {
-            addField(headerBand, reportHeaderConfiguration.getField2(), HEADER_FIELD_2_X, HEADER_FIELDS_TITLE_Y, HEADER_FIELDS_Y, HEADER_FIELDS_WIDTH);
+            addField(headerBand, reportHeaderConfiguration.getField2(), HEADER_FIELD_2_X, HEADER_FIELDS_TITLE_Y, HEADER_FIELDS_Y, HEADER_FIELDS_WIDTH, HEADER_FIELDS_HEIGHT);
         }
 
         if (nonNull(reportHeaderConfiguration.getField3())) {
-            addField(headerBand, reportHeaderConfiguration.getField3(), HEADER_FIELD_3_X, HEADER_FIELDS_TITLE_Y, HEADER_FIELDS_Y, HEADER_FIELDS_WIDTH);
+            addField(headerBand, reportHeaderConfiguration.getField3(), HEADER_FIELD_3_X, HEADER_FIELDS_TITLE_Y, HEADER_FIELDS_Y, HEADER_FIELDS_WIDTH, HEADER_FIELDS_HEIGHT);
         }
 
         if (nonNull(reportHeaderConfiguration.getField2())) {
-            addField(headerBand, reportHeaderConfiguration.getField4(), HEADER_FIELD_4_X, HEADER_FIELDS_TITLE_Y, HEADER_FIELDS_Y, HEADER_FIELDS_WIDTH);
+            addField(headerBand, reportHeaderConfiguration.getField4(), HEADER_FIELD_4_X, HEADER_FIELDS_TITLE_Y, HEADER_FIELDS_Y, HEADER_FIELDS_WIDTH, HEADER_FIELDS_HEIGHT);
         }
         this.jasperDesign.setPageHeader(headerBand);
     }
@@ -186,15 +186,15 @@ public class BaseReportTemplateBuilder {
         footerBand.addElement(footerFrame);
 
         if (nonNull(reportFooterConfiguration.getField1())) {
-            addField(footerBand, reportFooterConfiguration.getField1(), FOOTER_FIELD_1_X, FOOTER_FIELDS_TITLE_Y, FOOTER_FIELDS_Y, FOOTER_FIELDS_WIDTH);
+            addField(footerBand, reportFooterConfiguration.getField1(), FOOTER_FIELD_1_X, FOOTER_FIELDS_TITLE_Y, FOOTER_FIELDS_Y, FOOTER_FIELDS_WIDTH, FOOTER_TEXT_FIELD_HEIGHT);
         }
 
         if (nonNull(reportFooterConfiguration.getField2())) {
-            addField(footerBand, reportFooterConfiguration.getField2(), FOOTER_FIELD_2_X, FOOTER_FIELDS_TITLE_Y, FOOTER_FIELDS_Y, FOOTER_FIELDS_WIDTH);
+            addField(footerBand, reportFooterConfiguration.getField2(), FOOTER_FIELD_2_X, FOOTER_FIELDS_TITLE_Y, FOOTER_FIELDS_Y, FOOTER_FIELDS_WIDTH, FOOTER_TEXT_FIELD_HEIGHT);
         }
 
         if (nonNull(reportFooterConfiguration.getField3())) {
-            addField(footerBand, reportFooterConfiguration.getField3(), FOOTER_FIELD_3_X, FOOTER_FIELDS_TITLE_Y, FOOTER_FIELDS_Y, FOOTER_FIELDS_WIDTH);
+            addField(footerBand, reportFooterConfiguration.getField3(), FOOTER_FIELD_3_X, FOOTER_FIELDS_TITLE_Y, FOOTER_FIELDS_Y, FOOTER_FIELDS_WIDTH, FOOTER_TEXT_FIELD_HEIGHT);
         }
 
         addPageNumber(FOOTER_PAGE_NUMBER_TEXT_X, footerBand);
@@ -230,16 +230,17 @@ public class BaseReportTemplateBuilder {
         footerBand.addElement(pageNumberText);
     }
 
-    private void addField(JRDesignBand band, GridReportField field, int xPos, int yTilePos, int yFieldPos, int fieldWidth) {
+    private void addField(JRDesignBand band, GridReportField field, int xPos, int yTilePos, int yFieldPos, int fieldWidth, int fieldHeight) {
+
         JRDesignStaticText headerField1TitleText = new DesignTextBuilder()
                 .text(field.getName())
-                .position(xPos, yTilePos, fieldWidth, HEADER_FIELDS_HEIGHT)
+                .position(xPos, yTilePos, fieldWidth, fieldHeight)
                 .horizontalTextAlign(HorizontalTextAlignEnum.LEFT)
                 .buildStaticText();
 
         JRDesignStaticText headerField1Text = new DesignTextBuilder()
                 .text(field.getValue())
-                .position(xPos, yFieldPos, fieldWidth, HEADER_FIELDS_HEIGHT)
+                .position(xPos, yFieldPos, fieldWidth, fieldHeight)
                 .font(BOLD_FONT)
                 .bold()
                 .horizontalTextAlign(HorizontalTextAlignEnum.LEFT)

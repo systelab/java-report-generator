@@ -91,6 +91,7 @@ public class FormReportTest {
                 .field2(GridReportField.of("Second","Another"))
                 .field3(GridReportField.of("Third","Another one"))
                 .field4(GridReportField.of("Fourth","Last one"))
+
                 .build();
     }
 
