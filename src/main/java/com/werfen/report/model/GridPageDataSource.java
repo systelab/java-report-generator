@@ -7,7 +7,5 @@ public interface GridPageDataSource {
 
     boolean nextPage();
 
-    int getRowCount();
-
     List<GridReportRow> getCurrentPageRows();
 }

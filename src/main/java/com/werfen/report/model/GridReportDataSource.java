@@ -6,40 +6,33 @@ import net.sf.jasperreports.engine.data.JRAbstractBeanDataSource;
 import java.util.Iterator;
 import java.util.Optional;
 
-import static java.util.Objects.nonNull;
-
 public class GridReportDataSource extends JRAbstractBeanDataSource {
 
     private final GridPageDataSource dataSource;
-    private Iterator<GridReportRow> rowIterator;
+    private Iterator<GridReportRow> currentPageRowIterator;
     private GridReportRow currentRow;
 
     public GridReportDataSource(GridPageDataSource dataSource) {
         super(true);
         this.dataSource = dataSource;
-        if (this.dataSource.getRowCount() > 0) {
-            this.dataSource.moveFirst();
-        }
+        this.moveFirst();
     }
 
 
     @Override
     public void moveFirst() {
-        if (dataSource.getRowCount() > 0) {
-            this.dataSource.moveFirst();
-            this.rowIterator = this.dataSource.getCurrentPageRows().listIterator();
-            this.currentRow = this.rowIterator.next();
-        }
+        this.dataSource.moveFirst();
+        this.currentPageRowIterator = this.dataSource.getCurrentPageRows().listIterator();
     }
 
     @Override
     public boolean next() {
-        if (nonNull(this.rowIterator) && this.rowIterator.hasNext()) {
-            this.currentRow = this.rowIterator.next();
+        if (this.currentPageRowIterator.hasNext()) {
+            this.currentRow = this.currentPageRowIterator.next();
             return true;
         } else if (this.dataSource.nextPage()) {
-            this.rowIterator = this.dataSource.getCurrentPageRows().listIterator();
-            this.currentRow = this.rowIterator.next();
+            this.currentPageRowIterator = this.dataSource.getCurrentPageRows().listIterator();
+            this.currentRow = this.currentPageRowIterator.next();
             return true;
         } else {
             return false;
