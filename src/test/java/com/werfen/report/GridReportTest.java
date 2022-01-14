@@ -24,6 +24,7 @@ public class GridReportTest {
     private static final String COLUMN_PREFIX_NAME = "col";
     private static final String COLUMN_PREFIX_TRANSLATION = "column ";
     private static final String COORDINATES_SEPARATOR = ".";
+    private static final String LOT_OF_CHARACTERS_VALUE = "123456789012345678901234567890123456789012345678901234567890";
 
     public static List<GridReportRow> getListReportData(int columnCount, int rowCount) {
 
@@ -85,7 +86,6 @@ public class GridReportTest {
     }
 
     @Test
-    @Disabled
     public void generateGridXlsxReport() {
         try {
             GridReportService gridReportService = new GridReportService();

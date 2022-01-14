@@ -6,22 +6,15 @@ import com.werfen.report.service.template.GridReportTemplateBuilder;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.export.*;
-import org.apache.commons.io.IOUtils;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
 public class GridReportService {
+
 
     Logger log = Logger.getLogger(GridReportService.class.getName());
 
@@ -37,6 +30,10 @@ public class GridReportService {
         switch (reportFormat) {
             case PDF:
                 this.exportToPdf(filePath, template.getJasperDesign(), this.getProperties(gridReportConfiguration), new GridReportDataSource(gridPageDataSource));
+                break;
+            case EXCEL:
+                ExcelGridReportService excelGridReportService =  new ExcelGridReportService();
+                excelGridReportService.export(filePath, gridReportConfiguration.getHeaderConfiguration().getTitle(), gridReportConfiguration,gridPageDataSource);
                 break;
             default:
                 throw new RuntimeException("Report Format " + reportFormat + " is not currently supported");
@@ -64,59 +61,7 @@ public class GridReportService {
         }
     }
 
-    public void exportToXlsx(String filePath, String sheetName, JasperDesign jasperDesign, Map<String, Object> parameters, JRDataSource ds) throws JRException {
-        JasperReport jasperReport  = JasperCompileManager.compileReport(jasperDesign);
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport,  parameters, ds);
 
-        JRXlsxExporter exporter = new JRXlsxExporter();
-        exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
-        exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(filePath));
-        exporter.setConfiguration(this.getXlsxReportConfiguration(sheetName));
-
-        try {
-            exporter.exportReport();
-        } catch (JRException ex) {
-            log.info("Error generating xls : " + ex.getMessage());
-        }
-    }
-    private void exportToXlsx(String filePath, String sheetName,GridReportConfiguration gridReportConfiguration, List<GridReportRow> rows) {
-        Workbook workbook = new XSSFWorkbook();
-
-        Sheet sheet = workbook.createSheet(sheetName);
-        createHeader(gridReportConfiguration.getHeaderConfiguration(), sheet, workbook);
-
-    }
-
-    private void createHeader(ReportHeaderConfiguration headerConfiguration, Sheet sheet, Workbook workbook)  {
-        Row header = sheet.createRow(0);
-        Cell headerCell  = header.createCell(0) ;
-        headerCell.setCellValue(headerConfiguration.getTitle());
-        FileInputStream inputStream = null;
-        try {
-            inputStream = new FileInputStream( headerConfiguration.getLogoPath() );
-
-            int pictureIndex = workbook.addPicture(IOUtils.toByteArray(inputStream), Workbook.PICTURE_TYPE_PNG);
-            inputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        CreationHelper helper = workbook.getCreationHelper();
-        Drawing drawing = sheet.createDrawingPatriarch();
-        ClientAnchor anchor = helper.createClientAnchor();
-        anchor.setCol1(1); //Column B
-        anchor.setRow1(0); //Row 3
-        anchor.setCol2(2); //Column C
-        anchor.setRow2(1);
-        //Picture pict = drawing.createPicture(anchor, pictureIndex);
-
-        headerCell  = header.createCell(1) ;
-
-        header = sheet.createRow(2);
-
-
-
-
-    }
 
     private Map<String, Object> getProperties(GridReportConfiguration gridReportConfiguration) {
         Map<String, Object> parameters = new HashMap<>();
