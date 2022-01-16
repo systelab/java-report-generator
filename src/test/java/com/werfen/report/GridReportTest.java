@@ -75,8 +75,8 @@ public class GridReportTest {
             e.printStackTrace();
         }
 
-        try (PDDocument original = PDDocument.load(new File("grid_report_golden_null_values.pdf"));
-             PDDocument generated = PDDocument.load(new File("grid_report_2.pdf"))) {
+        try (PDDocument original = PDDocument.load(new File("grid_report_null_values_golden.pdf"));
+             PDDocument generated = PDDocument.load(new File("grid_report_null_values.pdf"))) {
             PDFTextStripper textStripper = new PDFTextStripper();
             assertEquals(textStripper.getText(original), textStripper.getText(generated));
         } catch(Exception ex) {
