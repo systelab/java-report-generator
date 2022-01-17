@@ -6,6 +6,7 @@ import com.werfen.report.util.GeneralConfiguration;
 import net.sf.jasperreports.engine.JRException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -23,7 +24,6 @@ public class GridReportTest {
     private static final String COLUMN_PREFIX_NAME = "col";
     private static final String COLUMN_PREFIX_TRANSLATION = "column ";
     private static final String COORDINATES_SEPARATOR = ".";
-    private static final String LOT_OF_CHARACTERS_VALUE = "123456789012345678901234567890123456789012345678901234567890";
 
     public static List<GridReportRow> getListReportData(int columnCount, int rowCount) {
 
