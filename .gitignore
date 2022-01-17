@@ -23,3 +23,7 @@ allure-results/
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+/form_report.pdf
+/grid_report.pdf
+/grid_report.xlsx
+/grid_report_null_values.pdf

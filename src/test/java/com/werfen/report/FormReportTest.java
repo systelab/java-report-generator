@@ -97,9 +97,11 @@ public class FormReportTest {
 
     private ReportFooterConfiguration buildReportFooterConfiguration() {
         return ReportFooterConfiguration.builder()
-                .field1(GridReportField.of("Created at: ",ZonedDateTime.of(2021, 12, 1, 10, 1, 1, 1, ZoneId.systemDefault()).toOffsetDateTime().format(DateTimeFormatter.ofPattern(DATE_FORMAT))))
-                .field2(GridReportField.of("Created by: ","My self"))
-                .field3(GridReportField.of("Third: ","Another"))
+                .field1(GridReportField.of("Created at: ", ZonedDateTime.of(2021, 12, 1, 10, 1, 1, 1, ZoneId.systemDefault()).toOffsetDateTime().format(DateTimeFormatter.ofPattern(DATE_FORMAT))))
+                .field2(GridReportField.of("Created by: ", "My self"))
+                .field3(GridReportField.of("Third: ", "Another"))
+                // TODO: This shall be set to true as soon as the related bug is fixed
+                .showPageNumbers(false)
                 .build();
     }
 }
