@@ -200,7 +200,9 @@ public class BaseReportTemplateBuilder {
             addField(footerBand, reportFooterConfiguration.getField3(), FOOTER_FIELD_3_X, FOOTER_FIELDS_TITLE_Y, FOOTER_FIELDS_Y, FOOTER_FIELDS_WIDTH, FOOTER_TEXT_FIELD_HEIGHT);
         }
 
-        addPageNumber(FOOTER_PAGE_NUMBER_TEXT_X, footerBand);
+        if (reportFooterConfiguration.isShowPageNumbers()) {
+            addPageNumber(FOOTER_PAGE_NUMBER_TEXT_X, footerBand);
+        }
 
         this.jasperDesign.setPageFooter(footerBand);
     }

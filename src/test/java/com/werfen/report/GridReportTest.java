@@ -6,7 +6,6 @@ import com.werfen.report.util.GeneralConfiguration;
 import net.sf.jasperreports.engine.JRException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -70,17 +69,17 @@ public class GridReportTest {
         try {
             GridReportService gridReportService = new GridReportService();
             GeneralConfiguration.setDefaultNullString("Nop");
-            File file = gridReportService.build(this.getConfiguration("grid_report_2", 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
+            File file = gridReportService.build(this.getConfiguration("grid_report_null_values", 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
             file.createNewFile();
         } catch (JRException | IOException e) {
             e.printStackTrace();
         }
 
         try (PDDocument original = PDDocument.load(new File("grid_report_golden_null_values.pdf"));
-             PDDocument generated = PDDocument.load(new File("grid_report_2.pdf"))) {
+             PDDocument generated = PDDocument.load(new File("grid_report_null_values.pdf"))) {
             PDFTextStripper textStripper = new PDFTextStripper();
             assertEquals(textStripper.getText(original), textStripper.getText(generated));
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -127,9 +126,11 @@ public class GridReportTest {
 
     private ReportFooterConfiguration buildReportFooterConfiguration() {
         return ReportFooterConfiguration.builder()
-                .field1(GridReportField.of("Created at: ",ZonedDateTime.of(2021, 12, 1, 10, 1, 1, 1, ZoneId.systemDefault()).toOffsetDateTime().format(DateTimeFormatter.ofPattern(DATE_FORMAT))))
-                .field2(GridReportField.of("Created by: ","My self"))
-                .field3(GridReportField.of("Third: ","Another"))
+                .field1(GridReportField.of("Created at: ", ZonedDateTime.of(2021, 12, 1, 10, 1, 1, 1, ZoneId.systemDefault()).toOffsetDateTime().format(DateTimeFormatter.ofPattern(DATE_FORMAT))))
+                .field2(GridReportField.of("Created by: ", "My self"))
+                .field3(GridReportField.of("Third: ", "Another"))
+                // TODO: This shall be set to true as soon as the related bug is fixed
+                .showPageNumbers(false)
                 .build();
 
     }
