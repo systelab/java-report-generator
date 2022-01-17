@@ -83,6 +83,9 @@ public class BaseReportTemplateBuilder {
     }
 
     public void initJasperDesign(String name, PageFormat pageFormat) {
+        if (pageFormat == null) {
+            pageFormat = PageFormat.A4;
+        }
         this.jasperDesign = new JasperDesign();
         this.jasperDesign.setName(name);
         this.jasperDesign.setPageWidth(pageFormat.getWidth());

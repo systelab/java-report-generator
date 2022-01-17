@@ -22,7 +22,7 @@ public class FormReportTest {
     public void generateFormReport() {
         try {
             FormReportService formReportService = new FormReportService();
-            File file = formReportService.build(this.getConfiguration("form_report"), this.getData());
+            File file = formReportService.build(this.getConfiguration("form_report"), this.getData(), PageFormat.A4);
             file.createNewFile();
         } catch (JRException | IOException e) {
             e.printStackTrace();

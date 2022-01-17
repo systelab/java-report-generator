@@ -6,9 +6,12 @@ import com.werfen.report.service.template.GridReportTemplateBuilder;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.export.*;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
+import net.sf.jasperreports.export.SimplePdfReportConfiguration;
 
-import java.io.*;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -22,7 +25,6 @@ public class GridReportService {
 
         String filePath = gridReportConfiguration.getOutputFilePath() + reportFormat.getFileExtension();
         GridReportTemplateBuilder template = new GridReportTemplateBuilder();
-
         template.initJasperDesign("gridReport", pageFormat);
         template.addHeader(gridReportConfiguration.getHeaderConfiguration());
         template.addFooter(gridReportConfiguration.getFooterConfiguration());
