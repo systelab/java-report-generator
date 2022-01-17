@@ -6,7 +6,6 @@ import com.werfen.report.util.GeneralConfiguration;
 import net.sf.jasperreports.engine.JRException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -75,7 +74,7 @@ public class GridReportTest {
             e.printStackTrace();
         }
 
-        try (PDDocument original = PDDocument.load(new File("grid_report_golden_null_values.pdf"));
+        try (PDDocument original = PDDocument.load(new File("grid_report_null_values_golden.pdf"));
              PDDocument generated = PDDocument.load(new File("grid_report_null_values.pdf"))) {
             PDFTextStripper textStripper = new PDFTextStripper();
             assertEquals(textStripper.getText(original), textStripper.getText(generated));
