@@ -13,6 +13,7 @@ import net.sf.jasperreports.engine.design.*;
 import net.sf.jasperreports.engine.type.*;
 
 import static java.lang.Math.round;
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 public class BaseReportTemplateBuilder {
@@ -83,7 +84,7 @@ public class BaseReportTemplateBuilder {
     }
 
     public void initJasperDesign(String name, PageFormat pageFormat) {
-        if (pageFormat == null) {
+        if (isNull(pageFormat)) {
             pageFormat = PageFormat.A4;
         }
         this.jasperDesign = new JasperDesign();
