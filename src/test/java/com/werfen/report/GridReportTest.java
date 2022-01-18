@@ -25,18 +25,21 @@ public class GridReportTest {
     private static final String COLUMN_PREFIX_NAME = "col";
     private static final String COLUMN_PREFIX_TRANSLATION = "column ";
     private static final String COORDINATES_SEPARATOR = ".";
+    private static final String GOLDEN_SUFFIX = "_golden";
+    private static final String EXCEL_EXTENSION = ".xlsx";
+    private static final String PDF_EXTENSION = ".pdf";
 
-    public static List<GridReportRow> getListReportData(int columnCount, int rowCount) {
+    private static List<GridReportRow> getListReportData(int columnCount, int rowCount) {
 
 
         List<GridReportRow> gridReportRows = new ArrayList<>();
         for (int row = 1; row <= rowCount; row++) {
             List<GridReportField> gridReportFields = new ArrayList<>();
-            for (int column = 1; column <= columnCount-2; column++) {
+            for (int column = 1; column <= columnCount - 2; column++) {
                 gridReportFields.add(GridReportField.of(COLUMN_PREFIX_NAME + column, column + COORDINATES_SEPARATOR + row));
             }
             gridReportFields.add(GridReportField.of(COLUMN_PREFIX_NAME + (columnCount - 1), null));
-            gridReportFields.add(GridReportField.of(COLUMN_PREFIX_NAME + columnCount, null,"N/A"));
+            gridReportFields.add(GridReportField.of(COLUMN_PREFIX_NAME + columnCount, null, "N/A"));
 
             gridReportRows.add(GridReportRow.builder().values(gridReportFields).build());
         }
@@ -47,37 +50,18 @@ public class GridReportTest {
 
     @Test
     public void generateGridPdfReport() {
+        String fileName = "grid_report";
         try {
             GridReportService gridReportService = new GridReportService();
             GeneralConfiguration.setDefaultNullString("-");
-            File file = gridReportService.build(this.getConfiguration("grid_report", 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
+            File file = gridReportService.build(this.getConfiguration(fileName, 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
             file.createNewFile();
         } catch (JRException | IOException e) {
             e.printStackTrace();
         }
 
-        try (PDDocument original = PDDocument.load(new File("grid_report_golden.pdf"));
-             PDDocument generated = PDDocument.load(new File("grid_report.pdf"))) {
-                PDFTextStripper textStripper = new PDFTextStripper();
-                assertEquals(textStripper.getText(original), textStripper.getText(generated));
-        } catch(Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    @Test
-    public void generateGridPdfReportModifyDefault() {
-        try {
-            GridReportService gridReportService = new GridReportService();
-            GeneralConfiguration.setDefaultNullString("Nop");
-            File file = gridReportService.build(this.getConfiguration("grid_report_null_values", 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
-            file.createNewFile();
-        } catch (JRException | IOException e) {
-            e.printStackTrace();
-        }
-
-        try (PDDocument original = PDDocument.load(new File("grid_report_null_values_golden.pdf"));
-             PDDocument generated = PDDocument.load(new File("grid_report_null_values.pdf"))) {
+        try (PDDocument original = PDDocument.load(new File(fileName + GOLDEN_SUFFIX + PDF_EXTENSION));
+             PDDocument generated = PDDocument.load(new File(fileName + PDF_EXTENSION))) {
             PDFTextStripper textStripper = new PDFTextStripper();
             assertEquals(textStripper.getText(original), textStripper.getText(generated));
         } catch (Exception ex) {
@@ -86,28 +70,48 @@ public class GridReportTest {
     }
 
     @Test
-    public void generateGridXlsxReport() {
+    public void generateGridPdfReportModifyDefault() {
+        String fileName = "grid_report_null_values";
         try {
             GridReportService gridReportService = new GridReportService();
-            File file = gridReportService.build(this.getConfiguration("grid_report", 12), this.getDataSource(), ReportFormat.EXCEL, PageFormat.A4);
+            GeneralConfiguration.setDefaultNullString("Nop");
+            File file = gridReportService.build(this.getConfiguration(fileName, 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
             file.createNewFile();
         } catch (JRException | IOException e) {
             e.printStackTrace();
         }
 
-        try (Workbook original = new XSSFWorkbook(new File("grid_report_golden.xlsx"));
-             Workbook generated = new XSSFWorkbook(new File("grid_report.xlsx"))) {
-            CompareExcelFiles compareExcelFiles = new CompareExcelFiles();
-            compareExcelFiles.verifyIfExcelFilesHaveSameNumberAndNameOfSheets(original, generated);
-            compareExcelFiles.verifySheetsInExcelFilesHaveSameRowsAndColumns(original, generated);
-            compareExcelFiles.verifyDataInExcelBookAllSheets(original, generated);
-        } catch (Exception e) {
-            e.printStackTrace();
+        try (PDDocument original = PDDocument.load(new File(fileName + GOLDEN_SUFFIX + PDF_EXTENSION));
+             PDDocument generated = PDDocument.load(new File(fileName + PDF_EXTENSION))) {
+            PDFTextStripper textStripper = new PDFTextStripper();
+            assertEquals(textStripper.getText(original), textStripper.getText(generated));
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
     private GridPageDataSource getDataSource() {
         return new ListGridPageDataSource(10, GridReportTest.getListReportData(12, 50));
+    }
+
+    @Test
+    public void generateGridXlsxReport() {
+        String fileName = "grid_report";
+        try {
+            GridReportService gridReportService = new GridReportService();
+            File file = gridReportService.build(this.getConfiguration(fileName, 12), this.getDataSource(), ReportFormat.EXCEL, PageFormat.A4);
+            file.createNewFile();
+        } catch (JRException | IOException e) {
+            e.printStackTrace();
+        }
+
+        try (Workbook original = new XSSFWorkbook(new File(fileName + GOLDEN_SUFFIX + EXCEL_EXTENSION));
+             Workbook generated = new XSSFWorkbook(new File(fileName + EXCEL_EXTENSION))) {
+            ExcelComparator excelComparator = new ExcelComparator();
+            excelComparator.assertWorkbookEquals(original, generated);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private GridReportConfiguration getConfiguration(String fileName, int columnCount) throws IOException {
