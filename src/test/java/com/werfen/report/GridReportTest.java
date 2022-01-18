@@ -6,6 +6,8 @@ import com.werfen.report.util.GeneralConfiguration;
 import net.sf.jasperreports.engine.JRException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -90,6 +92,16 @@ public class GridReportTest {
             File file = gridReportService.build(this.getConfiguration("grid_report", 12), this.getDataSource(), ReportFormat.EXCEL, PageFormat.A4);
             file.createNewFile();
         } catch (JRException | IOException e) {
+            e.printStackTrace();
+        }
+
+        try (Workbook original = new XSSFWorkbook(new File("grid_report_golden.xlsx"));
+             Workbook generated = new XSSFWorkbook(new File("grid_report.xlsx"))) {
+            CompareExcelFiles compareExcelFiles = new CompareExcelFiles();
+            compareExcelFiles.verifyIfExcelFilesHaveSameNumberAndNameOfSheets(original, generated);
+            compareExcelFiles.verifySheetsInExcelFilesHaveSameRowsAndColumns(original, generated);
+            compareExcelFiles.verifyDataInExcelBookAllSheets(original, generated);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
