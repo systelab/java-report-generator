@@ -19,24 +19,24 @@ public class PdfGridReportService {
 
     Logger log = Logger.getLogger(GridReportService.class.getName());
 
-    public void exportToPdf(String filePath, GridReportConfiguration gridReportConfiguration, JRDataSource ds, PageFormat pageFormat) throws JRException {
-
-        GridReportTemplateBuilder template = new GridReportTemplateBuilder();
-        template.initJasperDesign("gridReport", pageFormat);
-        template.addHeader(gridReportConfiguration.getHeaderConfiguration());
-        template.addFooter(gridReportConfiguration.getFooterConfiguration());
-        template.addGrid(gridReportConfiguration.getGridColumnConfigurations());
-
-        JasperReport jasperReport = JasperCompileManager.compileReport(template.getJasperDesign());
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, this.getProperties(gridReportConfiguration), ds);
-
-        JRPdfExporter exporter = new JRPdfExporter();
-        exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
-        exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(filePath));
-        exporter.setConfiguration(getPdfReportConfiguration());
-        exporter.setConfiguration(getPdfExporterConfiguration());
+    public void exportToPdf(String filePath, GridReportConfiguration gridReportConfiguration, JRDataSource ds, PageFormat pageFormat) {
 
         try {
+            GridReportTemplateBuilder template = new GridReportTemplateBuilder();
+            template.initJasperDesign("gridReport", pageFormat);
+            template.addHeader(gridReportConfiguration.getHeaderConfiguration());
+            template.addFooter(gridReportConfiguration.getFooterConfiguration());
+            template.addGrid(gridReportConfiguration.getGridColumnConfigurations());
+
+            JasperReport jasperReport = JasperCompileManager.compileReport(template.getJasperDesign());
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, this.getProperties(gridReportConfiguration), ds);
+
+            JRPdfExporter exporter = new JRPdfExporter();
+            exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+            exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(filePath));
+            exporter.setConfiguration(getPdfReportConfiguration());
+            exporter.setConfiguration(getPdfExporterConfiguration());
+
             exporter.exportReport();
         } catch (JRException ex) {
             log.info("Error exporting to PDF: " + ex.getMessage());

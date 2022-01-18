@@ -17,23 +17,26 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FormReportTest {
     public static String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    private static final String GOLDEN_SUFFIX = "_golden";
 
     @Test
     public void generateFormReport() {
+        String fileName = "form_report";
         try {
             FormReportService formReportService = new FormReportService();
-            File file = formReportService.build(this.getConfiguration("form_report"), this.getData(), PageFormat.A4);
+            File file = formReportService.build(this.getConfiguration(fileName + ReportFormat.PDF.getFileExtension()), this.getData(), PageFormat.A4);
             file.createNewFile();
         } catch (JRException | IOException e) {
             e.printStackTrace();
         }
-        try (PDDocument original = PDDocument.load(new File("form_report_golden.pdf"));
-             PDDocument generated = PDDocument.load(new File("form_report.pdf"))) {
+        try (PDDocument original = PDDocument.load(new File(fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension()));
+             PDDocument generated = PDDocument.load(new File(fileName + ReportFormat.PDF.getFileExtension()))) {
             PDFTextStripper textStripper = new PDFTextStripper();
             assertEquals(textStripper.getText(original), textStripper.getText(generated));
         } catch (Exception ex) {
             ex.printStackTrace();
-        }    }
+        }
+    }
 
     private FormReportData getData() {
         return FormReportData.builder()

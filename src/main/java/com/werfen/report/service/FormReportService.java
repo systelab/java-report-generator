@@ -29,7 +29,8 @@ public class FormReportService {
         template.addFooter(formReportConfiguration.getFooterConfiguration());
         template.addForm(formReportData);
         this.exportToPdf(formReportConfiguration.getOutputFilePath(), template.getJasperDesign(), getProperties(formReportConfiguration), new JREmptyDataSource());
-        return new File(formReportConfiguration.getOutputFilePath() + ".pdf");
+
+        return new File(formReportConfiguration.getOutputFilePath());
     }
 
     private void exportToPdf(String filePath, JasperDesign jasperDesign, Map<String, Object> parameters, JRDataSource ds) throws JRException {
@@ -39,7 +40,7 @@ public class FormReportService {
 
         JRPdfExporter exporter = new JRPdfExporter();
         exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
-        exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(filePath + ".pdf"));
+        exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(filePath));
         exporter.setConfiguration(getBreakConfiguration());
         exporter.setConfiguration(getSecurityConfiguration());
 

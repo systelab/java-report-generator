@@ -1,15 +1,14 @@
 package com.werfen.report.service;
 
 import com.werfen.report.model.*;
-import net.sf.jasperreports.engine.JRException;
 
 import java.io.File;
 
 public class GridReportService {
 
-    public File build(GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource, ReportFormat reportFormat, PageFormat pageFormat) throws JRException {
+    public File build(GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource, ReportFormat reportFormat, PageFormat pageFormat) {
 
-        String filePath = gridReportConfiguration.getOutputFilePath() + reportFormat.getFileExtension();
+        String filePath = gridReportConfiguration.getOutputFilePath();
 
         switch (reportFormat) {
             case PDF:

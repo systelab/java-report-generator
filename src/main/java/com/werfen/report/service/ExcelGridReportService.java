@@ -17,8 +17,9 @@ import static java.util.Objects.nonNull;
 
 public class ExcelGridReportService {
 
-    private static final int EXCEL_WITDH_VALUE = 256 * 7;
     Logger log = Logger.getLogger(GridReportService.class.getName());
+
+    private static final int BASE_COLUMN_WITDH = 256 * 7;
 
     public void export(String filePath, String sheetName, GridReportConfiguration gridReportConfiguration, GridPageDataSource dataSource) {
         Workbook workbook = new XSSFWorkbook();
@@ -47,7 +48,7 @@ public class ExcelGridReportService {
             Cell cell = gridTitleRow.createCell(col);
             cell.setCellValue(gridColumnConfiguration.getTranslation());
             cell.setCellStyle(headerStyle);
-            sheet.setColumnWidth(col, gridColumnConfiguration.getWidth().getValue() * EXCEL_WITDH_VALUE);
+            sheet.setColumnWidth(col, gridColumnConfiguration.getWidth().getValue() * BASE_COLUMN_WITDH);
         }
     }
 
@@ -83,7 +84,7 @@ public class ExcelGridReportService {
             GridColumnConfiguration gridColumnConfiguration = gridColumnConfigurations.get(col);
             Cell cell = dataRow.createCell(col);
             cell.setCellValue(getGridReportFieldValue(values, gridColumnConfiguration.getName()));
-            sheet.setColumnWidth(col, gridColumnConfiguration.getWidth().getValue() * EXCEL_WITDH_VALUE);
+            sheet.setColumnWidth(col, gridColumnConfiguration.getWidth().getValue() * BASE_COLUMN_WITDH);
         }
     }
 
