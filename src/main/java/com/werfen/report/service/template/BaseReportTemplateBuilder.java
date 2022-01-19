@@ -13,6 +13,7 @@ import net.sf.jasperreports.engine.design.*;
 import net.sf.jasperreports.engine.type.*;
 
 import static java.lang.Math.round;
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 public class BaseReportTemplateBuilder {
@@ -83,6 +84,9 @@ public class BaseReportTemplateBuilder {
     }
 
     public void initJasperDesign(String name, PageFormat pageFormat) {
+        if (isNull(pageFormat)) {
+            pageFormat = PageFormat.A4;
+        }
         this.jasperDesign = new JasperDesign();
         this.jasperDesign.setName(name);
         this.jasperDesign.setPageWidth(pageFormat.getWidth());
@@ -197,7 +201,9 @@ public class BaseReportTemplateBuilder {
             addField(footerBand, reportFooterConfiguration.getField3(), FOOTER_FIELD_3_X, FOOTER_FIELDS_TITLE_Y, FOOTER_FIELDS_Y, FOOTER_FIELDS_WIDTH, FOOTER_TEXT_FIELD_HEIGHT);
         }
 
-        addPageNumber(FOOTER_PAGE_NUMBER_TEXT_X, footerBand);
+        if (reportFooterConfiguration.isShowPageNumbers()) {
+            addPageNumber(FOOTER_PAGE_NUMBER_TEXT_X, footerBand);
+        }
 
         this.jasperDesign.setPageFooter(footerBand);
     }

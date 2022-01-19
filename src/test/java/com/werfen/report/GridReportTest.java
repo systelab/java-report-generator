@@ -3,10 +3,10 @@ package com.werfen.report;
 import com.werfen.report.model.*;
 import com.werfen.report.service.GridReportService;
 import com.werfen.report.util.GeneralConfiguration;
-import net.sf.jasperreports.engine.JRException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
-import org.junit.jupiter.api.Disabled;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -24,75 +24,65 @@ public class GridReportTest {
     private static final String COLUMN_PREFIX_NAME = "col";
     private static final String COLUMN_PREFIX_TRANSLATION = "column ";
     private static final String COORDINATES_SEPARATOR = ".";
+    private static final String GOLDEN_SUFFIX = "_golden";
 
-    public static List<GridReportRow> getListReportData(int columnCount, int rowCount) {
+    private static List<GridReportRow> getListReportData(int columnCount, int rowCount) {
 
 
         List<GridReportRow> gridReportRows = new ArrayList<>();
         for (int row = 1; row <= rowCount; row++) {
             List<GridReportField> gridReportFields = new ArrayList<>();
-            for (int column = 1; column <= columnCount-2; column++) {
+            for (int column = 1; column <= columnCount - 2; column++) {
                 gridReportFields.add(GridReportField.of(COLUMN_PREFIX_NAME + column, column + COORDINATES_SEPARATOR + row));
             }
             gridReportFields.add(GridReportField.of(COLUMN_PREFIX_NAME + (columnCount - 1), null));
-            gridReportFields.add(GridReportField.of(COLUMN_PREFIX_NAME + columnCount, null,"N/A"));
+            gridReportFields.add(GridReportField.of(COLUMN_PREFIX_NAME + columnCount, null, "N/A"));
 
             gridReportRows.add(GridReportRow.builder().values(gridReportFields).build());
         }
-
 
         return gridReportRows;
     }
 
     @Test
     public void generateGridPdfReport() {
+        String fileName = "grid_report";
         try {
             GridReportService gridReportService = new GridReportService();
             GeneralConfiguration.setDefaultNullString("-");
-            File file = gridReportService.build(this.getConfiguration("grid_report", 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
+            File file = gridReportService.build(this.getConfiguration(fileName, 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
             file.createNewFile();
-        } catch (JRException | IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
-        try (PDDocument original = PDDocument.load(new File("grid_report_golden.pdf"));
-             PDDocument generated = PDDocument.load(new File("grid_report.pdf"))) {
-                PDFTextStripper textStripper = new PDFTextStripper();
-                assertEquals(textStripper.getText(original), textStripper.getText(generated));
-        } catch(Exception ex) {
+        try (PDDocument original = PDDocument.load(new File(fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension()));
+             PDDocument generated = PDDocument.load(new File(fileName + ReportFormat.PDF.getFileExtension()))) {
+            PDFTextStripper textStripper = new PDFTextStripper();
+            assertEquals(textStripper.getText(original), textStripper.getText(generated));
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
     @Test
     public void generateGridPdfReportModifyDefault() {
+        String fileName = "grid_report_null_values";
         try {
             GridReportService gridReportService = new GridReportService();
             GeneralConfiguration.setDefaultNullString("Nop");
-            File file = gridReportService.build(this.getConfiguration("grid_report_2", 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
+            File file = gridReportService.build(this.getConfiguration(fileName, 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
             file.createNewFile();
-        } catch (JRException | IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
-        try (PDDocument original = PDDocument.load(new File("grid_report_null_values_golden.pdf"));
-             PDDocument generated = PDDocument.load(new File("grid_report_null_values.pdf"))) {
+        try (PDDocument original = PDDocument.load(new File(fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension()));
+             PDDocument generated = PDDocument.load(new File(fileName + ReportFormat.PDF.getFileExtension()))) {
             PDFTextStripper textStripper = new PDFTextStripper();
             assertEquals(textStripper.getText(original), textStripper.getText(generated));
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
-        }
-    }
-
-    @Test
-    @Disabled
-    public void generateGridXlsxReport() {
-        try {
-            GridReportService gridReportService = new GridReportService();
-            File file = gridReportService.build(this.getConfiguration("grid_report", 12), this.getDataSource(), ReportFormat.EXCEL, PageFormat.A4);
-            file.createNewFile();
-        } catch (JRException | IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -100,11 +90,31 @@ public class GridReportTest {
         return new ListGridPageDataSource(10, GridReportTest.getListReportData(12, 50));
     }
 
+    @Test
+    public void generateGridXlsxReport() {
+        String fileName = "grid_report";
+        try {
+            GridReportService gridReportService = new GridReportService();
+            File file = gridReportService.build(this.getConfiguration(fileName, 12), this.getDataSource(), ReportFormat.EXCEL, PageFormat.A4);
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try (Workbook original = new XSSFWorkbook(new File(fileName + GOLDEN_SUFFIX + ReportFormat.EXCEL.getFileExtension()));
+             Workbook generated = new XSSFWorkbook(new File(fileName + ReportFormat.EXCEL.getFileExtension()))) {
+            ExcelComparator excelComparator = new ExcelComparator();
+            excelComparator.assertWorkbookEquals(original, generated);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private GridReportConfiguration getConfiguration(String fileName, int columnCount) throws IOException {
 
         List<GridColumnConfiguration> gridColumnConfigurations = new ArrayList<>();
         for (int column = 1; column <= columnCount; column++) {
-            gridColumnConfigurations.add(GridColumnConfiguration.builder().name(COLUMN_PREFIX_NAME + column).width(GridReportColumnWidth.findByValue((column%7)+1)).translation(COLUMN_PREFIX_TRANSLATION + column).build());
+            gridColumnConfigurations.add(GridColumnConfiguration.builder().name(COLUMN_PREFIX_NAME + column).width(GridReportColumnWidth.findByValue((column % 7) + 1)).translation(COLUMN_PREFIX_TRANSLATION + column).build());
         }
         return GridReportConfiguration.builder()
                 .outputFilePath(fileName)
@@ -118,18 +128,20 @@ public class GridReportTest {
         return ReportHeaderConfiguration.builder()
                 .title("Grid report")
                 .logoPath("src/main/resources/AF_WERFEN_BLUE_POS_RGB.png")
-                .field1(GridReportField.of("Lab name","Name"))
-                .field2(GridReportField.of("Second","Another"))
-                .field3(GridReportField.of("Third","Another one"))
-                .field4(GridReportField.of("Fourth","Last one"))
+                .field1(GridReportField.of("Lab name", "Name"))
+                .field2(GridReportField.of("Second", "Another"))
+                .field3(GridReportField.of("Third", "Another one"))
+                .field4(GridReportField.of("Fourth", "Last one"))
                 .build();
     }
 
     private ReportFooterConfiguration buildReportFooterConfiguration() {
         return ReportFooterConfiguration.builder()
-                .field1(GridReportField.of("Created at: ",ZonedDateTime.of(2021, 12, 1, 10, 1, 1, 1, ZoneId.systemDefault()).toOffsetDateTime().format(DateTimeFormatter.ofPattern(DATE_FORMAT))))
-                .field2(GridReportField.of("Created by: ","My self"))
-                .field3(GridReportField.of("Third: ","Another"))
+                .field1(GridReportField.of("Created at: ", ZonedDateTime.of(2021, 12, 1, 10, 1, 1, 1, ZoneId.systemDefault()).toOffsetDateTime().format(DateTimeFormatter.ofPattern(DATE_FORMAT))))
+                .field2(GridReportField.of("Created by: ", "My self"))
+                .field3(GridReportField.of("Third: ", "Another"))
+                // TODO: This shall be set to true as soon as the related bug is fixed
+                .showPageNumbers(false)
                 .build();
 
     }

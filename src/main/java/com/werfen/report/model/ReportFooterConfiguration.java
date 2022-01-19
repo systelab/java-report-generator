@@ -9,4 +9,6 @@ public class ReportFooterConfiguration {
     private final GridReportField field1;
     private final GridReportField field2;
     private final GridReportField field3;
+    @Builder.Default
+    private final boolean showPageNumbers = true;
 }
