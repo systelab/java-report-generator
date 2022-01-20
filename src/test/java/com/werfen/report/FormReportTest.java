@@ -16,26 +16,21 @@ import java.time.format.DateTimeFormatter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FormReportTest {
-    public static String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     private static final String GOLDEN_SUFFIX = "_golden";
+    public static String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     @Test
-    public void generateFormReport() {
+    public void generateFormReport() throws IOException, JRException {
         String fileName = "form_report";
-        try {
-            FormReportService formReportService = new FormReportService();
-            File file = formReportService.build(this.getConfiguration(fileName + ReportFormat.PDF.getFileExtension()), this.getData(), PageFormat.A4);
-            file.createNewFile();
-        } catch (JRException | IOException e) {
-            e.printStackTrace();
-        }
-        try (PDDocument original = PDDocument.load(new File(fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension()));
-             PDDocument generated = PDDocument.load(new File(fileName + ReportFormat.PDF.getFileExtension()))) {
-            PDFTextStripper textStripper = new PDFTextStripper();
-            assertEquals(textStripper.getText(original), textStripper.getText(generated));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+
+        FormReportService formReportService = new FormReportService();
+        File file = formReportService.build(this.getConfiguration(fileName + ReportFormat.PDF.getFileExtension()), this.getData(), PageFormat.A4);
+        file.createNewFile();
+
+        PDDocument original = PDDocument.load(new File(fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension()));
+        PDDocument generated = PDDocument.load(new File(fileName + ReportFormat.PDF.getFileExtension()));
+        PDFTextStripper textStripper = new PDFTextStripper();
+        assertEquals(textStripper.getText(original), textStripper.getText(generated));
     }
 
     private FormReportData getData() {
@@ -79,7 +74,7 @@ public class FormReportTest {
     }
 
     private FormReportConfiguration getConfiguration(String fileName) throws IOException {
-       return FormReportConfiguration.builder()
+        return FormReportConfiguration.builder()
                 .outputFilePath(fileName)
                 .headerConfiguration(this.buildHeaderConfiguration())
                 .footerConfiguration(this.buildReportFooterConfiguration())
@@ -90,10 +85,10 @@ public class FormReportTest {
         return ReportHeaderConfiguration.builder()
                 .title("Grid report")
                 .logoPath("src/main/resources/AF_WERFEN_BLUE_POS_RGB.png")
-                .field1(GridReportField.of("Lab name","Name"))
-                .field2(GridReportField.of("Second","Another"))
-                .field3(GridReportField.of("Third","Another one"))
-                .field4(GridReportField.of("Fourth","Last one"))
+                .field1(GridReportField.of("Lab name", "Name"))
+                .field2(GridReportField.of("Second", "Another"))
+                .field3(GridReportField.of("Third", "Another one"))
+                .field4(GridReportField.of("Fourth", "Last one"))
 
                 .build();
     }
