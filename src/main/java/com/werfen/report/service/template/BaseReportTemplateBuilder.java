@@ -19,12 +19,11 @@ import static java.util.Objects.nonNull;
 public class BaseReportTemplateBuilder {
 
     public static final String BOLD_FONT = "Helvetica-Bold";
+    public static final String TITLE_LOGO_PARAMETER = "TITLE_LOGO_PATH";
     protected static final int PAGE_MARGIN = 20;
     private static final int TITLE_MARGIN_X = 10;
     private static final int HEADER_MARGIN_X = 10;
     private static final int FOOTER_MARGIN_X = 10;
-
-    public static final String TITLE_LOGO_PARAMETER = "TITLE_LOGO_PATH";
     private static final int TITLE_HEIGHT = 42;
     private static final int PAGE_NUMBER_MARGIN_X = 14;
     private static final int TITLE_Y = 12;
@@ -50,7 +49,7 @@ public class BaseReportTemplateBuilder {
     private static final int HEADER_FRAME_Y = 0;
 
     private static final int FOOTER_TEXT_FIELD_HEIGHT = 9;
-    private static final int HEADER_FIELD_1_X = HEADER_MARGIN_X;
+    private static final int HEADER_FIELDS_INITIAL_X = HEADER_MARGIN_X;
     private static final int FOOTER_FIELDS_TITLE_Y = 8;
     private static final int FOOTER_FIELDS_Y = 17;
     private static final int FOOTER_PAGE_NUMBER_TEXT_WIDTH = 32;
@@ -63,7 +62,7 @@ public class BaseReportTemplateBuilder {
     private static final String STYLE_NAME = "default";
     private static final String STYLE_ENCODING = "UTF-8";
     private static final Float STYLE_FONT_SIZE = 7f;
-    private static final int FOOTER_FIELD_1_X = FOOTER_MARGIN_X;
+    private static final int FOOTER_FIELDS_INITIAL_X = FOOTER_MARGIN_X;
 
     protected JasperDesign jasperDesign;
 
@@ -105,9 +104,6 @@ public class BaseReportTemplateBuilder {
         final int TITLE_LOGO_X = TITLE_LINE_SEPARATOR_X + TITLE_MARGIN_X;
         final int TITLE_TEXT_WIDTH = TITLE_LINE_SEPARATOR_X - (TITLE_MARGIN_X * 2);
         final int HEADER_FIELDS_WIDTH = round((float) (BAND_WIDTH - (HEADER_MARGIN_X * 5)) / 4);
-        final int HEADER_FIELD_2_X = HEADER_FIELD_1_X + HEADER_FIELDS_WIDTH + HEADER_MARGIN_X;
-        final int HEADER_FIELD_3_X = HEADER_FIELD_2_X + HEADER_FIELDS_WIDTH + HEADER_MARGIN_X;
-        final int HEADER_FIELD_4_X = HEADER_FIELD_3_X + HEADER_FIELDS_WIDTH + HEADER_MARGIN_X;
 
 
         JRDesignRectangle titleFrame = new DesignRectangleBuilder()
@@ -154,20 +150,12 @@ public class BaseReportTemplateBuilder {
 
         headerBand.addElement(headerFrame);
 
-        if (nonNull(reportHeaderConfiguration.getField1())) {
-            addField(headerBand, reportHeaderConfiguration.getField1(), HEADER_FIELD_1_X, HEADER_FIELDS_TITLE_Y, HEADER_FIELDS_Y, HEADER_FIELDS_WIDTH, HEADER_FIELDS_HEIGHT);
-        }
-
-        if (nonNull(reportHeaderConfiguration.getField2())) {
-            addField(headerBand, reportHeaderConfiguration.getField2(), HEADER_FIELD_2_X, HEADER_FIELDS_TITLE_Y, HEADER_FIELDS_Y, HEADER_FIELDS_WIDTH, HEADER_FIELDS_HEIGHT);
-        }
-
-        if (nonNull(reportHeaderConfiguration.getField3())) {
-            addField(headerBand, reportHeaderConfiguration.getField3(), HEADER_FIELD_3_X, HEADER_FIELDS_TITLE_Y, HEADER_FIELDS_Y, HEADER_FIELDS_WIDTH, HEADER_FIELDS_HEIGHT);
-        }
-
-        if (nonNull(reportHeaderConfiguration.getField2())) {
-            addField(headerBand, reportHeaderConfiguration.getField4(), HEADER_FIELD_4_X, HEADER_FIELDS_TITLE_Y, HEADER_FIELDS_Y, HEADER_FIELDS_WIDTH, HEADER_FIELDS_HEIGHT);
+        int xPosition = HEADER_FIELDS_INITIAL_X;
+        for (GridReportField field : reportHeaderConfiguration.getFields()) {
+            if (nonNull(field)) {
+                addField(headerBand, field, xPosition, HEADER_FIELDS_TITLE_Y, HEADER_FIELDS_Y, HEADER_FIELDS_WIDTH, HEADER_FIELDS_HEIGHT);
+            }
+            xPosition = xPosition + HEADER_FIELDS_WIDTH + HEADER_MARGIN_X;
         }
         this.jasperDesign.setPageHeader(headerBand);
     }
@@ -176,39 +164,38 @@ public class BaseReportTemplateBuilder {
         final int BAND_WIDTH = this.jasperDesign.getPageWidth() - (PAGE_MARGIN * 2);
         final int FOOTER_EFFECTIVE_WIDTH = BAND_WIDTH - TITLE_LOGO_WIDTH - (TITLE_MARGIN_X * 2);
         final int FOOTER_FIELDS_WIDTH = round((float) (FOOTER_EFFECTIVE_WIDTH - (FOOTER_MARGIN_X * 4)) / 3);
-        final int FOOTER_FIELD_2_X = FOOTER_FIELD_1_X + FOOTER_FIELDS_WIDTH + FOOTER_MARGIN_X;
-        final int FOOTER_FIELD_3_X = FOOTER_FIELD_2_X + FOOTER_FIELDS_WIDTH + FOOTER_MARGIN_X;
         final int FOOTER_PAGE_NUMBER_TEXT_X = BAND_WIDTH - PAGE_NUMBER_MARGIN_X - FOOTER_PAGE_NUMBER_TEXT_WIDTH;
 
-        JRDesignBand footerBand = new JRDesignBand();
-        footerBand.setHeight(FOOTER_HEIGHT);
-        footerBand.setSplitType(SplitTypeEnum.STRETCH);
+        JRDesignBand footerBand = getFooterBand(BAND_WIDTH);
 
-        JRDesignRectangle footerFrame = new DesignRectangleBuilder()
-                .position(FOOTER_FRAME_X, FOOTER_FRAME_Y, BAND_WIDTH, FOOTER_FRAME_HEIGHT).build();
-
-        footerBand.addElement(footerFrame);
-
-        if (nonNull(reportFooterConfiguration.getField1())) {
-            addField(footerBand, reportFooterConfiguration.getField1(), FOOTER_FIELD_1_X, FOOTER_FIELDS_TITLE_Y, FOOTER_FIELDS_Y, FOOTER_FIELDS_WIDTH, FOOTER_TEXT_FIELD_HEIGHT);
-        }
-
-        if (nonNull(reportFooterConfiguration.getField2())) {
-            addField(footerBand, reportFooterConfiguration.getField2(), FOOTER_FIELD_2_X, FOOTER_FIELDS_TITLE_Y, FOOTER_FIELDS_Y, FOOTER_FIELDS_WIDTH, FOOTER_TEXT_FIELD_HEIGHT);
-        }
-
-        if (nonNull(reportFooterConfiguration.getField3())) {
-            addField(footerBand, reportFooterConfiguration.getField3(), FOOTER_FIELD_3_X, FOOTER_FIELDS_TITLE_Y, FOOTER_FIELDS_Y, FOOTER_FIELDS_WIDTH, FOOTER_TEXT_FIELD_HEIGHT);
+        int xPosition = FOOTER_FIELDS_INITIAL_X;
+        for (GridReportField field : reportFooterConfiguration.getFields()) {
+            if (nonNull(field)) {
+                addField(footerBand, field, xPosition, FOOTER_FIELDS_TITLE_Y, FOOTER_FIELDS_Y, FOOTER_FIELDS_WIDTH, FOOTER_TEXT_FIELD_HEIGHT);
+            }
+            xPosition = xPosition + FOOTER_FIELDS_WIDTH + FOOTER_MARGIN_X;
         }
 
         if (reportFooterConfiguration.isShowPageNumbers()) {
-            addPageNumber(FOOTER_PAGE_NUMBER_TEXT_X, footerBand);
+            addPageNumber(footerBand,FOOTER_PAGE_NUMBER_TEXT_X);
         }
 
         this.jasperDesign.setPageFooter(footerBand);
     }
 
-    private void addPageNumber(int FOOTER_PAGE_NUMBER_TEXT_X, JRDesignBand footerBand) {
+    private JRDesignBand getFooterBand(int width) {
+        JRDesignBand footerBand = new JRDesignBand();
+        footerBand.setHeight(FOOTER_HEIGHT);
+        footerBand.setSplitType(SplitTypeEnum.STRETCH);
+
+        JRDesignRectangle footerFrame = new DesignRectangleBuilder()
+                .position(FOOTER_FRAME_X, FOOTER_FRAME_Y, width, FOOTER_FRAME_HEIGHT).build();
+
+        footerBand.addElement(footerFrame);
+        return footerBand;
+    }
+
+    private void addPageNumber(JRDesignBand band, int xPosition) {
         JRDesignExpression masterCurrentPageExpression = new JRDesignExpression();
         masterCurrentPageExpression.setText("$V{MASTER_CURRENT_PAGE}");
 
@@ -229,11 +216,12 @@ public class BaseReportTemplateBuilder {
         JRDesignTextField pageNumberText = new DesignTextBuilder()
                 .expression(pageNumberExpression)
                 .evaluationTime(EvaluationTimeEnum.MASTER)
-                .position(FOOTER_PAGE_NUMBER_TEXT_X, FOOTER_PAGE_NUMBER_TEXT_Y, FOOTER_PAGE_NUMBER_TEXT_WIDTH, FOOTER_TEXT_FIELD_HEIGHT)
+                .position(xPosition, FOOTER_PAGE_NUMBER_TEXT_Y, FOOTER_PAGE_NUMBER_TEXT_WIDTH, FOOTER_TEXT_FIELD_HEIGHT)
                 .horizontalTextAlign(HorizontalTextAlignEnum.LEFT)
                 .buildTextField();
 
-        footerBand.addElement(pageNumberText);
+        band.addElement(pageNumberText);
+
     }
 
     private void addField(JRDesignBand band, GridReportField field, int xPos, int yTilePos, int yFieldPos, int fieldWidth, int fieldHeight) {

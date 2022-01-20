@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 
 public class FormReportService {
 
-    Logger log = Logger.getLogger(GridReportService.class.getName());
+    Logger log = Logger.getLogger(FormReportService.class.getName());
 
     public File build(FormReportConfiguration formReportConfiguration, FormReportData formReportData, PageFormat pageFormat) throws JRException {
         FormReportTemplateBuilder template = new FormReportTemplateBuilder();
