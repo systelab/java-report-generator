@@ -5,6 +5,7 @@ import com.werfen.report.service.GridReportService;
 import com.werfen.report.util.GeneralConfiguration;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.Test;
@@ -45,45 +46,34 @@ public class GridReportTest {
     }
 
     @Test
-    public void generateGridPdfReport() {
+    public void generateGridPdfReport() throws IOException {
         String fileName = "grid_report";
-        try {
-            GridReportService gridReportService = new GridReportService();
-            GeneralConfiguration.setDefaultNullString("-");
-            File file = gridReportService.build(this.getConfiguration(fileName, 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
-            file.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        try (PDDocument original = PDDocument.load(new File(fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension()));
-             PDDocument generated = PDDocument.load(new File(fileName + ReportFormat.PDF.getFileExtension()))) {
-            PDFTextStripper textStripper = new PDFTextStripper();
-            assertEquals(textStripper.getText(original), textStripper.getText(generated));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        GridReportService gridReportService = new GridReportService();
+        GeneralConfiguration.setDefaultNullString("-");
+        File file = gridReportService.build(this.getConfiguration(fileName + ReportFormat.PDF.getFileExtension(), 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
+        file.createNewFile();
+
+
+        PDDocument original = PDDocument.load(new File(fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension()));
+        PDDocument generated = PDDocument.load(new File(fileName + ReportFormat.PDF.getFileExtension()));
+        PDFTextStripper textStripper = new PDFTextStripper();
+        assertEquals(textStripper.getText(original), textStripper.getText(generated));
+
     }
 
     @Test
-    public void generateGridPdfReportModifyDefault() {
+    public void generateGridPdfReportModifyDefault() throws IOException {
         String fileName = "grid_report_null_values";
-        try {
-            GridReportService gridReportService = new GridReportService();
-            GeneralConfiguration.setDefaultNullString("Nop");
-            File file = gridReportService.build(this.getConfiguration(fileName, 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
-            file.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        GridReportService gridReportService = new GridReportService();
+        GeneralConfiguration.setDefaultNullString("Nop");
+        File file = gridReportService.build(this.getConfiguration(fileName + ReportFormat.PDF.getFileExtension(), 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
+        file.createNewFile();
 
-        try (PDDocument original = PDDocument.load(new File(fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension()));
-             PDDocument generated = PDDocument.load(new File(fileName + ReportFormat.PDF.getFileExtension()))) {
-            PDFTextStripper textStripper = new PDFTextStripper();
-            assertEquals(textStripper.getText(original), textStripper.getText(generated));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        PDDocument original = PDDocument.load(new File(fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension()));
+        PDDocument generated = PDDocument.load(new File(fileName + ReportFormat.PDF.getFileExtension()));
+        PDFTextStripper textStripper = new PDFTextStripper();
+        assertEquals(textStripper.getText(original), textStripper.getText(generated));
     }
 
     private GridPageDataSource getDataSource() {
@@ -91,23 +81,18 @@ public class GridReportTest {
     }
 
     @Test
-    public void generateGridXlsxReport() {
+    public void generateGridXlsxReport() throws IOException, InvalidFormatException {
         String fileName = "grid_report";
-        try {
-            GridReportService gridReportService = new GridReportService();
-            File file = gridReportService.build(this.getConfiguration(fileName, 12), this.getDataSource(), ReportFormat.EXCEL, PageFormat.A4);
-            file.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        try (Workbook original = new XSSFWorkbook(new File(fileName + GOLDEN_SUFFIX + ReportFormat.EXCEL.getFileExtension()));
-             Workbook generated = new XSSFWorkbook(new File(fileName + ReportFormat.EXCEL.getFileExtension()))) {
-            ExcelComparator excelComparator = new ExcelComparator();
-            excelComparator.assertWorkbookEquals(original, generated);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        GridReportService gridReportService = new GridReportService();
+        File file = gridReportService.build(this.getConfiguration(fileName+ ReportFormat.EXCEL.getFileExtension(), 12), this.getDataSource(), ReportFormat.EXCEL, PageFormat.A4);
+        file.createNewFile();
+
+
+        Workbook original = new XSSFWorkbook(new File(fileName + GOLDEN_SUFFIX + ReportFormat.EXCEL.getFileExtension()));
+        Workbook generated = new XSSFWorkbook(new File(fileName + ReportFormat.EXCEL.getFileExtension()));
+        ExcelComparator excelComparator = new ExcelComparator();
+        excelComparator.assertWorkbookEquals(original, generated);
     }
 
     private GridReportConfiguration getConfiguration(String fileName, int columnCount) throws IOException {

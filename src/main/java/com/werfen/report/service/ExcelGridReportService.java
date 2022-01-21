@@ -17,9 +17,8 @@ import static java.util.Objects.nonNull;
 
 public class ExcelGridReportService {
 
-    Logger log = Logger.getLogger(GridReportService.class.getName());
-
-    private static final int BASE_COLUMN_WITDH = 256 * 7;
+    private static final int BASE_COLUMN_WIDTH = 256 * 7;
+    Logger log = Logger.getLogger(ExcelGridReportService.class.getName());
 
     public void export(String filePath, String sheetName, GridReportConfiguration gridReportConfiguration, GridPageDataSource dataSource) {
         Workbook workbook = new XSSFWorkbook();
@@ -48,7 +47,7 @@ public class ExcelGridReportService {
             Cell cell = gridTitleRow.createCell(col);
             cell.setCellValue(gridColumnConfiguration.getTranslation());
             cell.setCellStyle(headerStyle);
-            sheet.setColumnWidth(col, gridColumnConfiguration.getWidth().getValue() * BASE_COLUMN_WITDH);
+            sheet.setColumnWidth(col, gridColumnConfiguration.getWidth().getValue() * BASE_COLUMN_WIDTH);
         }
     }
 
@@ -84,7 +83,7 @@ public class ExcelGridReportService {
             GridColumnConfiguration gridColumnConfiguration = gridColumnConfigurations.get(col);
             Cell cell = dataRow.createCell(col);
             cell.setCellValue(getGridReportFieldValue(values, gridColumnConfiguration.getName()));
-            sheet.setColumnWidth(col, gridColumnConfiguration.getWidth().getValue() * BASE_COLUMN_WITDH);
+            sheet.setColumnWidth(col, gridColumnConfiguration.getWidth().getValue() * BASE_COLUMN_WIDTH);
         }
     }
 
@@ -129,36 +128,21 @@ public class ExcelGridReportService {
     }
 
     private int addSummaryHeaderFields(Sheet sheet, int rowIndex, ReportHeaderConfiguration headerConfiguration) {
-        if (nonNull(headerConfiguration.getField1())) {
-            addSummaryField(sheet, rowIndex, headerConfiguration.getField1());
-            rowIndex++;
-        }
-        if (nonNull(headerConfiguration.getField2())) {
-            addSummaryField(sheet, rowIndex, headerConfiguration.getField2());
-            rowIndex++;
-        }
-        if (nonNull(headerConfiguration.getField3())) {
-            addSummaryField(sheet, rowIndex, headerConfiguration.getField3());
-            rowIndex++;
-        }
-        if (nonNull(headerConfiguration.getField4())) {
-            addSummaryField(sheet, rowIndex, headerConfiguration.getField4());
-            rowIndex++;
+        for (GridReportField field : headerConfiguration.getFields()) {
+            if (nonNull(field)) {
+                addSummaryField(sheet, rowIndex, field);
+                rowIndex++;
+            }
         }
         return rowIndex + 2;
     }
 
     private void addSummaryFooterFields(Sheet sheet, int rowIndex, ReportFooterConfiguration reportFooterConfiguration) {
-        if (nonNull(reportFooterConfiguration.getField1())) {
-            addSummaryField(sheet, rowIndex, reportFooterConfiguration.getField1());
-            rowIndex++;
-        }
-        if (nonNull(reportFooterConfiguration.getField2())) {
-            addSummaryField(sheet, rowIndex, reportFooterConfiguration.getField2());
-            rowIndex++;
-        }
-        if (nonNull(reportFooterConfiguration.getField3())) {
-            addSummaryField(sheet, rowIndex, reportFooterConfiguration.getField3());
+        for (GridReportField field : reportFooterConfiguration.getFields()) {
+            if (nonNull(field)) {
+                addSummaryField(sheet, rowIndex, field);
+                rowIndex++;
+            }
         }
     }
 
