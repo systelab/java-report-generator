@@ -1,9 +1,9 @@
-package com.werfen.report.service.template;
+package com.werfen.report.service.pdf.template;
 
 import com.werfen.report.model.GridColumnConfiguration;
 import com.werfen.report.model.GridReportColumnWidth;
-import com.werfen.report.util.DesignLineBuilder;
-import com.werfen.report.util.DesignTextBuilder;
+import com.werfen.report.service.pdf.util.DesignLineBuilder;
+import com.werfen.report.service.pdf.util.DesignTextBuilder;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.design.*;
 import net.sf.jasperreports.engine.type.HorizontalTextAlignEnum;

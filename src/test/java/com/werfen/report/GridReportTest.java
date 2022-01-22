@@ -2,7 +2,8 @@ package com.werfen.report;
 
 import com.werfen.report.model.*;
 import com.werfen.report.service.GridReportService;
-import com.werfen.report.util.GeneralConfiguration;
+import com.werfen.report.exception.ReportException;
+import com.werfen.report.model.GeneralConfiguration;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -46,7 +47,7 @@ public class GridReportTest {
     }
 
     @Test
-    public void generateGridPdfReport() throws IOException {
+    public void generateGridPdfReport() throws IOException, ReportException {
         String fileName = "grid_report";
 
         GridReportService gridReportService = new GridReportService();
@@ -63,11 +64,11 @@ public class GridReportTest {
     }
 
     @Test
-    public void generateGridPdfReportModifyDefault() throws IOException {
+    public void generateGridPdfReportModifyDefault() throws IOException, ReportException {
         String fileName = "grid_report_null_values";
         GridReportService gridReportService = new GridReportService();
         GeneralConfiguration.setDefaultNullString("Nop");
-        File file = gridReportService.build(this.getConfiguration(fileName + ReportFormat.PDF.getFileExtension(), 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
+        File file = gridReportService.buildPDF(this.getConfiguration(fileName + ReportFormat.PDF.getFileExtension(), 12), this.getDataSource(), PageFormat.A4);
         file.createNewFile();
 
         PDDocument original = PDDocument.load(new File(fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension()));
@@ -81,11 +82,11 @@ public class GridReportTest {
     }
 
     @Test
-    public void generateGridXlsxReport() throws IOException, InvalidFormatException {
+    public void generateGridXlsxReport() throws IOException, InvalidFormatException, ReportException {
         String fileName = "grid_report";
 
         GridReportService gridReportService = new GridReportService();
-        File file = gridReportService.build(this.getConfiguration(fileName+ ReportFormat.EXCEL.getFileExtension(), 12), this.getDataSource(), ReportFormat.EXCEL, PageFormat.A4);
+        File file = gridReportService.buildExcel(this.getConfiguration(fileName+ ReportFormat.EXCEL.getFileExtension(), 12), this.getDataSource());
         file.createNewFile();
 
 

@@ -1,6 +1,5 @@
 package com.werfen.report.model;
 
-
 import lombok.Builder;
 import lombok.Getter;
 

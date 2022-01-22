@@ -1,13 +1,13 @@
-package com.werfen.report.service.template;
+package com.werfen.report.service.pdf.template;
 
 import com.werfen.report.model.GridReportField;
 import com.werfen.report.model.PageFormat;
 import com.werfen.report.model.ReportFooterConfiguration;
 import com.werfen.report.model.ReportHeaderConfiguration;
-import com.werfen.report.util.DesignImageBuilder;
-import com.werfen.report.util.DesignLineBuilder;
-import com.werfen.report.util.DesignRectangleBuilder;
-import com.werfen.report.util.DesignTextBuilder;
+import com.werfen.report.service.pdf.util.DesignImageBuilder;
+import com.werfen.report.service.pdf.util.DesignLineBuilder;
+import com.werfen.report.service.pdf.util.DesignRectangleBuilder;
+import com.werfen.report.service.pdf.util.DesignTextBuilder;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.design.*;
 import net.sf.jasperreports.engine.type.*;
@@ -19,11 +19,9 @@ import static java.util.Objects.nonNull;
 public class BaseReportTemplateBuilder {
 
     public static final String BOLD_FONT = "Helvetica-Bold";
-
+    public static final String TITLE_LOGO_PARAMETER = "TITLE_LOGO_PATH";
     protected static final int PAGE_MARGIN = 20;
     private static final int PAGE_NUMBER_MARGIN_X = 14;
-
-    public static final String TITLE_LOGO_PARAMETER = "TITLE_LOGO_PATH";
     private static final int TITLE_MARGIN_X = 10;
     private static final int TITLE_HEIGHT = 42;
     private static final int TITLE_Y = 12;
@@ -179,7 +177,7 @@ public class BaseReportTemplateBuilder {
         }
 
         if (reportFooterConfiguration.isShowPageNumbers()) {
-            addPageNumber(footerBand,FOOTER_PAGE_NUMBER_TEXT_X);
+            addPageNumber(footerBand, FOOTER_PAGE_NUMBER_TEXT_X);
         }
 
         this.jasperDesign.setPageFooter(footerBand);
