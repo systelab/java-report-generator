@@ -3,7 +3,10 @@ package com.werfen.report.model;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static java.util.Objects.nonNull;
 
 @Builder
 @Getter
@@ -16,6 +19,16 @@ public class ReportHeaderConfiguration {
     private final GridReportField field4;
 
     public List<GridReportField> getFields() {
-        return List.of(field1, field2, field3, field4);
+        List<GridReportField> fields = new ArrayList<>();
+        if (nonNull(this.getField1()))
+            fields.add(this.field1);
+        if (nonNull(this.getField2()))
+            fields.add(this.field2);
+        if (nonNull(this.getField3()))
+            fields.add(this.field3);
+        if (nonNull(this.getField4()))
+            fields.add(this.field4);
+
+        return fields;
     }
 }
