@@ -16,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FormReportTest {
+    private static final String GOLDEN_PATH = "src/test/resources/golden/";
     private static final String GOLDEN_SUFFIX = "_golden";
     public static String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
@@ -27,7 +28,7 @@ public class FormReportTest {
         File file = formReportService.build(this.getConfiguration(fileName + ReportFormat.PDF.getFileExtension()), this.getData(), PageFormat.A4);
         file.createNewFile();
 
-        PDDocument original = PDDocument.load(new File(fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension()));
+        PDDocument original = PDDocument.load(new File(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension()));
         PDDocument generated = PDDocument.load(new File(fileName + ReportFormat.PDF.getFileExtension()));
         PDFTextStripper textStripper = new PDFTextStripper();
         assertEquals(textStripper.getText(original), textStripper.getText(generated));
@@ -73,7 +74,7 @@ public class FormReportTest {
                 ).build();
     }
 
-    private FormReportConfiguration getConfiguration(String fileName) throws IOException {
+    private FormReportConfiguration getConfiguration(String fileName) {
         return FormReportConfiguration.builder()
                 .outputFilePath(fileName)
                 .headerConfiguration(this.buildHeaderConfiguration())
