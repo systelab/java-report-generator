@@ -26,6 +26,7 @@ public class GridReportTest {
     private static final String COLUMN_PREFIX_TRANSLATION = "column ";
     private static final String COORDINATES_SEPARATOR = ".";
     private static final String GOLDEN_SUFFIX = "_golden";
+    private static final String GOLDEN_PATH = "src/test/resources/golden/";
 
     private static List<GridReportRow> getListReportData(int columnCount, int rowCount) {
 
@@ -55,7 +56,7 @@ public class GridReportTest {
         file.createNewFile();
 
 
-        PDDocument original = PDDocument.load(new File(fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension()));
+        PDDocument original = PDDocument.load(new File(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension()));
         PDDocument generated = PDDocument.load(new File(fileName + ReportFormat.PDF.getFileExtension()));
         PDFTextStripper textStripper = new PDFTextStripper();
         assertEquals(textStripper.getText(original), textStripper.getText(generated));
@@ -70,7 +71,7 @@ public class GridReportTest {
         File file = gridReportService.build(this.getConfiguration(fileName + ReportFormat.PDF.getFileExtension(), 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
         file.createNewFile();
 
-        PDDocument original = PDDocument.load(new File(fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension()));
+        PDDocument original = PDDocument.load(new File(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension()));
         PDDocument generated = PDDocument.load(new File(fileName + ReportFormat.PDF.getFileExtension()));
         PDFTextStripper textStripper = new PDFTextStripper();
         assertEquals(textStripper.getText(original), textStripper.getText(generated));
@@ -89,13 +90,13 @@ public class GridReportTest {
         file.createNewFile();
 
 
-        Workbook original = new XSSFWorkbook(new File(fileName + GOLDEN_SUFFIX + ReportFormat.EXCEL.getFileExtension()));
+        Workbook original = new XSSFWorkbook(new File(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.EXCEL.getFileExtension()));
         Workbook generated = new XSSFWorkbook(new File(fileName + ReportFormat.EXCEL.getFileExtension()));
         ExcelComparator excelComparator = new ExcelComparator();
         excelComparator.assertWorkbookEquals(original, generated);
     }
 
-    private GridReportConfiguration getConfiguration(String fileName, int columnCount) throws IOException {
+    private GridReportConfiguration getConfiguration(String fileName, int columnCount) {
 
         List<GridColumnConfiguration> gridColumnConfigurations = new ArrayList<>();
         for (int column = 1; column <= columnCount; column++) {
