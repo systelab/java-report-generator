@@ -35,7 +35,7 @@ public class FormReportTest {
     }
 
     @Test
-    public void generateFormReportWithLessFields() throws IOException, JRException {
+    public void generateFormReportWithLessFields() throws IOException, ReportException {
         String fileName = "form_report_less_fields";
 
         FormReportService formReportService = new FormReportService();
