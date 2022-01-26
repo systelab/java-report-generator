@@ -15,10 +15,6 @@ import java.io.IOException;
 
 public class GridReportService {
 
-    /**
-     * @deprecated Since 1.8.0. Use the specific methods buildPDF and buildExcel instead.
-     */
-    @Deprecated(since="1.8.0", forRemoval=true)
     public File build(GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource, ReportFormat reportFormat, PageFormat pageFormat) throws ReportException, ReportFormatException {
         if (reportFormat == ReportFormat.PDF)
             return buildPDF(gridReportConfiguration, gridPageDataSource, pageFormat);
@@ -26,7 +22,7 @@ public class GridReportService {
             return buildExcel(gridReportConfiguration, gridPageDataSource);
     }
 
-    public File buildPDF(GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource, PageFormat pageFormat) throws ReportException {
+    private File buildPDF(GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource, PageFormat pageFormat) throws ReportException {
         try {
             String filePath = gridReportConfiguration.getOutputFilePath();
             PdfGridReportService pdfGridReportService = new PdfGridReportService();
@@ -37,7 +33,7 @@ public class GridReportService {
         }
     }
 
-    public File buildExcel(GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource) throws ReportException {
+    private File buildExcel(GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource) throws ReportException {
         try {
             String filePath = gridReportConfiguration.getOutputFilePath();
             ExcelGridReportService excelGridReportService = new ExcelGridReportService();
