@@ -101,7 +101,7 @@ public class BaseReportTemplateBuilder {
     }
 
     public void addHeader(ReportHeaderConfiguration reportHeaderConfiguration) throws JRException {
-        final int FIELD_COUNT = getHeaderFieldCount(reportHeaderConfiguration);
+        final int FIELD_COUNT = reportHeaderConfiguration.getFields().size();
         final int FIELD_MARGIN_COUNT = FIELD_COUNT + 1;
         final int BAND_WIDTH = this.jasperDesign.getPageWidth() - (PAGE_MARGIN * 2);
         final int TITLE_LINE_SEPARATOR_X = BAND_WIDTH - TITLE_LOGO_WIDTH - (TITLE_MARGIN_X * 2);
@@ -165,7 +165,7 @@ public class BaseReportTemplateBuilder {
     }
 
     public void addFooter(ReportFooterConfiguration reportFooterConfiguration) {
-        final int FIELD_COUNT = getFooterFieldCount(reportFooterConfiguration);
+        final int FIELD_COUNT = reportFooterConfiguration.getFields().size();
         final int FIELD_MARGIN_COUNT = FIELD_COUNT + 1;
         final int BAND_WIDTH = this.jasperDesign.getPageWidth() - (PAGE_MARGIN * 2);
         final int FOOTER_EFFECTIVE_WIDTH = BAND_WIDTH - TITLE_LOGO_WIDTH - (TITLE_MARGIN_X * 2);
@@ -248,31 +248,5 @@ public class BaseReportTemplateBuilder {
 
         band.addElement(headerField1TitleText);
         band.addElement(headerField1Text);
-    }
-
-    private int getHeaderFieldCount(ReportHeaderConfiguration reportHeaderConfiguration) {
-        int fieldCount = 0;
-        if (nonNull(reportHeaderConfiguration.getField1()))
-            fieldCount++;
-        if (nonNull(reportHeaderConfiguration.getField2()))
-            fieldCount++;
-        if (nonNull(reportHeaderConfiguration.getField3()))
-            fieldCount++;
-        if (nonNull(reportHeaderConfiguration.getField4()))
-            fieldCount++;
-
-        return fieldCount;
-    }
-
-    private int getFooterFieldCount(ReportFooterConfiguration footerConfiguration) {
-        int fieldCount = 0;
-        if (nonNull(footerConfiguration.getField1()))
-            fieldCount++;
-        if (nonNull(footerConfiguration.getField2()))
-            fieldCount++;
-        if (nonNull(footerConfiguration.getField3()))
-            fieldCount++;
-
-        return fieldCount;
     }
 }
