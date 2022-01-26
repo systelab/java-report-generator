@@ -1,9 +1,9 @@
-package com.werfen.report.service.template;
+package com.werfen.report.service.pdf.template;
 
 import com.werfen.report.model.FormReportData;
 import com.werfen.report.model.FormReportField;
 import com.werfen.report.model.FormReportSection;
-import com.werfen.report.util.DesignTextBuilder;
+import com.werfen.report.service.pdf.util.DesignTextBuilder;
 import net.sf.jasperreports.engine.design.JRDesignBand;
 import net.sf.jasperreports.engine.design.JRDesignSection;
 import net.sf.jasperreports.engine.design.JRDesignStaticText;
@@ -18,13 +18,12 @@ public class FormReportTemplateBuilder extends BaseReportTemplateBuilder {
 
     public static final int SECTION_SEPARATOR_BEGIN = 5;
     public static final int SECTION_SEPARATOR_END = 10;
-    private static final String TITLE_FONT_NAME = "Helvetica-Bold";
-    private static final int TITLE_HEIGHT = 23;
-    private static final int TITLE_LEFT_PADDING = 9;
-
     public static final int FIELD_HEIGHT = 14;
     public static final int FIELD_LABEL_X = 10;
     public static final int FIELD_VALUE_X = 134;
+    private static final String TITLE_FONT_NAME = "Helvetica-Bold";
+    private static final int TITLE_HEIGHT = 23;
+    private static final int TITLE_LEFT_PADDING = 9;
 
     public void addForm(FormReportData formReportData) {
         formReportData.getSections().forEach(section -> this.addSection(section, 0));
@@ -44,7 +43,7 @@ public class FormReportTemplateBuilder extends BaseReportTemplateBuilder {
         final int BAND_WIDTH = this.jasperDesign.getPageWidth() - (PAGE_MARGIN * 2);
 
         JRDesignStaticText titleBox = new DesignTextBuilder()
-                .position(0,0, BAND_WIDTH, TITLE_HEIGHT)
+                .position(0, 0, BAND_WIDTH, TITLE_HEIGHT)
                 .mode(ModeEnum.OPAQUE)
                 .backgroundColor(this.getTitleColor(sectionDepth))
                 .buildStaticText();

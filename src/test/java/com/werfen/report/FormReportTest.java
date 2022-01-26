@@ -2,7 +2,7 @@ package com.werfen.report;
 
 import com.werfen.report.model.*;
 import com.werfen.report.service.FormReportService;
-import net.sf.jasperreports.engine.JRException;
+import com.werfen.report.exception.ReportException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ public class FormReportTest {
     public static String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     @Test
-    public void generateFormReport() throws IOException, JRException {
+    public void generateFormReport() throws IOException, ReportException {
         String fileName = "form_report";
 
         FormReportService formReportService = new FormReportService();
@@ -35,7 +35,7 @@ public class FormReportTest {
     }
 
     @Test
-    public void generateFormReportWithLessFields() throws IOException, JRException {
+    public void generateFormReportWithLessFields() throws IOException, ReportException {
         String fileName = "form_report_less_fields";
 
         FormReportService formReportService = new FormReportService();

@@ -1,8 +1,6 @@
 package com.werfen.report.model;
 
 
-import com.werfen.report.util.GeneralConfiguration;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

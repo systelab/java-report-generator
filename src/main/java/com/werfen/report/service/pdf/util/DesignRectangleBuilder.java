@@ -1,4 +1,4 @@
-package com.werfen.report.util;
+package com.werfen.report.service.pdf.util;
 
 import net.sf.jasperreports.engine.design.JRDesignRectangle;
 

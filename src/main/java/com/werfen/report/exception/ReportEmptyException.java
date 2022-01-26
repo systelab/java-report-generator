@@ -1,4 +1,4 @@
-package com.werfen.report.service.exception;
+package com.werfen.report.exception;
 
 public class ReportEmptyException extends RuntimeException {
 

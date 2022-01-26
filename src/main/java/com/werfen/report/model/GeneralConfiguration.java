@@ -1,4 +1,4 @@
-package com.werfen.report.util;
+package com.werfen.report.model;
 
 import lombok.Builder;
 import lombok.Getter;

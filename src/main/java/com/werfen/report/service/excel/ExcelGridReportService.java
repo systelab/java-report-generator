@@ -1,4 +1,4 @@
-package com.werfen.report.service;
+package com.werfen.report.service.excel;
 
 import com.werfen.report.model.*;
 import org.apache.commons.io.IOUtils;
@@ -20,7 +20,7 @@ public class ExcelGridReportService {
     private static final int BASE_COLUMN_WIDTH = 256 * 7;
     Logger log = Logger.getLogger(ExcelGridReportService.class.getName());
 
-    public void export(String filePath, String sheetName, GridReportConfiguration gridReportConfiguration, GridPageDataSource dataSource) {
+    public void export(String filePath, GridReportConfiguration gridReportConfiguration, GridPageDataSource dataSource) throws IOException {
         Workbook workbook = new XSSFWorkbook();
 
         addDataSheet(workbook, dataSource, gridReportConfiguration.getGridColumnConfigurations());
@@ -92,17 +92,12 @@ public class ExcelGridReportService {
         return currentReportField.orElseThrow(() -> new RuntimeException("The field name '" + name + "' in the XLSX is not valid")).getValue();
     }
 
-    private void addSummarySheet(Workbook workbook, GridReportConfiguration gridReportConfiguration) {
-        try {
+    private void addSummarySheet(Workbook workbook, GridReportConfiguration gridReportConfiguration) throws IOException {
             Sheet sheet = workbook.createSheet("Summary");
 
             int nextRowIndex = addSummaryTitle(sheet, workbook, gridReportConfiguration.getHeaderConfiguration());
             nextRowIndex = addSummaryHeaderFields(sheet, nextRowIndex, gridReportConfiguration.getHeaderConfiguration());
             addSummaryFooterFields(sheet, nextRowIndex, gridReportConfiguration.getFooterConfiguration());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private int addSummaryTitle(Sheet sheet, Workbook workbook, ReportHeaderConfiguration headerConfiguration) throws IOException {
