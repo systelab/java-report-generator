@@ -101,11 +101,13 @@ public class BaseReportTemplateBuilder {
     }
 
     public void addHeader(ReportHeaderConfiguration reportHeaderConfiguration) throws JRException {
+        final int FIELD_COUNT = reportHeaderConfiguration.getFields().size();
+        final int FIELD_MARGIN_COUNT = FIELD_COUNT + 1;
         final int BAND_WIDTH = this.jasperDesign.getPageWidth() - (PAGE_MARGIN * 2);
         final int TITLE_LINE_SEPARATOR_X = BAND_WIDTH - TITLE_LOGO_WIDTH - (TITLE_MARGIN_X * 2);
         final int TITLE_LOGO_X = TITLE_LINE_SEPARATOR_X + TITLE_MARGIN_X;
         final int TITLE_TEXT_WIDTH = TITLE_LINE_SEPARATOR_X - (TITLE_MARGIN_X * 2);
-        final int HEADER_FIELDS_WIDTH = round((float) (BAND_WIDTH - (HEADER_MARGIN_X * 5)) / 4);
+        final int HEADER_FIELDS_WIDTH = round((float) (BAND_WIDTH - (HEADER_MARGIN_X * FIELD_MARGIN_COUNT)) / FIELD_COUNT);
 
 
         JRDesignRectangle titleFrame = new DesignRectangleBuilder()
@@ -163,9 +165,11 @@ public class BaseReportTemplateBuilder {
     }
 
     public void addFooter(ReportFooterConfiguration reportFooterConfiguration) {
+        final int FIELD_COUNT = reportFooterConfiguration.getFields().size();
+        final int FIELD_MARGIN_COUNT = FIELD_COUNT + 1;
         final int BAND_WIDTH = this.jasperDesign.getPageWidth() - (PAGE_MARGIN * 2);
         final int FOOTER_EFFECTIVE_WIDTH = BAND_WIDTH - TITLE_LOGO_WIDTH - (TITLE_MARGIN_X * 2);
-        final int FOOTER_FIELDS_WIDTH = round((float) (FOOTER_EFFECTIVE_WIDTH - (FOOTER_MARGIN_X * 4)) / 3);
+        final int FOOTER_FIELDS_WIDTH = round((float) (FOOTER_EFFECTIVE_WIDTH - (FOOTER_MARGIN_X * FIELD_MARGIN_COUNT)) / FIELD_COUNT);
         final int FOOTER_PAGE_NUMBER_TEXT_X = BAND_WIDTH - PAGE_NUMBER_MARGIN_X - FOOTER_PAGE_NUMBER_TEXT_WIDTH;
 
         JRDesignBand footerBand = getFooterBand(BAND_WIDTH);
