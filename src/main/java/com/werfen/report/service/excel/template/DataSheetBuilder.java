@@ -11,48 +11,48 @@ import java.util.Optional;
 public class DataSheetBuilder {
     private static final int BASE_COLUMN_WIDTH = 256 * 7;
 
-    public void build(Workbook workbook, GridPageDataSource dataSource, List<GridColumnConfiguration> gridColumnConfigurations) {
+    public void build(Workbook workbook, GridPageDataSource dataSource, List<GridColumnConfiguration> columnConfigurations) {
         Sheet sheet = workbook.createSheet("Data");
-        addHeader(sheet, workbook, gridColumnConfigurations);
-        addBody(sheet, dataSource, gridColumnConfigurations);
+        addHeader(sheet, workbook, columnConfigurations);
+        addBody(sheet, dataSource, columnConfigurations);
     }
 
-    private void addHeader(Sheet sheet, Workbook workbook, List<GridColumnConfiguration> gridColumnConfigurations) {
+    private void addHeader(Sheet sheet, Workbook workbook, List<GridColumnConfiguration> columnConfigurations) {
         Row row = sheet.createRow(0);
         CellStyle headerStyle = getHeaderCellStyle(workbook);
-        for (int col = 0; col < gridColumnConfigurations.size(); col++) {
-            createCell(sheet, row, col, gridColumnConfigurations.get(col).getTranslation(), gridColumnConfigurations.get(col).getWidth(), headerStyle);
+        for (int col = 0; col < columnConfigurations.size(); col++) {
+            createCell(sheet, row, col, columnConfigurations.get(col).getTranslation(), columnConfigurations.get(col).getWidth().getValue(), headerStyle);
         }
     }
 
-    private void addBody(Sheet sheet, GridPageDataSource dataSource, List<GridColumnConfiguration> gridColumnConfigurations) {
+    private void addBody(Sheet sheet, GridPageDataSource dataSource, List<GridColumnConfiguration> columnConfigurations) {
         int rowIndex = 1;
         dataSource.moveFirst();
         do {
             for (GridReportRow row : dataSource.getCurrentPageRows()) {
-                addRow(sheet, rowIndex, row, gridColumnConfigurations);
+                addRow(sheet, rowIndex, row, columnConfigurations);
                 rowIndex++;
             }
         } while (dataSource.nextPage());
     }
 
-    private void addRow(Sheet sheet, int rowIndex, GridReportRow row, List<GridColumnConfiguration> gridColumnConfigurations) {
+    private void addRow(Sheet sheet, int rowIndex, GridReportRow row, List<GridColumnConfiguration> columnConfigurations) {
         Row dataRow = sheet.createRow(rowIndex);
         List<GridReportField> values = row.getValues();
-        for (int col = 0; col < gridColumnConfigurations.size(); col++) {
-            GridColumnConfiguration gridColumnConfiguration = gridColumnConfigurations.get(col);
-            createCell(sheet, dataRow, col, getGridReportFieldValue(values, gridColumnConfiguration.getName()), gridColumnConfiguration.getWidth());
+        for (int col = 0; col < columnConfigurations.size(); col++) {
+            GridColumnConfiguration columnConfiguration = columnConfigurations.get(col);
+            createCell(sheet, dataRow, col, getGridReportFieldValue(values, columnConfiguration.getName()), columnConfiguration.getWidth().getValue());
         }
     }
 
-    private Cell createCell(Sheet sheet, Row row, int col, String value, GridReportColumnWidth width) {
+    private Cell createCell(Sheet sheet, Row row, int col, String value, int width) {
         Cell cell = row.createCell(col);
         cell.setCellValue(value);
-        sheet.setColumnWidth(col, width.getValue() * BASE_COLUMN_WIDTH);
+        sheet.setColumnWidth(col, width * BASE_COLUMN_WIDTH);
         return cell;
     }
 
-    private Cell createCell(Sheet sheet, Row row, int col, String value, GridReportColumnWidth width, CellStyle headerStyle) {
+    private Cell createCell(Sheet sheet, Row row, int col, String value, int width, CellStyle headerStyle) {
         Cell cell = createCell(sheet, row, col, value, width);
         cell.setCellStyle(headerStyle);
         return cell;
