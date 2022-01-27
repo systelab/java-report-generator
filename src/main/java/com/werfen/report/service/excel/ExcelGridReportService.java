@@ -1,8 +1,8 @@
 package com.werfen.report.service.excel;
 
 import com.werfen.report.model.*;
-import com.werfen.report.service.excel.template.DataSheetBuilder;
-import com.werfen.report.service.excel.template.SummarySheetBuilder;
+import com.werfen.report.service.excel.template.DataSheetTemplate;
+import com.werfen.report.service.excel.template.SummarySheetTemplate;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -17,11 +17,11 @@ public class ExcelGridReportService {
     public void export(String filePath, GridReportConfiguration gridReportConfiguration, GridPageDataSource dataSource) throws IOException {
         Workbook workbook = new XSSFWorkbook();
 
-        DataSheetBuilder dataTemplate=new DataSheetBuilder();
-        SummarySheetBuilder summaryTemplate=new SummarySheetBuilder();
+        DataSheetTemplate dataTemplate=new DataSheetTemplate();
+        SummarySheetTemplate summaryTemplate=new SummarySheetTemplate();
 
-        dataTemplate.build(workbook, dataSource, gridReportConfiguration.getGridColumnConfigurations());
-        summaryTemplate.build(workbook, gridReportConfiguration);
+        dataTemplate.generate(workbook, dataSource, gridReportConfiguration.getGridColumnConfigurations());
+        summaryTemplate.generate(workbook, gridReportConfiguration);
 
         try (FileOutputStream fileOut = new FileOutputStream(filePath)) {
             workbook.write(fileOut);

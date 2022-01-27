@@ -14,7 +14,6 @@ import net.sf.jasperreports.engine.type.*;
 
 import static java.lang.Math.round;
 import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 
 public class BaseReportTemplateBuilder {
 
@@ -154,9 +153,7 @@ public class BaseReportTemplateBuilder {
 
         int xPosition = HEADER_FIELDS_INITIAL_X;
         for (GridReportField field : reportHeaderConfiguration.getFields()) {
-            if (nonNull(field)) {
-                addField(headerBand, field, xPosition, HEADER_FIELDS_TITLE_Y, HEADER_FIELDS_Y, HEADER_FIELDS_WIDTH, HEADER_FIELDS_HEIGHT);
-            }
+            addField(headerBand, field, xPosition, HEADER_FIELDS_TITLE_Y, HEADER_FIELDS_Y, HEADER_FIELDS_WIDTH, HEADER_FIELDS_HEIGHT);
             xPosition = xPosition + HEADER_FIELDS_WIDTH + HEADER_MARGIN_X;
         }
         this.jasperDesign.setPageHeader(headerBand);
@@ -174,9 +171,7 @@ public class BaseReportTemplateBuilder {
 
         int xPosition = FOOTER_FIELDS_INITIAL_X;
         for (GridReportField field : reportFooterConfiguration.getFields()) {
-            if (nonNull(field)) {
-                addField(footerBand, field, xPosition, FOOTER_FIELDS_TITLE_Y, FOOTER_FIELDS_Y, FOOTER_FIELDS_WIDTH, FOOTER_TEXT_FIELD_HEIGHT);
-            }
+            addField(footerBand, field, xPosition, FOOTER_FIELDS_TITLE_Y, FOOTER_FIELDS_Y, FOOTER_FIELDS_WIDTH, FOOTER_TEXT_FIELD_HEIGHT);
             xPosition = xPosition + FOOTER_FIELDS_WIDTH + FOOTER_MARGIN_X;
         }
 

@@ -10,11 +10,9 @@ import org.apache.poi.ss.usermodel.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import static java.util.Objects.nonNull;
+public class SummarySheetTemplate {
 
-public class SummarySheetBuilder {
-
-    public void build(Workbook workbook, GridReportConfiguration gridReportConfiguration) throws IOException {
+    public void generate(Workbook workbook, GridReportConfiguration gridReportConfiguration) throws IOException {
         Sheet sheet = workbook.createSheet("Summary");
 
         int nextRowIndex = addTitle(sheet, workbook, gridReportConfiguration.getHeaderConfiguration());
@@ -46,20 +44,16 @@ public class SummarySheetBuilder {
 
     private int addHeader(Sheet sheet, int rowIndex, ReportHeaderConfiguration headerConfiguration) {
         for (GridReportField field : headerConfiguration.getFields()) {
-            if (nonNull(field)) {
-                addSummaryField(sheet, rowIndex, field);
-                rowIndex++;
-            }
+            addSummaryField(sheet, rowIndex, field);
+            rowIndex++;
         }
         return rowIndex + 2;
     }
 
     private void addFooter(Sheet sheet, int rowIndex, ReportFooterConfiguration reportFooterConfiguration) {
         for (GridReportField field : reportFooterConfiguration.getFields()) {
-            if (nonNull(field)) {
-                addSummaryField(sheet, rowIndex, field);
-                rowIndex++;
-            }
+            addSummaryField(sheet, rowIndex, field);
+            rowIndex++;
         }
     }
 

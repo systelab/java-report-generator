@@ -8,10 +8,10 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.util.List;
 import java.util.Optional;
 
-public class DataSheetBuilder {
+public class DataSheetTemplate {
     private static final int BASE_COLUMN_WIDTH = 256 * 7;
 
-    public void build(Workbook workbook, GridPageDataSource dataSource, List<GridColumnConfiguration> columnConfigurations) {
+    public void generate(Workbook workbook, GridPageDataSource dataSource, List<GridColumnConfiguration> columnConfigurations) {
         Sheet sheet = workbook.createSheet("Data");
         addHeader(sheet, workbook, columnConfigurations);
         addBody(sheet, dataSource, columnConfigurations);
