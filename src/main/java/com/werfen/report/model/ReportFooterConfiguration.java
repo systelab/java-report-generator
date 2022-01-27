@@ -3,10 +3,10 @@ package com.werfen.report.model;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static java.util.Objects.nonNull;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Builder
 @Getter
@@ -18,14 +18,6 @@ public class ReportFooterConfiguration {
     private final boolean showPageNumbers = true;
 
     public List<GridReportField> getFields() {
-        List<GridReportField> fields = new ArrayList<>();
-        if (nonNull(this.getField1()))
-            fields.add(this.field1);
-        if (nonNull(this.getField2()))
-            fields.add(this.field2);
-        if (nonNull(this.getField3()))
-            fields.add(this.field3);
-
-        return fields;
+        return Stream.of(field1, field2, field3).filter(Objects::nonNull).collect(Collectors.toList());
     }
 }
