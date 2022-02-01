@@ -3,11 +3,9 @@ package com.werfen.report;
 import com.werfen.report.exception.ReportException;
 import com.werfen.report.model.*;
 import com.werfen.report.service.GridReportService;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.text.PDFTextStripper;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import com.werfen.report.test.utils.assertions.ComparisonResultAssertions;
+import com.werfen.report.test.utils.excel.ExcelComparator;
+import com.werfen.report.test.utils.pdf.PDFComparator;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -17,8 +15,6 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class GridReportTest {
     public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
@@ -56,10 +52,9 @@ public class GridReportTest {
         file.createNewFile();
 
 
-        PDDocument original = PDDocument.load(new File(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension()));
-        PDDocument generated = PDDocument.load(new File(fileName + ReportFormat.PDF.getFileExtension()));
-        PDFTextStripper textStripper = new PDFTextStripper();
-        assertEquals(textStripper.getText(original), textStripper.getText(generated));
+        File expectedFile = new File(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension());
+        File actualFile = new File(fileName + ReportFormat.PDF.getFileExtension());
+        ComparisonResultAssertions.assertEquals(PDFComparator.compareFiles(expectedFile, actualFile));
 
     }
 
@@ -71,18 +66,13 @@ public class GridReportTest {
         File file = gridReportService.build(this.getConfiguration(fileName + ReportFormat.PDF.getFileExtension(), 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
         file.createNewFile();
 
-        PDDocument original = PDDocument.load(new File(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension()));
-        PDDocument generated = PDDocument.load(new File(fileName + ReportFormat.PDF.getFileExtension()));
-        PDFTextStripper textStripper = new PDFTextStripper();
-        assertEquals(textStripper.getText(original), textStripper.getText(generated));
-    }
-
-    private GridPageDataSource getDataSource() {
-        return new ListGridPageDataSource(10, GridReportTest.getListReportData(12, 50));
+        File expectedFile = new File(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension());
+        File actualFile = new File(fileName + ReportFormat.PDF.getFileExtension());
+        ComparisonResultAssertions.assertEquals(PDFComparator.compareFiles(expectedFile, actualFile));
     }
 
     @Test
-    public void generateGridXlsxReport() throws IOException, InvalidFormatException, ReportException {
+    public void generateGridXlsxReport() throws IOException, ReportException {
         String fileName = "grid_report";
 
         GridReportService gridReportService = new GridReportService();
@@ -90,10 +80,13 @@ public class GridReportTest {
         file.createNewFile();
 
 
-        Workbook original = new XSSFWorkbook(new File(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.EXCEL.getFileExtension()));
-        Workbook generated = new XSSFWorkbook(new File(fileName + ReportFormat.EXCEL.getFileExtension()));
-        ExcelComparator excelComparator = new ExcelComparator();
-        excelComparator.assertWorkbookEquals(original, generated);
+        File expectedFile = new File(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.EXCEL.getFileExtension());
+        File actualFile = new File(fileName + ReportFormat.EXCEL.getFileExtension());
+        ComparisonResultAssertions.assertEquals(ExcelComparator.compareFiles(expectedFile, actualFile));
+    }
+
+    private GridPageDataSource getDataSource() {
+        return new ListGridPageDataSource(10, GridReportTest.getListReportData(12, 50));
     }
 
     private GridReportConfiguration getConfiguration(String fileName, int columnCount) {

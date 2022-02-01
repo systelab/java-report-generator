@@ -1,10 +1,10 @@
 package com.werfen.report;
 
+import com.werfen.report.exception.ReportException;
 import com.werfen.report.model.*;
 import com.werfen.report.service.FormReportService;
-import com.werfen.report.exception.ReportException;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.text.PDFTextStripper;
+import com.werfen.report.test.utils.assertions.ComparisonResultAssertions;
+import com.werfen.report.test.utils.pdf.PDFComparator;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -12,8 +12,6 @@ import java.io.IOException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FormReportTest {
     private static final String GOLDEN_PATH = "src/test/resources/golden/";
@@ -28,10 +26,9 @@ public class FormReportTest {
         File file = formReportService.build(this.getConfiguration(fileName + ReportFormat.PDF.getFileExtension()), this.getData(), PageFormat.A4);
         file.createNewFile();
 
-        PDDocument original = PDDocument.load(new File(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension()));
-        PDDocument generated = PDDocument.load(new File(fileName + ReportFormat.PDF.getFileExtension()));
-        PDFTextStripper textStripper = new PDFTextStripper();
-        assertEquals(textStripper.getText(original), textStripper.getText(generated));
+        File expectedFile = new File(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension());
+        File actualFile = new File(fileName + ReportFormat.PDF.getFileExtension());
+        ComparisonResultAssertions.assertEquals(PDFComparator.compareFiles(expectedFile, actualFile));
     }
 
     @Test
@@ -42,10 +39,9 @@ public class FormReportTest {
         File file = formReportService.build(this.getLessFieldsConfiguration(fileName + ReportFormat.PDF.getFileExtension()), this.getData(), PageFormat.A4);
         file.createNewFile();
 
-        PDDocument original = PDDocument.load(new File(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension()));
-        PDDocument generated = PDDocument.load(new File(fileName + ReportFormat.PDF.getFileExtension()));
-        PDFTextStripper textStripper = new PDFTextStripper();
-        assertEquals(textStripper.getText(original), textStripper.getText(generated));
+        File expectedFile = new File(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension());
+        File actualFile = new File(fileName + ReportFormat.PDF.getFileExtension());
+        ComparisonResultAssertions.assertEquals(PDFComparator.compareFiles(expectedFile, actualFile));
     }
 
     private FormReportData getData() {
