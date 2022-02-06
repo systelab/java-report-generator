@@ -97,6 +97,60 @@ Step 2. Add the dependency
 	</dependency>
 ```
 
+## API
+
+### Grid Report
+
+In order to generate a grid report use the method build in GridReportService.
+
+You will need to specify the configuration, the data, the output format (pdf or excel) and for pdf the page size.
+
+```java
+        GridReportService gridReportService = new GridReportService();
+        GeneralConfiguration.setDefaultNullString("-");
+        File file = gridReportService.build(configuration, dataSource, ReportFormat.PDF, PageFormat.A4);
+```
+
+Configuration allows to specify the name of the file to generate, the report header, the footer and the columns to be present.
+
+- Header includes a title, a logo and a up to four additional information.
+- Footer includes up to three additional information and let you specify if the page number should be present.
+- For each column, the key, the title and the width must be specified. The width is based in a grid system based on 12 columns across the page.
+
+Use the builder method in GridReportConfiguration to generate your Configuration.
+
+Data is provided through a class implementing the interface GridPageDataSource, in order to get the data in bursts to minimize memory utilization.
+
+```java
+public interface GridPageDataSource {
+    void moveFirst();
+    boolean nextPage();
+    List<GridReportRow> getCurrentPageRows();
+}
+```
+
+### Form Report
+
+In order to generate a form report use the method build in FormReportService.
+
+You will need to specify the configuration, the data and the page size (pdf will be generated).
+
+```java
+        FormReportService formReportService = new FormReportService();
+        File file = formReportService.build(configuration, data, PageFormat.A4);
+```
+
+Configuration allows to specify the name of the file to generate, the report header and the footer.
+
+- Header includes a title, a logo and a up to four additional information.
+- Footer includes up to three additional information and let you specify if the page number should be present.
+
+Use the builder method in FormReportConfiguration to generate your Configuration.
+
+Data is provided through a FormReportData, a class that represents a hierarchy of sections, titles, fields and subfields.
+
+Use the builder method in FormReportData to generate your data structure.
+
 
 [git]: https://git-scm.com/
 [archunit]: https://www.archunit.org/
