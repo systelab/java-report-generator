@@ -16,10 +16,11 @@ import java.io.IOException;
 public class GridReportService {
 
     public File build(GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource, ReportFormat reportFormat, PageFormat pageFormat) throws ReportException, ReportFormatException {
-        if (reportFormat == ReportFormat.PDF)
+        if (reportFormat == ReportFormat.PDF) {
             return buildPDF(gridReportConfiguration, gridPageDataSource, pageFormat);
-        else
+        } else {
             return buildExcel(gridReportConfiguration, gridPageDataSource);
+        }
     }
 
     private File buildPDF(GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource, PageFormat pageFormat) throws ReportException {

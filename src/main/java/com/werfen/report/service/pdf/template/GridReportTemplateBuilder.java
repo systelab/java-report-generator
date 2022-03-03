@@ -13,7 +13,7 @@ import java.util.List;
 
 import static java.lang.Math.round;
 
-public class GridReportTemplateBuilder extends BaseReportTemplateBuilder {
+public class GridReportTemplateBuilder {
 
     private static final int ROW_SEPARATOR_LINE_THICKNESS = 1;
     private static final int CELL_UNIT_HEIGHT = 32;
@@ -22,9 +22,10 @@ public class GridReportTemplateBuilder extends BaseReportTemplateBuilder {
     private static final int CELL_VALUE_OFFSET_Y = 17;
     private static final String FIELD_TEXT_PDF_FONT = "Helvetica-Bold";
     private static final String FIELD_TEXT_PDF_ENCODING = "UTF-8";
+    private static final int PAGE_MARGIN = 20;
 
-    public void addGrid(List<GridColumnConfiguration> gridColumnConfigurations) throws JRException {
-        final int BAND_WIDTH = this.jasperDesign.getPageWidth() - (PAGE_MARGIN * 2);
+    public void addGrid(JasperDesign jasperDesign, List<GridColumnConfiguration> gridColumnConfigurations) throws JRException {
+        final int BAND_WIDTH = jasperDesign.getPageWidth() - (PAGE_MARGIN * 2);
 
         JRDesignBand rowBand = new JRDesignBand();
         rowBand.setHeight(CELL_UNIT_HEIGHT);
@@ -38,7 +39,7 @@ public class GridReportTemplateBuilder extends BaseReportTemplateBuilder {
         for (int i = 0; i < gridColumnConfigurations.size(); i++) {
 
             GridColumnConfiguration gridColumnConfiguration = gridColumnConfigurations.get(i);
-            this.addCell(rowBand, gridColumnConfiguration, currentColumn, currentRow);
+            this.addCell(jasperDesign, rowBand, gridColumnConfiguration, currentColumn, currentRow);
 
             currentColumn += gridColumnConfiguration.getWidth().getValue();
 
@@ -56,8 +57,8 @@ public class GridReportTemplateBuilder extends BaseReportTemplateBuilder {
         ((JRDesignSection) jasperDesign.getDetailSection()).addBand(rowBand);
     }
 
-    private void addCell(JRDesignBand rowBand, GridColumnConfiguration gridColumnConfiguration, int currentColumn, int currentRow) throws JRException {
-        final int BAND_WIDTH = this.jasperDesign.getPageWidth() - (PAGE_MARGIN * 2);
+    private void addCell(JasperDesign jasperDesign, JRDesignBand rowBand, GridColumnConfiguration gridColumnConfiguration, int currentColumn, int currentRow) throws JRException {
+        final int BAND_WIDTH = jasperDesign.getPageWidth() - (PAGE_MARGIN * 2);
         final int CELL_UNIT_WIDTH = round((float) BAND_WIDTH / 12);
 
         JRDesignStaticText titleText = new DesignTextBuilder()
@@ -71,7 +72,7 @@ public class GridReportTemplateBuilder extends BaseReportTemplateBuilder {
         JRDesignField fieldValue = new JRDesignField();
         fieldValue.setName(gridColumnConfiguration.getName());
         fieldValue.setValueClass(String.class);
-        super.jasperDesign.addField(fieldValue);
+        jasperDesign.addField(fieldValue);
 
         JRDesignExpression fieldValueExpression = new JRDesignExpression();
         fieldValueExpression.setText("$F{" + gridColumnConfiguration.getName() + "}");
