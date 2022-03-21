@@ -1,7 +1,7 @@
 
 # Report Generator library
 
-This is a Java libraries with some utilities ....
+This is a Java libraries with some utilities to generate two kind of reports: grid ones and form ones.
 
 ## Getting Started
 
