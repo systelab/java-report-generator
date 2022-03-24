@@ -15,6 +15,12 @@ Please include a general summary of the change.
 
 Please include which issue is fixed 
 
+## Attachments
+
+<!--- Please add all the needed attachments -->
+
+Please include the relevant attachments.
+
 ## Motivation and Context
 
 <!--- Why is this change required? What problem does it solve? -->

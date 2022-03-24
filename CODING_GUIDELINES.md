@@ -1,4 +1,17 @@
-## 1 Introduction
+
+- [1. Introduction](#1-introduction)
+    - [1.1. Terminology notes](#11-terminology-notes)
+    - [1.2. Guide notes](#12-guide-notes)
+- [2. Source file basics](#2-source-file-basics)
+    - [2.1. File name](#21-file-name)
+    - [2.2. File encoding: UTF-8](#22-file-encoding-utf-8)
+    - [2.3. Special characters](#23-special-characters)
+        - [2.3.1. Whitespace characters](#231-whitespace-characters)
+        - [2.3.2. Special escape sequences](#232-special-escape-sequences)
+        - [2.3.3. Non-ASCII characters](#233-non-ascii-characters)
+
+    
+## 1. Introduction
 
 If you plan on contributing to java-report-generator, please start reading this document.
 
@@ -13,7 +26,7 @@ avoids giving _advice_ that isn't clearly enforceable (whether by human or tool)
 
 We will check each of the coding guidelines during the review process, but knowing about them ahead of time will reduce the number of iterations.
 
-### 1.1 Terminology notes
+### 1.1. Terminology notes
 
 In this document, unless otherwise clarified:
 
@@ -25,31 +38,30 @@ In this document, unless otherwise clarified:
 Other "terminology notes" will appear occasionally throughout the document.
 
 
-### 1.2 Guide notes
+### 1.2. Guide notes
 
 Example code in this document is **non-normative**. That is,  they may not illustrate the _only_ stylish way to represent the
 code. Optional formatting choices made in examples should not be enforced as rules.
 
 
-## 2 Source file basics
+## 2. Source file basics
 
 
-### 2.1 File name
+### 2.1. File name
 
 The source file name consists of the case-sensitive name of the top-level class it contains,
 plus the `.java` extension.
 
 
-### 2.2 File encoding: UTF-8
+### 2.2. File encoding: UTF-8
 
 Source files are encoded in **UTF-8**.
 
 
-### 2.3 Special characters
+### 2.3. Special characters
 
 
-
-#### 2.3.1 Whitespace characters
+#### 2.3.1. Whitespace characters
 
 Aside from the line terminator sequence, the **ASCII horizontal space
 character** (**0x20**) is the only whitespace character that appears
@@ -58,7 +70,7 @@ anywhere in a source file. This implies that:
 1.  All other whitespace characters in string and character literals are escaped.
 2.  Tab characters are **not** used for indentation.
 
-#### 2.3.2 Special escape sequences
+#### 2.3.2. Special escape sequences
 
 For any character that has a special escape sequence
 (`\b`,
@@ -74,7 +86,7 @@ is used rather than the corresponding octal
 (e.g. `\u000a`) escape.
 
 
-#### 2.3.3 Non-ASCII characters
+#### 2.3.3. Non-ASCII characters
 
 For the remaining non-ASCII characters, either the actual Unicode character
 (e.g. `∞`) or the equivalent Unicode escape
@@ -427,7 +439,6 @@ reasonable chance the code will be misinterpreted without them, nor would they h
 easier to read. It is _not_ reasonable to assume that every reader has the entire Java
 operator precedence table memorized.
 
-
 ### 4.8 Specific constructs
 
 
@@ -495,7 +506,6 @@ The square brackets form a part of the _type_, not the variable:
 _switch block_ are one or more _statement groups_. Each statement group consists of
 one or more _switch labels_ (either `case FOO:` or
 `default:`), followed by one or more statements.
-
 
 ##### 4.8.4.1 Indentation
 
@@ -607,11 +617,177 @@ public protected private abstract static final transient volatile synchronized n
 lowercase (to avoid confusion with the digit `1`). For example, `3000000000L`
 rather than `3000000000l`.
 
+## 5 Statements
 
-## 5 Naming
+### 5.1 Simple Statements
+
+Each line should contain at most one statement. Example:
+
+````
+// DO
+count++;
+count--;
+
+// DON'T
+count++; count--;
+````
+
+### 5.2 Compound Statements
+
+Compound statements are statements that contain lists of statements enclosed in braces:
+
+````
+{
+  <statement>
+}
+````
+
+* The enclosed statements should be indented one more level than the compound statement.
+* Braces are used around all statements, even single code-line statements, when they are part of a control structure, such as a if-else or for statement. This makes it easier to add statements without accidentally introducing bugs due to forgetting to add braces.
+
+### 5.2.1 return Statements
+
+A return statement with a value should not use parentheses unless they make the return value more obvious in some way. Example:
+
+````
+return 1;
+return products.size();
+return (size < 10 ? size : DEFAULT_SIZE);
+````
+
+### 5.2.2 if-else Statements
+
+The if-else class of statements should have the following form:
+
+````
+if (condition1)
+{
+  <statements>
+} 
+else if (condition2)
+{
+  <statements>
+} 
+else 
+{
+  <statements>
+}
+
+return 1;
+````
+
+**if** statements always use braces {}.
+Positive conditionals are easier to read than negative conditionals.
+
+### 5.2.3 for Statements
+
+A for statement should have the following form:
+
+````
+for (<initialization>; <condition>; <update>)
+{
+  <statements>
+}
+````
+
+An empty for statement (one in which all the work is done in the initialization, condition, and update clauses) should have the following form:
+
+````
+for (<initialization>; <condition>; <update>);
+````
+
+When using the comma operator in the initialization or update clause of a **for** statement, avoid the complexity of using more than three variables. If needed, use separate statements before the **for** loop (for the initialization clause) or at the end of the loop (for the update clause).
+
+### 5.2.4 while Statements
+
+A **while** statement should have the following form:
+
+````
+while (<condition>) 
+{
+  <statements>
+}
+````
+
+An empty while statement should have the following form:
+
+````
+while (<condition>);
+````
+
+### 5.2.5 do-while Statements
+
+A **do-while** statement should have the following form:
+
+````
+do 
+{
+  <statements>
+} 
+while (<condition>);
+````
+
+### 5.2.6 switch Statements
+
+A **switch** statement should have the following form:
+
+````
+switch (status)
+{
+  case ABC:
+    <statements>
+    /* falls through */
+  case DEF:
+    <statements>
+    break;
+  case XYZ:
+    <statements>
+    break;
+  default:
+    <statements>
+    break;
+}
+````
+
+Every time a case falls through (doesn’t include a **break** statement), add a comment where the **break** statement would normally be. This is shown in the preceding code example with the /\* falls through \*/ comment. Every **switch** statement should include a **default** case. The **break** in the **default** case is redundant, but it prevents a fall-through error if later another case is added.
+
+### 5.2.7 try-catch Statements
+
+A **try-catch** statement should have the following format:
+
+````
+try
+{
+  <statements>
+}
+catch (Exception e)
+{
+  <statements>
+}
+````
+
+A **try-catch** statement may also be followed by **finally**, which executes regardless of whether or not the try block has completed successfully:
+
+````
+try 
+{
+  <statements>
+}
+catch (Exception e) 
+{
+  <statements>
+} 
+finally 
+{
+  <statements>
+}
+````
 
 
-### 5.1 Rules common to all identifiers
+## 6 Naming
+
+
+### 6.1 Rules common to all identifiers
 
 Identifiers use only ASCII letters and digits, and in two cases noted below, underscores. Thus
 each valid identifier name is matched by the regular expression `\w+` .
@@ -622,10 +798,10 @@ suffixes, like those seen in the examples `name_`,
 `kName`, are **not** used.
 
 
-### 5.2 Rules by identifier type
+### 6.2 Rules by identifier type
 
 
-#### 5.2.1 Package names
+#### 6.2.1 Package names
 
 Package names are all lowercase, with consecutive words simply concatenated together (no
 underscores). For example, `com.example.deepspace`, not
@@ -633,7 +809,7 @@ underscores). For example, `com.example.deepspace`, not
 `com.example.deep_space`.
 
 
-#### 5.2.2 Class names
+#### 6.2.2 Class names
 
 Class names are written in [UpperCamelCase](#s5.3-camel-case).
 
@@ -652,7 +828,7 @@ with `Test`. For example,
 `HashIntegrationTest`.
 
 
-#### 5.2.3 Method names
+#### 6.2.3 Method names
 
 Method names are written in [lowerCamelCase](#s5.3-camel-case).
 
@@ -666,7 +842,7 @@ for example `testPop_emptyStack`. There is no One Correct
 Way to name test methods.
 
 
-#### 5.2.4 Constant names
+#### 6.2.4 Constant names
 
 Constant names use `CONSTANT_CASE`: all uppercase
 letters, with words separated by underscores. But what _is_ a constant, exactly?
@@ -696,7 +872,7 @@ static final String[] nonEmptyArray = {"these", "can", "change"};
 These names are typically nouns or noun phrases.
 
 
-#### 5.2.5 Non-constant field names
+#### 6.2.5 Non-constant field names
 
 Non-constant field names (static or otherwise) are written
 in [lowerCamelCase](#s5.3-camel-case).
@@ -706,14 +882,14 @@ These names are typically nouns or noun phrases.  For example,
 `index`.
 
 
-#### 5.2.6 Parameter names
+#### 6.2.6 Parameter names
 
 Parameter names are written in [lowerCamelCase](#s5.3-camel-case).
 
 One-character parameter names should be avoided.
 
 
-#### 5.2.7 Local variable names
+#### 6.2.7 Local variable names
 
 Local variable names are written in [lowerCamelCase](#s5.3-camel-case), and can be
 abbreviated more liberally than other types of names.
@@ -724,7 +900,7 @@ Even when final and immutable, local variables are not considered to be constant
 be styled as constants.
 
 
-#### 5.2.8 Type variable names
+#### 6.2.8 Type variable names
 
 Each type variable is named in one of two styles:
 
@@ -737,7 +913,7 @@ Each type variable is named in one of two styles:
     `RequestT`,
     `FooBarT`).
 
-### 5.3 Camel case: defined
+### 6.3 Camel case: defined
 
 Sometimes there is more than one reasonable way to convert an English phrase into camel case,
 such as when acronyms or unusual constructs like "IPv6" or "iOS" are present. To improve
@@ -772,10 +948,10 @@ language: for example "nonempty" and "non-empty" are both correct, so the method
 `checkNonEmpty` are likewise both correct.
 
 
-## 6 Programming Practices
+## 7 Programming Practices
 
 
-### 6.1 @Override: always used
+### 7.1 @Override: always used
 
 A method is marked with the `@Override` annotation
 whenever it is legal.  This includes a class method overriding a superclass method, a class method
@@ -786,7 +962,7 @@ method.
 `@Deprecated`.
 
 
-### 6.2 Caught exceptions: not ignored
+### 7.2 Caught exceptions: not ignored
 
 Except as noted below, it is very rarely correct to do nothing in response to a caught
 exception. (Typical responses are to log it, or if it is considered "impossible", rethrow it as an
@@ -822,7 +998,7 @@ catch (NoSuchElementException expected)
 }
 ````
 
-### 6.3 Static members: qualified using class
+### 7.3 Static members: qualified using class
 
 When a reference to a static class member must be qualified, it is qualified with that class's
 name, not with a reference or expression of that class's type.
@@ -835,7 +1011,7 @@ aFoo.aStaticMethod(); // bad
 somethingThatYieldsAFoo().aStaticMethod(); // very bad
 ````
 
-### 6.4 Finalizers: not used
+### 7.4 Finalizers: not used
 
 It is **extremely rare** to override `Object.finalize`.
 
@@ -843,7 +1019,7 @@ It is **extremely rare** to override `Object.finalize`.
 [_Effective Java_](http://books.google.com/books?isbn=8131726592)
 Item 7, "Avoid Finalizers," very carefully, and _then_ don't do it.
 
-### 6.5 Final private fields, parameters, and local variables
+### 7.5 Final private fields, parameters, and local variables
 
 Private fields, parameters, and local variables that are initialized only once,
 and not changed after initialization, should be marked final.
@@ -851,13 +1027,13 @@ and not changed after initialization, should be marked final.
 Parameters should be marked final whenever possible. It is better to make a
 copy of a parameter before modifying it.
 
-## 7 Javadoc
+## 8 Javadoc
 
 
-### 7.1 Formatting
+### 8.1 Formatting
 
 
-#### 7.1.1 General form
+#### 8.1.1 General form
 
 The _basic_ formatting of Javadoc blocks is as seen in this example:
 ````
@@ -878,7 +1054,7 @@ at-clauses present, and the entirety of the Javadoc block (including comment mar
 single line.
 
 
-#### 7.1.2 Paragraphs
+#### 8.1.2 Paragraphs
 
 One blank line—that is, a line containing only the aligned leading asterisk
 (`*`)—appears between paragraphs, and before the group of "at-clauses" if
@@ -886,7 +1062,7 @@ present. Each paragraph but the first has `<p>` immediately before the first wor
 with no space after.
 
 
-#### 7.1.3 At-clauses
+#### 8.1.3 At-clauses
 
 Any of the standard "at-clauses" that are used appear in the order `@param`,
 `@return`, `@throws`, `@deprecated`, and these four types never
@@ -895,7 +1071,7 @@ are indented four (or more) spaces from the position of the `@`.
 
 
 
-### 7.2 The summary fragment
+### 8.2 The summary fragment
 
 The Javadoc for each class and member begins with a brief **summary fragment**. This
 fragment is very important: it is the only part of the text that appears in certain contexts such as
@@ -912,7 +1088,7 @@ punctuated as if it were a complete sentence.
 changed to `/** Returns the customer ID. */`.
 
 
-### 7.3 Where Javadoc is used
+### 8.3 Where Javadoc is used
 
 At the _minimum_, Javadoc is present for every
 `public` class, and every
@@ -925,7 +1101,7 @@ comment would be used to define the overall purpose or behavior of a class, meth
 comment is written as Javadoc instead. (It's more uniform, and more tool-friendly.)
 
 
-#### 7.3.1 Exception: self-explanatory methods
+#### 8.3.1 Exception: self-explanatory methods
 
 Javadoc is optional for "simple, obvious" methods like
 `getFoo`, in cases where there _really and truly_ is
@@ -939,6 +1115,6 @@ named `getCanonicalName`, don't omit its documentation
 what the term "canonical name" means!
 
 
-#### 7.3.2 Exception: overrides;
+#### 8.3.2 Exception: overrides;
 
 Javadoc is not always present on a method that overrides a supertype method.
