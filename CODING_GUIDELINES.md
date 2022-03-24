@@ -9,8 +9,106 @@
         - [2.3.1. Whitespace characters](#231-whitespace-characters)
         - [2.3.2. Special escape sequences](#232-special-escape-sequences)
         - [2.3.3. Non-ASCII characters](#233-non-ascii-characters)
+- [3. Source file structure](#3-source-file-structure)
+    - [3.1. License or copyright information, if present](#31-license-or-copyright-information-if-present)
+    - [3.2. Package statement](#32-package-statement)
+    - [3.3. Import statements](#33-import-statements)
+        - [3.3.1. No wildcard imports](#331-no-wildcard-imports)
+        - [3.3.2. No line-wrapping](#332-no-line-wrapping)
+        - [3.3.3. Ordering and spacing](#333-ordering-and-spacing)
+    - [3.4. Class declaration](#34-class-declaration)
+        - [3.4.1. Exactly one top-level class declaration](#341-exactly-one-top-level-class-declaration)
+        - [3.4.2. Class member ordering](#342-class-member-ordering)
+            - [3.4.2.1. Overloads: never split](#3421-overloads-never-split)
+- [4. Formatting](#4-formatting)
+    - [4.1. Braces](#41-braces)
+        - [4.1.1. Braces are used where optional](#411-braces-are-used-where-optional)
+        - [4.1.2. Nonempty blocks: K &amp; R style](#412-nonempty-blocks-k-amp-r-style)
+        - [4.1.3. Empty blocks: may be concise](#413-empty-blocks-may-be-concise)
+    - [4.2. Block indentation: +4 spaces](#42-block-indentation-4-spaces)
+    - [4.3. One statement per line](#43-one-statement-per-line)
+    - [4.4. Column limit: 120](#44-column-limit-120)
+    - [4.5. Line-wrapping](#45-line-wrapping)
+        - [4.5.1. Where to break](#451-where-to-break)
+        - [4.5.2. Indent continuation lines at least +4 spaces](#452-indent-continuation-lines-at-least-4-spaces)
+    - [4.6. Whitespace](#46-whitespace)
+        - [4.6.1. Vertical Whitespace](#461-vertical-whitespace)
+        - [4.6.2. Horizontal whitespace](#462-horizontal-whitespace)
+        - [4.6.3. Horizontal alignment: never required](#463-horizontal-alignment-never-required)    
+    - [4.7. Grouping parentheses: recommended](#47-grouping-parentheses-recommended)
+    - [4.8 Specific constructs](#48-specific-constructs)    
+        - [4.8.1 Enum classes](#481-enum-classes)
+        - [4.8.2. Variable declarations](#482-variable-declarations)
+            - [4.8.2.1. One variable per declaration](#4821-one-variable-per-declaration)
+            - [4.8.2.2. Declared when needed, initialized as soon as possible](#4822-declared-when-needed-initialized-as-soon-as-possible)
+        - [4.8.3. Arrays](#483-arrays)
+            - [4.8.3.1. Array initializers: can be "block-like"](#4831-array-initializers-can-be-block-like)
+            - [4.8.3.2. No C-style array declarations](#4832-no-c-style-array-declarations)
+        - [4.8.4. Switch statements](#484-switch-statements)
+            - [4.8.4.1. Indentation](#4841-indentation)
+            - [4.8.4.2. Fall-through: commented](#4842-fall-through-commented)
+            - [4.8.4.3. The default case is present](#4843-the-default-case-is-present)
+        - [4.8.5. Annotations](#485-annotations)
+        - [4.8.6. Comments](#486-comments)
+            - [4.8.6.1. Block comment style](#4861-block-comment-style)
+        - [4.8.7. Modifiers](#487-modifiers)
+        - [4.8.8. Numeric Literals](#488-numeric-literals)
+- [5. Statements](#5-statements)
+    - [5.1 Simple Statements](#51-simple-statements)
+    - [5.2. Compound Statements](#52-compound-statements)    
+        - [5.2.1. return Statements](#521-return-statements)
+        - [5.2.2. if-else Statements](#522-if-else-statements)
+        - [5.2.3. for Statements](#523-for-statements)
+        - [5.2.4. while Statements](#524-while-statements)
+        - [5.2.5. do-while Statements](#525-do-while-statements)
+        - [5.2.6. switch Statements](#526-switch-statements)
+        - [5.2.7. try-catch Statements](#527-try-catch-statements)
+- [6. Naming](#6-naming)
+    - [6.1 Rules common to all identifiers](#61-rules-common-to-all-identifiers)
+    - [6.2. Rules by identifier type](#62-rules-by-identifier-type)
+        - [6.2.1. Package names](#621-package-names)
+        - [6.2.2. Class names](#622-class-names)
+        - [6.2.3. Method names](#623-method-names)
+        - [6.2.4. Constant names](#624-constant-names)
+        - [6.2.5. Non-constant field names](#625-non-constant-field-names)
+        - [6.2.6 Parameter names](#626-parameter-names)
+        - [6.2.7. Local variable names](#627-local-variable-names)
+        - [6.2.8. Type variable names](#628-type-variable-names)
+    - [6.3. Camel case: defined](#63-camel-case-defined)
+- [7. Unit-Tests](#7-unit-tests)
+    - [7.1. Keeping Tests Clean](#71-keeping-tests-clean)
+    - [7.2. F.I.R.S.T](#72-first)
+    - [7.3. Unit-Test Smells](#73-unit-test-smells)
+- [8. Design & Best Practices](#8-design--best-practices)
+    - [8.1. Encapsulations](#81-encapsulations)
+    - [8.2. Interfaces and Inheritances](#82-interfaces-and-inheritances)
+    - [8.3. Structure over Convention](#83-structure-over-convention)
+    - [8.4. Exceptions and Error Handlings](#84-exceptions-and-error-handlings)
+    - [8.5. Constant interface pattern](#85-constant-interface-pattern)
+    - [8.6. Concurrency](#86-concurrency)
+- [9. Programming Practices](#9-programming-practices)
+    - [9.1. Avoid multiple *return* statements](#91-avoid-multiple-return-statements)
+    - [9.2. Boolean comparisons](#92-boolean-comparisons)
+    - [9.3. *for* loops Vs *for-each* loops](#93-for-loops-vs-for-each-loops)
+    - [9.4. *String* concatenation](#94-string-concatenation)
+    - [9.5. Collections](#95-collections)
+    - [9.6. Raw types](#96-raw-types)
+    - [9.7. @Override: always used](#97-override-always-used)
+    - [9.8. Caught exceptions: not ignored](#98-caught-exceptions-not-ignored)
+    - [9.9. Static members: qualified using class](#99-static-members-qualified-using-class)
+    - [9.10. Finalizers: not used](#910-finalizers-not-used)
+    - [9.11. Final private fields, parameters, and local variables](#911-final-private-fields-parameters-and-local-variables)
+- [10 Javadoc](#10-javadoc)
+    - [10.1 Formatting](#101-formatting)
+        - [10.1.1 General form](#1011-general-form)
+        - [10.1.2 Paragraphs](#1012-paragraphs)
+        - [10.1.3. At-clauses](#1013-at-clauses)
+    - [10.2. The summary fragment](#102-the-summary-fragment)
+    - [10.3. Where Javadoc is used](#103-where-javadoc-is-used)
+        - [10.3.1. Exception: self-explanatory methods](#1031-exception-self-explanatory-methods)
+        - [10.3.2. Exception: overrides](#1032-exception-overrides)
 
-    
+ 
 ## 1. Introduction
 
 If you plan on contributing to java-report-generator, please start reading this document.
@@ -106,7 +204,7 @@ some programs might not handle non-ASCII characters properly. If that should hap
 programs are **broken** and they must be **fixed**.
 
 
-## 3 Source file structure
+## 3. Source file structure
 
 
 A source file consists of, **in order**:
@@ -119,34 +217,34 @@ A source file consists of, **in order**:
 **Exactly one blank line** separates each section that is present.
 
 
-### 3.1 License or copyright information, if present
+### 3.1. License or copyright information, if present
 
 If license or copyright information belongs in a file, it belongs here.
 
 
-### 3.2 Package statement
+### 3.2. Package statement
 
 The package statement is **not line-wrapped**. The column limit (Section 4.4,
 [Column limit: 120](#s4.4-column-limit)) does not apply to package statements.
 
 
-### 3.3 Import statements
+### 3.3. Import statements
 
 
 
-#### 3.3.1 No wildcard imports
+#### 3.3.1. No wildcard imports
 
 **Wildcard imports**, static or otherwise, **are not used**.
 
 
-#### 3.3.2 No line-wrapping
+#### 3.3.2. No line-wrapping
 
 Import statements are **not line-wrapped**. The column limit (Section 4.4,
 [Column limit: 120](#s4.4-column-limit)) does not apply to import
 statements.
 
 
-#### 3.3.3 Ordering and spacing
+#### 3.3.3. Ordering and spacing
 
 Import statements are divided into the following groups, in this order, with each group
 separated by a single blank line:
@@ -166,15 +264,15 @@ ASCII sort order; the presence of semicolons warps the result.)
 The Eclipse project is set up to automatically organize imports according to these requirements.
 
 
-### 3.4 Class declaration
+### 3.4. Class declaration
 
 
-#### 3.4.1 Exactly one top-level class declaration
+#### 3.4.1. Exactly one top-level class declaration
 
 Each top-level class resides in a source file of its own.
 
 
-#### 3.4.2 Class member ordering
+#### 3.4.2. Class member ordering
 
 The ordering of the members of a class can have a great effect on learnability, but there is
 no single correct recipe for how to do it. Different classes may order their members
@@ -186,13 +284,13 @@ just habitually added to the end of the class, as that would yield "chronologica
 added" ordering, which is not a logical ordering.
 
 
-##### 3.4.2.1 Overloads: never split
+##### 3.4.2.1. Overloads: never split
 
 When a class has multiple constructors, or multiple methods with the same name, these appear
 sequentially, with no intervening members.
 
 
-## 4 Formatting
+## 4. Formatting
 
 **Terminology Note:** _block-like construct_ refers to
 the body of a class, method or constructor. Note that, by Section 4.8.3.1 on
@@ -200,10 +298,10 @@ the body of a class, method or constructor. Note that, by Section 4.8.3.1 on
 _may_ optionally be treated as if it were a block-like construct.
 
 
-### 4.1 Braces
+### 4.1. Braces
 
 
-#### 4.1.1 Braces are used where optional
+#### 4.1.1. Braces are used where optional
 
 Braces are used with
 `if`,
@@ -214,7 +312,7 @@ Braces are used with
 body is empty or contains only a single statement.
 
 
-#### 4.1.2 Nonempty blocks: K &amp; R style
+#### 4.1.2. Nonempty blocks: K &amp; R style
 
 Braces follow the Kernighan and Ritchie style
 ("[Egyptian brackets](http://www.codinghorror.com/blog/2012/07/new-programming-jargon.html)")
@@ -252,7 +350,7 @@ A few exceptions for enum classes are given in Section 4.8.1,
 [Enum classes](#s4.8.1-enum-classes).
 
 
-#### 4.1.3 Empty blocks: may be concise
+#### 4.1.3. Empty blocks: may be concise
 
 An empty block or block-like construct _may_ be closed immediately after it is
 opened, with no characters or line break in between
@@ -266,7 +364,7 @@ Example:
   void doNothing() {}
 ````
 
-### 4.2 Block indentation: +4 spaces
+### 4.2. Block indentation: +4 spaces
 
 Each time a new block or block-like construct is opened, the indent increases by four
 spaces. When the block ends, the indent returns to the previous indent level. The indent level
@@ -274,12 +372,12 @@ applies to both code and comments throughout the block. (See the example in Sect
 [Nonempty blocks: K &amp; R Style](#s4.1.2-blocks-k-r-style).)
 
 
-### 4.3 One statement per line
+### 4.3. One statement per line
 
 Each statement is followed by a line-break.
 
 
-### 4.4 Column limit: 120
+### 4.4. Column limit: 120
 
 Projects should use a column limit of 120 characters.
 
@@ -296,7 +394,7 @@ Section 4.5, [Line-wrapping](#s4.5-line-wrapping).
     3.3 [Import statements](#s3.3-import-statements)).
 3.  Command lines in a comment that may be cut-and-pasted into a shell.
 
-### 4.5 Line-wrapping
+### 4.5. Line-wrapping
 
 **Terminology Note:** When code that might otherwise legally
 occupy a single line is divided into multiple lines, typically to avoid overflowing the column
@@ -309,7 +407,7 @@ every situation. Very often there are several valid ways to line-wrap the same p
 **Tip:** Extracting a method or local variable may solve the problem without the need to line-wrap.
 
 
-#### 4.5.1 Where to break
+#### 4.5.1. Where to break
 
 The prime directive of line-wrapping is: prefer to break at a
 **higher syntactic level**. Also:
@@ -330,7 +428,7 @@ The prime directive of line-wrapping is: prefer to break at a
 4.  A comma (`,`) stays attached to the token that
     precedes it.
 
-#### 4.5.2 Indent continuation lines at least +4 spaces
+#### 4.5.2. Indent continuation lines at least +4 spaces
 
 When line-wrapping, each line after the first (each _continuation line_) is indented
 at least +4 from the original line.
@@ -344,10 +442,10 @@ the discouraged practice of using a variable number of spaces to align certain t
 previous lines.
 
 
-### 4.6 Whitespace
+### 4.6. Whitespace
 
 
-#### 4.6.1 Vertical Whitespace
+#### 4.6.1. Vertical Whitespace
 
 A single blank line appears:
 
@@ -365,7 +463,7 @@ A single blank line appears:
 _Multiple_ consecutive blank lines are permitted, but never required (or encouraged).
 
 
-#### 4.6.2 Horizontal whitespace
+#### 4.6.2. Horizontal whitespace
 
 Beyond where required by the language or other style rules, and apart from literals, comments and
 Javadoc, a single ASCII space also appears in the following places **only**.
@@ -407,7 +505,7 @@ Javadoc, a single ASCII space also appears in the following places **only**.
 start or end of a line, only _interior_ space.
 
 
-#### 4.6.3 Horizontal alignment: never required
+#### 4.6.3. Horizontal alignment: never required
 
 **Terminology Note:** _Horizontal alignment_ is the
 practice of adding a variable number of additional spaces in your code with the goal of making
@@ -432,17 +530,17 @@ This can at worst result in pointless busywork, but at best it still corrupts ve
 information, slows down reviewers and exacerbates merge conflicts.
 
 
-### 4.7 Grouping parentheses: recommended
+### 4.7. Grouping parentheses: recommended
 
 Optional grouping parentheses are omitted only when author and reviewer agree that there is no
 reasonable chance the code will be misinterpreted without them, nor would they have made the code
 easier to read. It is _not_ reasonable to assume that every reader has the entire Java
 operator precedence table memorized.
 
-### 4.8 Specific constructs
+### 4.8. Specific constructs
 
 
-#### 4.8.1 Enum classes
+#### 4.8.1. Enum classes
 
 After each comma that follows an enum constant, a line-break is optional.
 
@@ -456,16 +554,16 @@ private enum Suit { CLUBS, HEARTS, SPADES, DIAMONDS }
 Since enum classes _are classes_, all other rules for formatting classes apply.
 
 
-#### 4.8.2 Variable declarations
+#### 4.8.2. Variable declarations
 
 
-##### 4.8.2.1 One variable per declaration
+##### 4.8.2.1. One variable per declaration
 
 Every variable declaration (field or local) declares only one variable: declarations such as
 `int a, b;` are not used.
 
 
-##### 4.8.2.2 Declared when needed, initialized as soon as possible
+##### 4.8.2.2. Declared when needed, initialized as soon as possible
 
 Local variables are **not** habitually declared at the start of their containing
 block or block-like construct. Instead, local variables are declared close to the point they are
@@ -473,10 +571,10 @@ first used (within reason), to minimize their scope. Local variable declarations
 initializers, or are initialized immediately after declaration.
 
 
-#### 4.8.3 Arrays
+#### 4.8.3. Arrays
 
 
-##### 4.8.3.1 Array initializers: can be "block-like"
+##### 4.8.3.1. Array initializers: can be "block-like"
 
 Any array initializer may _optionally_ be formatted as if it were a "block-like
 construct." For example, the following are all valid (**not** an exhaustive
@@ -493,21 +591,21 @@ new int[] {             3,
                           {0, 1, 2, 3}
 ````
 
-##### 4.8.3.2 No C-style array declarations
+##### 4.8.3.2. No C-style array declarations
 
 The square brackets form a part of the _type_, not the variable:
 `String[] args`, not
 `String args[]`.
 
 
-#### 4.8.4 Switch statements
+#### 4.8.4. Switch statements
 
 **Terminology Note:** Inside the braces of a
 _switch block_ are one or more _statement groups_. Each statement group consists of
 one or more _switch labels_ (either `case FOO:` or
 `default:`), followed by one or more statements.
 
-##### 4.8.4.1 Indentation
+##### 4.8.4.1. Indentation
 
 As with any other block, the contents of a switch block are indented +4.
 
@@ -516,7 +614,7 @@ if a block were being opened. The following switch label returns to the previous
 level, as if a block had been closed.
 
 
-##### 4.8.4.2 Fall-through: commented
+##### 4.8.4.2. Fall-through: commented
 
 Within a switch block, each statement group either terminates abruptly (with a
 `break`,
@@ -541,13 +639,13 @@ switch (input)
 }
 ````
 
-##### 4.8.4.3 The default case is present
+##### 4.8.4.3. The default case is present
 
 Each switch statement includes a `default` statement
 group, even if it contains no code.
 
 
-#### 4.8.5 Annotations
+#### 4.8.5. Annotations
 
 Annotations applying to a class, method or constructor appear immediately after the
 documentation block, and each annotation is listed on a line of its own (that is, one annotation
@@ -576,11 +674,10 @@ for example:
 There are no specific rules for formatting parameter and local variable annotations.
 
 
-#### 4.8.6 Comments
+#### 4.8.6. Comments
 
 
-
-##### 4.8.6.1 Block comment style
+##### 4.8.6.1. Block comment style
 
 Block comments are indented at the same level as the surrounding code. They may be in
 `/* ... */` style or
@@ -602,7 +699,7 @@ re-wrap the lines when necessary (paragraph-style). Most formatters don't re-wra
 `// ...` style comment blocks.
 
 
-#### 4.8.7 Modifiers
+#### 4.8.7. Modifiers
 
 Class and member modifiers, when present, appear in the order
 recommended by the Java Language Specification:
@@ -611,15 +708,15 @@ recommended by the Java Language Specification:
 public protected private abstract static final transient volatile synchronized native strictfp
 ````
 
-#### 4.8.8 Numeric Literals
+#### 4.8.8. Numeric Literals
 
 `long`-valued integer literals use an uppercase `L` suffix, never
 lowercase (to avoid confusion with the digit `1`). For example, `3000000000L`
 rather than `3000000000l`.
 
-## 5 Statements
+## 5. Statements
 
-### 5.1 Simple Statements
+### 5.1. Simple Statements
 
 Each line should contain at most one statement. Example:
 
@@ -632,7 +729,7 @@ count--;
 count++; count--;
 ````
 
-### 5.2 Compound Statements
+### 5.2. Compound Statements
 
 Compound statements are statements that contain lists of statements enclosed in braces:
 
@@ -645,7 +742,7 @@ Compound statements are statements that contain lists of statements enclosed in 
 * The enclosed statements should be indented one more level than the compound statement.
 * Braces are used around all statements, even single code-line statements, when they are part of a control structure, such as a if-else or for statement. This makes it easier to add statements without accidentally introducing bugs due to forgetting to add braces.
 
-### 5.2.1 return Statements
+### 5.2.1. return Statements
 
 A return statement with a value should not use parentheses unless they make the return value more obvious in some way. Example:
 
@@ -655,7 +752,7 @@ return products.size();
 return (size < 10 ? size : DEFAULT_SIZE);
 ````
 
-### 5.2.2 if-else Statements
+### 5.2.2. if-else Statements
 
 The if-else class of statements should have the following form:
 
@@ -679,7 +776,7 @@ return 1;
 **if** statements always use braces {}.
 Positive conditionals are easier to read than negative conditionals.
 
-### 5.2.3 for Statements
+### 5.2.3. for Statements
 
 A for statement should have the following form:
 
@@ -698,7 +795,7 @@ for (<initialization>; <condition>; <update>);
 
 When using the comma operator in the initialization or update clause of a **for** statement, avoid the complexity of using more than three variables. If needed, use separate statements before the **for** loop (for the initialization clause) or at the end of the loop (for the update clause).
 
-### 5.2.4 while Statements
+### 5.2.4. while Statements
 
 A **while** statement should have the following form:
 
@@ -715,7 +812,7 @@ An empty while statement should have the following form:
 while (<condition>);
 ````
 
-### 5.2.5 do-while Statements
+### 5.2.5. do-while Statements
 
 A **do-while** statement should have the following form:
 
@@ -727,7 +824,7 @@ do
 while (<condition>);
 ````
 
-### 5.2.6 switch Statements
+### 5.2.6. switch Statements
 
 A **switch** statement should have the following form:
 
@@ -751,7 +848,7 @@ switch (status)
 
 Every time a case falls through (doesn’t include a **break** statement), add a comment where the **break** statement would normally be. This is shown in the preceding code example with the /\* falls through \*/ comment. Every **switch** statement should include a **default** case. The **break** in the **default** case is redundant, but it prevents a fall-through error if later another case is added.
 
-### 5.2.7 try-catch Statements
+### 5.2.7. try-catch Statements
 
 A **try-catch** statement should have the following format:
 
@@ -784,10 +881,10 @@ finally
 ````
 
 
-## 6 Naming
+## 6. Naming
 
 
-### 6.1 Rules common to all identifiers
+### 6.1. Rules common to all identifiers
 
 Identifiers use only ASCII letters and digits, and in two cases noted below, underscores. Thus
 each valid identifier name is matched by the regular expression `\w+` .
@@ -798,10 +895,10 @@ suffixes, like those seen in the examples `name_`,
 `kName`, are **not** used.
 
 
-### 6.2 Rules by identifier type
+### 6.2. Rules by identifier type
 
 
-#### 6.2.1 Package names
+#### 6.2.1. Package names
 
 Package names are all lowercase, with consecutive words simply concatenated together (no
 underscores). For example, `com.example.deepspace`, not
@@ -809,7 +906,7 @@ underscores). For example, `com.example.deepspace`, not
 `com.example.deep_space`.
 
 
-#### 6.2.2 Class names
+#### 6.2.2. Class names
 
 Class names are written in [UpperCamelCase](#s5.3-camel-case).
 
@@ -828,7 +925,7 @@ with `Test`. For example,
 `HashIntegrationTest`.
 
 
-#### 6.2.3 Method names
+#### 6.2.3. Method names
 
 Method names are written in [lowerCamelCase](#s5.3-camel-case).
 
@@ -842,7 +939,7 @@ for example `testPop_emptyStack`. There is no One Correct
 Way to name test methods.
 
 
-#### 6.2.4 Constant names
+#### 6.2.4. Constant names
 
 Constant names use `CONSTANT_CASE`: all uppercase
 letters, with words separated by underscores. But what _is_ a constant, exactly?
@@ -872,7 +969,7 @@ static final String[] nonEmptyArray = {"these", "can", "change"};
 These names are typically nouns or noun phrases.
 
 
-#### 6.2.5 Non-constant field names
+#### 6.2.5. Non-constant field names
 
 Non-constant field names (static or otherwise) are written
 in [lowerCamelCase](#s5.3-camel-case).
@@ -889,7 +986,7 @@ Parameter names are written in [lowerCamelCase](#s5.3-camel-case).
 One-character parameter names should be avoided.
 
 
-#### 6.2.7 Local variable names
+#### 6.2.7. Local variable names
 
 Local variable names are written in [lowerCamelCase](#s5.3-camel-case), and can be
 abbreviated more liberally than other types of names.
@@ -900,7 +997,7 @@ Even when final and immutable, local variables are not considered to be constant
 be styled as constants.
 
 
-#### 6.2.8 Type variable names
+#### 6.2.8. Type variable names
 
 Each type variable is named in one of two styles:
 
@@ -913,7 +1010,7 @@ Each type variable is named in one of two styles:
     `RequestT`,
     `FooBarT`).
 
-### 6.3 Camel case: defined
+### 6.3. Camel case: defined
 
 Sometimes there is more than one reasonable way to convert an English phrase into camel case,
 such as when acronyms or unusual constructs like "IPv6" or "iOS" are present. To improve
@@ -947,11 +1044,436 @@ language: for example "nonempty" and "non-empty" are both correct, so the method
 `checkNonempty` and
 `checkNonEmpty` are likewise both correct.
 
+## 7. Unit-Tests
 
-## 7 Programming Practices
+Tests are as important to the health of a project as the production code is. Perhaps they are even more important, because tests preserve and enhance the ﬂexibility, maintainability, and reusability of the production code. So keep your tests constantly clean.
+
+### 7.1. Keeping Tests Clean
+
+* Unit-Test should not be maintained to the same standards of quality as their production code.
+* Having dirty tests is better than having no tests.
+* Test code is just as important as production code
+* Use the SetUp / TearDown methods only for infrastructure that your unit-test needs. Do not use it for anything that is under test.
+* Clean Test: Builds up the test data (Given). The second part operates on that test data (When). Checks that the operation yielded the expected results. (Then)
+* Single Scenario per Test
+
+````
+public void testGetPageHierarchyAsXml() throws Exception 
+{
+  givenPages("PageOne", "PageOne.ChildOne", "PageTwo");
+  whenRequestIsIssued("root", "type:pages");
+  thenResponseShouldBeXML();
+}
+
+public void testGetPageHierarchyHasRightTags() throws Exception 
+{
+  givenPages("PageOne", "PageOne.ChildOne", "PageTwo");
+  whenRequestIsIssued("root", "type:pages");
+  thenResponseShouldContain("PageOne", "PageTwo", "ChildOne");
+}
+````
+
+### 7.2. F.I.R.S.T
+
+**F**ast: Unit-tests have to be fast in order to be executed often. Fast means much smaller than seconds.
+
+**I**ndependent: Clear when the failure happened. No dependency between tests (random order).
+
+**R**epeatable: No assumed initial state, nothing left behind, no dependency on external services that might be unavailable (databases, file system …)
+
+**S**elf-validating: No manual test interpretation or intervention. Red or green!
+
+**T**imely: Tests are written at the right time. TDD (Test Driven Development): Red – green – refactor, test a little – code a little. DDT (Defect Driven Testing): Write a unit test that reproduces the defect – Fix code – Test will succeed – Defect will never return. POUTing (Plain Old Unit Testing, aka. Test After): Write unit tests to check existing code, you cannot and probably do not want to test drive everything.
+
+### 7.3. Unit-Test Smells
+
+**Test Not Testing Anything**: Passing test that at first sight appears valid but does not test the testee.
+
+**Checking Internals**: A test that accesses internals (private/protected members) of the testee directly (Reflection). This is a refactoring killer.
+
+**Test Only Running on Developer’s Machine**: A test that is dependent on the development environment and fails elsewhere. Use continuous integration to catch them as soon as possible.
+
+**Test Checking More than Necessary**: A test that checks more than it is dedicated to. The test fails whenever something changes that it checks unnecessarily. Especially probable when fakes are involved or checking for item order in unordered collections.
+
+**Chatty Test**: A test that fills the console with text – probably used once to manually check for something.
+
+**Test Swallowing Exceptions**: A test that catches exceptions and lets the test pass.
+
+**Test Not Belonging in Host Test Fixture**: A test that tests a completely different testee than all other tests in the fixture.
+
+**Hidden Test Functionality**: Test functionality hidden in either the SetUp method, base class or helper class. The test should be clear by looking at the test method only – no initialisation or asserts somewhere else.
+
+**Conditional Test Logic**: Tests should not have any conditional test logic because it’s hard to read.
+
+**Test Logic in Production Code**: Tests depend on special logic in production code.
+
+**Erratic Test**: Sometimes passes, sometimes fails due to left overs or environment.
+
+## 8. Design & Best Practices
+
+For some good Object-oriented code design guidelines, see the Gang of Four book or the ObjectMentor website: http://www.objectmentor.com/
+
+### 8.1. Encapsulations
+
+It’s important to keep data and behavior as encapsulated as possible to reduce dependencies and therefore increase the maintainability of the system. These following guidelines should be considered in your design to increase encapsulation:
+
+* Aim to make all of your instance variables private and provide accessor methods only where necessary.
+* Make accessor methods for instance variables “final”.
+* Only use protected instance variables or protected constructors in well-defined packages
+* Use packages to manage complexity
+* If a class is only used within a package, make it package local (default visibility) to reduce system-level coupling.
+* Avoid using inner classes, an inner class only makes sense, and should only be used, if it is going to associate and be visible only to the class that contains it.
+
+### 8.2. Interfaces and Inheritances
+
+A well-designed system is set with assignment well-defined responsibilities and interfaces. The interface defines the “contract” that a class should meet and it’s essential to the development of large systems. The interface concept can be implemented in different ways, like abstract classes or actual Java interfaces. Most people tend to abuse of the use of inheritance when what they really needed was interfaces. Creating deep class hierarchies generate large dependencies and therefore less maintainability. Below some guidelines:
+
+* Keep inheritance hierarchies small
+* Prefer delegation or using utility classes over inheritance for reuse
+* Program to an interface, not to an implementation
+* If a class is designed to be inherited, but it does not make sense to have an instance of the class, it should be defined as abstract
+
+### 8.3. Structure over Convention
+
+Enforce design decisions with structure over convention. Naming conventions are good, but there are inferior to structures that force compliance.
+
+### 8.4. Exceptions and Error Handlings
+
+The general philosophy is to use exceptions only for errors: logic and programming errors, configuration errors, corrupted data, resource exhaustion, etc. The general rule is that the systems in normal condition and in the absence of overload or hardware failure should not raise any exceptions.  Keep in mind that throwing an exception is a very expensive operation in Java. Unwinding the stack and forming String objects requires many CPU cycles. Never program by exceptions. If you can anticipate a situation, include it in your code rather than using an exception to signal it.
+
+Avoid putting more than one **try/catch** block in a method. In general, all methods should follow this form:
+
+````
+public void doSomething() throws SomeException 
+{
+  <initializations>
+  try 
+  {
+    <code that throws exceptions>
+  } 
+  catch (SomeException e)
+  {
+    throw e;
+  } 
+  catch (SomeOtherException e)
+  {
+    <create a new SomeException se from e>
+    throw se;
+  }
+  catch (Exception e) 
+  {
+    <create a new SomeExcention se from e>
+    throw se;
+  }
+  finally
+  {
+    <cleanup>
+  }
+}
+````
+
+If you find that you need to nest try/catch blocks, consider encapsulating the nested block in a new method that handles the special exception.
+
+**Exception Factory**
+
+Every Application should have an exception handling framework. You should use a message ID to create exceptions within the code. Never use the new operator to create an exception.
+
+Here is the procedure you should follow when creating an exception
+
+* Decide on an appropriate message and exception class. You may subclass Exception or use it directly.
+* Check the existing exception hierarchy and message catalog to see if an appropriate exception/message pair already exists.
+* If an appropriate exception doesn’t already exist, check out the message catalog and add a new message/exception class pair. You may choose an appropriate string identifier for your message that is descriptive. If you need to pass additional static parameters to your exception constructor, put them in the message catalog as well.
+* If necessary, write the new exception class.
+* In your code, use an ExceptionFactory to generate the new exception. You may include an exception to be nested and any special purpose properties when creating this exception.
+
+**Additional Exception Guidelines**
+
+* Never, ever, consume an exception without taking an action. This form is unacceptable:
+
+````
+try 
+{
+  <code that throws exceptions>
+} catch (SomeException e) 
+{
+  // do nothing
+}
+````
+
+* Use exceptions to handle logic and programming errors, configuration errors, corrupted data, and resource exhaustion.
+
+````
+// DON'T 
+if (doSomething()) 
+{ 
+  if (doSomethingElse()) 
+  { 
+    if (doSomethingElseAgain()) 
+    { 
+      // ... 
+    } 
+    else 
+    {
+      // handle doSomethingElseAgain failed 
+    }
+  } 
+  else 
+  { 
+    // handle doSomethingElse failed 
+  } 
+} 
+else 
+{ 
+  // handle doSomething failed
+}
+````
+
+````
+// D0
+try 
+{
+  doSomething();
+  doSomethingElse();
+  doSomethingElseAgain();
+} 
+catch (SomethingException e) 
+{
+  // handle doSomething failed
+} 
+catch (SomethingElseException e) 
+{
+  // handle doSomethingElse failed
+} 
+catch (SomethingElseAgainException e) 
+{
+  // handle doSomethingElseAgain failed
+}
+````
+
+* Report exceptions by the appropriate logging mechanism as early as possible, including at the point of raise.
+* Minimize the number of exceptions exported from a given abstraction by categorizing them and using a constant (typesafe) to represent the condition
+* Do not use exceptions for frequent, anticipated events.
+* Do not use exceptions to implement control structures.
+* Make sure status codes have an appropriate value.
+* Perform safety checks locally; do not expect your client to do so.
+* Catch as many exceptions as possible explicitly – avoid catch(Exception) as the only exception handler
+* Separate fatal and non-fatal exception hierarchies
+* Never let exceptions propagate out a finally block
+* Never declare throws Exception, always use a subclass of the base Application Exception.
+
+### 8.5. Constant interface pattern
+
+Avoid declaring constant variables in an interface
+
+````
+public interface UserService 
+{
+  String SYSTEM_USERNAME = "system";
+  int AWAITING_QUEUE_SIZE = 20;
+
+  int AWAITING_APPROVAL_STATUS = 1;
+  int ACTIVE_SIATUS = 2;
+  int LOCKED_SIATUS = 3;
+
+  void approveUser(String username);
+
+  int getUserStatus();
+}
+````
+
+An **enum** may be a better approach. Or you could simply put the constants as public static fields in a class that cannot be instantiated
+
+````
+public final class UserConstants 
+{
+  public static final String SYSTEM_USERNAME = "system";
+  public static final int AWAITING_QUEUE_SIZE = 20;
+
+  private UserConstants() 
+  {
+  }
+}
+
+public enum UserStatus 
+{
+  AWAITING_APPROVAL,
+  ACTIVE,
+  LOCKED
+}
+````
+
+### 8.6. Concurrency
+
+What follows is a series of principles and techniques for defending your systems from the problems of concurrent code:
+
+* Keep your concurrency-related code separate from other code.
+* Limit the scope of data. Take data encapsulation to heart; severely limit the access of any data that may be shared.
+* Use Copies of Data. A good way to avoid shared data is to avoid sharing the data in the ﬁrst place. In some situations it is possible to copy objects and treat them as read-only. In other cases it might be possible to copy objects, collect results from multiple threads in these copies and then merge the results in a single thread.
+* Threads should be as independent as possible. Attempt to partition data into independent subsets than can be operated on by independent threads, possibly in different processors.
+* Review the classes available to you. In the case of Java 5, become familiar with **java.util.concurrent**, **java.util.concurrent.atomic**, **java.util.concurrent.locks**.
+* Keep your synchronized sections as small as possible.
+* Write tests that have the potential to expose problems and then run them frequently, with different programmatic conﬁgurations and system conﬁgurations and load. If tests ever fail, track down the failure. Don’t ignore a failure just because the tests pass on a subsequent run.
 
 
-### 7.1 @Override: always used
+## 9. Programming Practices
+
+Pay special attention to the most common style errors...
+
+* classes too long
+* methods too long
+* little or no javadoc comments
+* swallow exceptions
+* multiple *return* statements
+* Overuse of arrays in place of collections
+* too much or no whitespace
+
+
+### 9.1. Avoid multiple *return* statements
+
+Multiple *return* statements are hard and time consuming to debug.
+
+**Correct:**
+
+````
+ public class StringUtils 
+ {
+   public static boolean isEmpty(String string) 
+   {
+     return string == null || "".equals(string.trim());
+   }
+ }
+
+or
+
+public class StringUtils 
+{
+  public static boolean isEmpty(String string) 
+  {
+    boolean empty = false;
+    if (string == null) 
+    {
+      empty = true;
+    } 
+      else if ("".equals(string.trim())) 
+    {
+      empty = true;
+    }
+      return empty;
+    }
+ }
+````
+
+**Incorrect:**
+
+````
+ public class StringUtils 
+ {
+    public static boolean isEmpty(String string) 
+    {
+    if (string == null) 
+    {
+      return true;
+    } 
+    else if ("".equals(string.trim())) 
+    {
+      return true;
+    }
+    return false;
+    }
+ }
+````
+
+### 9.2. Boolean comparisons
+
+Mirroring the natural language "if the current state is not active" rather than "if active is not the current state"
+
+**Correct:**
+
+````
+	!active
+````
+
+**Incorrect:**
+
+````
+	active == false
+````
+
+### 9.3. *for* loops Vs *for-each* loops
+
+When iterating over iterable elements where the current index in the iteration is not important for-each loops are preferred. **Not compatible for JDK 1.4 **
+
+**Correct:**
+
+````
+for (String name: names) 
+{
+  doStuff(name);
+}
+````
+
+**Incorrect:**
+
+````
+for (int i = 0; i < names.length; i++) 
+{
+  doStuff(names[i]);
+}	
+````
+
+### 9.4. *String* concatenation
+
+Avoid the use of + or += to concatenate strings. Use java standards designed for that purposes such as String.format, StringBuilder, etc.  If you are doing thread safe operation then use StringBuilder instead of StringBuffer.
+
+**Correct:**
+
+````
+log.debug(String.format("found %s items", amount));
+````
+
+**Incorrect:**
+
+````
+log.debug("found " + amount + " items");	
+````
+
+### 9.5. Collections
+
+Use the right collections for the right task.
+
+**Duplicates**
+
+* Allows duplicates: [List](http://docs.oracle.com/javase/8/docs/api/java/util/List.html)
+* Does Not Allow Duplicates: [Set](http://docs.oracle.com/javase/8/docs/api/java/util/Set.html), [Map](http://docs.oracle.com/javase/8/docs/api/java/util/Map.html)
+
+**Implementations Iteration Order**
+
+* [HashSet](http://docs.oracle.com/javase/8/docs/api/java/util/HashSet.html) - undefined
+* [ConcurrentHashMap](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ConcurrentHashMap.html) - undefined
+* [HashMap](http://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html) - undefined
+* [LinkedHashSet](http://docs.oracle.com/javase/8/docs/api/java/util/LinkedHashSet.html) - insertion order
+* [LinkedHashMap](http://docs.oracle.com/javase/8/docs/api/java/util/LinkedHashMap.html) - insertion order of keys
+* [ArrayList](http://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html) - insertion order
+* [LinkedList](http://docs.oracle.com/javase/8/docs/api/java/util/LinkedList.html) - insertion order
+* [TreeSet](http://docs.oracle.com/javase/8/docs/api/java/util/TreeSet.html) - ascending order (Comparable / Comparator)
+
+### 9.6. Raw types
+
+Avoid using raw types when using classes that support generics.
+
+**Correct:**
+
+````
+List<String> people = Arrays.asList("you", "me");
+````
+
+**Incorrect:**
+
+````
+List people = Arrays.asList("you", "me");
+````
+
+### 9.7. @Override: always used
 
 A method is marked with the `@Override` annotation
 whenever it is legal.  This includes a class method overriding a superclass method, a class method
@@ -962,7 +1484,7 @@ method.
 `@Deprecated`.
 
 
-### 7.2 Caught exceptions: not ignored
+### 9.8. Caught exceptions: not ignored
 
 Except as noted below, it is very rarely correct to do nothing in response to a caught
 exception. (Typical responses are to log it, or if it is considered "impossible", rethrow it as an
@@ -998,7 +1520,7 @@ catch (NoSuchElementException expected)
 }
 ````
 
-### 7.3 Static members: qualified using class
+### 9.9. Static members: qualified using class
 
 When a reference to a static class member must be qualified, it is qualified with that class's
 name, not with a reference or expression of that class's type.
@@ -1011,7 +1533,7 @@ aFoo.aStaticMethod(); // bad
 somethingThatYieldsAFoo().aStaticMethod(); // very bad
 ````
 
-### 7.4 Finalizers: not used
+### 9.10. Finalizers: not used
 
 It is **extremely rare** to override `Object.finalize`.
 
@@ -1019,7 +1541,7 @@ It is **extremely rare** to override `Object.finalize`.
 [_Effective Java_](http://books.google.com/books?isbn=8131726592)
 Item 7, "Avoid Finalizers," very carefully, and _then_ don't do it.
 
-### 7.5 Final private fields, parameters, and local variables
+### 9.11. Final private fields, parameters, and local variables
 
 Private fields, parameters, and local variables that are initialized only once,
 and not changed after initialization, should be marked final.
@@ -1027,13 +1549,13 @@ and not changed after initialization, should be marked final.
 Parameters should be marked final whenever possible. It is better to make a
 copy of a parameter before modifying it.
 
-## 8 Javadoc
+## 10. Javadoc
 
 
-### 8.1 Formatting
+### 10.1. Formatting
 
 
-#### 8.1.1 General form
+#### 10.1.1. General form
 
 The _basic_ formatting of Javadoc blocks is as seen in this example:
 ````
@@ -1054,7 +1576,7 @@ at-clauses present, and the entirety of the Javadoc block (including comment mar
 single line.
 
 
-#### 8.1.2 Paragraphs
+#### 10.1.2. Paragraphs
 
 One blank line—that is, a line containing only the aligned leading asterisk
 (`*`)—appears between paragraphs, and before the group of "at-clauses" if
@@ -1062,7 +1584,7 @@ present. Each paragraph but the first has `<p>` immediately before the first wor
 with no space after.
 
 
-#### 8.1.3 At-clauses
+#### 10.1.3. At-clauses
 
 Any of the standard "at-clauses" that are used appear in the order `@param`,
 `@return`, `@throws`, `@deprecated`, and these four types never
@@ -1071,7 +1593,7 @@ are indented four (or more) spaces from the position of the `@`.
 
 
 
-### 8.2 The summary fragment
+### 10.2. The summary fragment
 
 The Javadoc for each class and member begins with a brief **summary fragment**. This
 fragment is very important: it is the only part of the text that appears in certain contexts such as
@@ -1088,7 +1610,7 @@ punctuated as if it were a complete sentence.
 changed to `/** Returns the customer ID. */`.
 
 
-### 8.3 Where Javadoc is used
+### 10.3. Where Javadoc is used
 
 At the _minimum_, Javadoc is present for every
 `public` class, and every
@@ -1101,7 +1623,7 @@ comment would be used to define the overall purpose or behavior of a class, meth
 comment is written as Javadoc instead. (It's more uniform, and more tool-friendly.)
 
 
-#### 8.3.1 Exception: self-explanatory methods
+#### 10.3.1. Exception: self-explanatory methods
 
 Javadoc is optional for "simple, obvious" methods like
 `getFoo`, in cases where there _really and truly_ is
@@ -1115,6 +1637,6 @@ named `getCanonicalName`, don't omit its documentation
 what the term "canonical name" means!
 
 
-#### 8.3.2 Exception: overrides;
+#### 10.3.2. Exception: overrides
 
 Javadoc is not always present on a method that overrides a supertype method.

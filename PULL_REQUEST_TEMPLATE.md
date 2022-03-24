@@ -6,20 +6,12 @@
 
 Please include a general summary of the change. 
 
-## Related Issue
+## Related Issue [optional]
 
-<!--- This project only accepts pull requests related to open issues -->
-<!--- If suggesting a new feature or change, please discuss it in an issue first -->
 <!--- If fixing a bug, there should be an issue describing it with steps to reproduce -->
 <!--- Please link to the issue here: -->
 
 Please include which issue is fixed 
-
-## Attachments
-
-<!--- Please add all the needed attachments -->
-
-Please include the relevant attachments.
 
 ## Motivation and Context
 
@@ -49,6 +41,13 @@ Please describe the tests that you ran to verify your changes. Please also note 
 - [ ] New release version 
 - [ ] Breaking change (fix or feature that would cause existing functionality to change)
 
+## Attachments
+
+<!--- Please add all the needed attachments -->
+
+Please include the relevant attachments.
+
+
 ## Checklist
 
 <!--- Go over all the following points, and put an `x` in all the boxes that apply. -->
@@ -67,4 +66,4 @@ Please describe the tests that you ran to verify your changes. Please also note 
 - [ ] New public packages, classes, and methods are **documented**. (Strongly consider documenting private classes and methods)
 - [ ] A new branch needs to be created from master to evolve previous versions
 - [ ] Increase version in pom.xml following [Semantic Versioning](https://semver.org/)
-- [ ] Squash merge as a default merge strategy in Bitbucket
+- [ ] Squash merge as a recommended merge strategy in Bitbucket
