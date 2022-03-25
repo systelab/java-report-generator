@@ -49,7 +49,7 @@ This section guides you through submitting a bug report for a Java library. Foll
 
 #### How Do I Submit A (Good) Bug Report?
 
-Bugs are tracked as [GitHub issues](https://guides.github.com/features/issues/). Create an issue on the repository and provide the following information by filling in [the template](https://github.com/systelab/systelab-components/blob/master/.github/ISSUE_TEMPLATE/bug_report.md).
+Bugs are tracked as [GitHub issues](https://guides.github.com/features/issues/). Create an issue on the repository and provide the following information by filling in [the template](https://github.com/systelab/java-report-generator/blob/master/.github/ISSUE_TEMPLATE/bug_report.md).
 
 Explain the problem and include additional details to help maintainers reproduce the problem:
 
@@ -67,7 +67,7 @@ This section guides you through submitting an enhancement suggestion, including 
 
 #### How Do I Submit A (Good) Enhancement Suggestion?
 
-Enhancement suggestions are tracked as [GitHub issues](https://guides.github.com/features/issues/). Create an enhancement on the repository and provide the following information by filling in [the template](https://github.com/systelab/systelab-components/blob/master/.github/ISSUE_TEMPLATE/feature_request.md).
+Enhancement suggestions are tracked as [GitHub issues](https://guides.github.com/features/issues/). Create an enhancement on the repository and provide the following information by filling in [the template](https://github.com/systelab/java-report-generator/blob/master/.github/ISSUE_TEMPLATE/feature_request.md).
 
 * **Use a clear and descriptive title** for the issue to identify the suggestion.
 * **Provide a step-by-step description of the suggested enhancement** in as many details as possible.
@@ -92,5 +92,5 @@ Please follow these steps to have your contribution considered by the maintainer
 4. After you submit your pull request, verify that all [status checks](https://help.github.com/articles/about-status-checks/) are passing <details><summary>What if the status checks are failing?</summary>If a status check is failing, and you believe that the failure is unrelated to your change, please leave a comment on the pull request explaining why you believe the failure is unrelated. A maintainer will re-run the status check for you. If we conclude that the failure was a false positive, then we will open an issue to track that problem with our status check suite.</details>
 5. While the prerequisites above must be satisfied prior to having your pull request reviewed, the reviewer(s) may ask you to complete additional design work, tests, or other changes before your pull request can be ultimately accepted.
 7. Before merging the pull request, the master branch needs to be merged into current. Then, the version in the pom.xml needs to be increased.
-6. Once it's merged, the author must transition it to the status "Ready to test" in the [project](https://github.com/systelab/systelab-components/projects)
+6. Once it's merged, the author must transition it to the status "Ready to test" in the [project](https://github.com/systelab/java-report-generator/projects)
 7. Based upon need, the library will be published into the npm repository. This process must be done by an authorized user.

@@ -6,12 +6,12 @@
 
 Please include a general summary of the change. 
 
-## Related Issue [optional]
+## Related Feature/Issue JIRA tickets [optional]
 
 <!--- If fixing a bug, there should be an issue describing it with steps to reproduce -->
 <!--- Please link to the issue here: -->
 
-Please include which issue is fixed 
+Please, just in case more than one feature/issue is included in the pull request, include all the JIRA tickets kind of feature/issue. 
 
 ## Motivation and Context
 

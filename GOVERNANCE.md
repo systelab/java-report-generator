@@ -37,7 +37,7 @@ authors of the change.
 If a collaborator opposes a proposed change, then the change cannot land. Often, discussions or further changes
 result in collaborators removing their opposition.
 
-Please see the detailed instructions on [Contribution](https://github.com/systelab/systelab-components/blob/master/CONTRIBUTING.md)
+Please see the detailed instructions on [Contribution](https://github.com/systelab/java-report-generator/blob/master/CONTRIBUTING.md)
 
 ### Collaborator activities
 

@@ -1,3 +1,6 @@
+# Coding Guidelines
+
+<!-- TOC -->
 
 - [1. Introduction](#1-introduction)
     - [1.1. Terminology notes](#11-terminology-notes)
@@ -107,6 +110,8 @@
     - [10.3. Where Javadoc is used](#103-where-javadoc-is-used)
         - [10.3.1. Exception: self-explanatory methods](#1031-exception-self-explanatory-methods)
         - [10.3.2. Exception: overrides](#1032-exception-overrides)
+
+<!-- /TOC -->
 
  
 ## 1. Introduction
