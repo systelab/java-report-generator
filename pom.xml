@@ -11,7 +11,7 @@
 
     <groupId>com.systelab</groupId>
     <artifactId>java-report-generator</artifactId>
-    <version>1.8.0</version>
+    <version>1.8.2</version>
     <packaging>jar</packaging>
     <name>java-report-generator</name>
     <url>https://github.com/systelab/java-report-generator</url>
