@@ -13,10 +13,8 @@ public class FormReportService {
 
     public File build(FormReportConfiguration formReportConfiguration, FormReportData formReportData, PageFormat pageFormat) throws ReportException {
         try {
-            String filePath = formReportConfiguration.getOutputFilePath();
             PdfFormReportService pdfFormReportService = new PdfFormReportService();
-            pdfFormReportService.export(filePath, formReportConfiguration, formReportData, pageFormat);
-            return new File(filePath);
+            return pdfFormReportService.export(formReportConfiguration, formReportData, pageFormat);
         } catch (JRException ex) {
             throw new ReportException(ex);
         }
