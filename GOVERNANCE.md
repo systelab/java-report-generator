@@ -74,11 +74,11 @@ The TSC has final authority over this project, including:
 The current list of TSC members for this library is:
 
 - Olga Puig @olgapuig (Meeting Chair)
+- Óscar Galcerán @oGalceran1 (Meeting Chair)
+- Joaquim Noto @QuimNotoTrilla (Meeting Chair)
 - Alfons Serra @alfonsserra
 - Carles Viñola. @vinyulis
 - Daniel Martinez. @dmartinezcapilla
-- Josep Vila. @josepvilabadillo
-- Aritz Peñalver. @apenalver2
 - Joaquim Vila. @joaquimvila
 
 ### TSC meetings
