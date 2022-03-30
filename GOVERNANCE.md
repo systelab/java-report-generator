@@ -29,7 +29,7 @@ The mechanism to propose such an implementation change is a GitHub pull request.
 
 Collaborators review and merge (_land_) pull requests.
 
-Three collaborators must approve a pull request before the pull request can land. 
+Two collaborators must approve a pull request before the pull request can land. 
 Approving a pull request indicates that the collaborator accepts
 responsibility for the change. Approval must be from collaborators who are not
 authors of the change.
@@ -77,9 +77,9 @@ The current list of TSC members for this library is:
 - Óscar Galcerán @oGalceran1 (Meeting Chair)
 - Joaquim Noto @QuimNotoTrilla (Meeting Chair)
 - Alfons Serra @alfonsserra
-- Carles Viñola. @vinyulis
-- Daniel Martinez. @dmartinezcapilla
-- Joaquim Vila. @joaquimvila
+- Carles Viñola @vinyulis
+- Daniel Martinez @dmartinezcapilla
+- Joaquim Vila @joaquimvila
 
 ### TSC meetings
 

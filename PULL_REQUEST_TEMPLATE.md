@@ -58,9 +58,8 @@ Please include the relevant attachments.
 - [ ] I have performed a self-review of my own code
 - [ ] I have commented my code, particularly in hard-to-understand areas
 - [ ] I have made corresponding changes to the documentation
-- [ ] There are **unit tests** for new/changed code (or a good explanation why this was not possible) and all of them passed
-- [ ] I have added tests to cover my changes (in REST API, at least 1 test for each endpoint with the same coverage as the master branch)
-- [ ] All **CI builders** and all the agreed to solve **SONAR Qube issues** have indicated success (Give them the needed time to notice the pull request)
+- [ ] There are **component tests** for new/changed code (or a good explanation why this was not possible) and all of them passed. I have also added tests to cover my changes
+- [ ] All **CI builders** have indicated success (Give them the needed time to notice the pull request)
 - [ ] The **Pull request title** has the type of change ended with a slash (bugfix/feature/...), Jira issue numbers separated by spaces (if any), a space, and then a short, but descriptive summary
 - [ ] **Commit messages** are well formed: [A note about Git commit messages](http://www.tpope.net/node/106)
 - [ ] New public packages, classes, and methods are **documented**. (Strongly consider documenting private classes and methods)
