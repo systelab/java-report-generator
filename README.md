@@ -1,7 +1,7 @@
 
 # Report Generator library
 
-This is a Java libraries with some utilities ....
+This is a Java libraries with some utilities to generate two kind of reports: grid ones and form ones.
 
 ## Getting Started
 
@@ -79,22 +79,22 @@ dependencies {
 Step 1. Add the JitPack repository to your build file
 
 ```
-	<repositories>
-		<repository>
-		    <id>jitpack.io</id>
-		    <url>https://jitpack.io</url>
-		</repository>
-	</repositories>
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
 ```
 
 Step 2. Add the dependency
 
 ```
-	<dependency>
-	    <groupId>com.github.systelab</groupId>
-	    <artifactId>java-report-generator</artifactId>
-	    <version>v1.0.2</version>
-	</dependency>
+<dependency>
+    <groupId>com.github.systelab</groupId>
+    <artifactId>java-report-generator</artifactId>
+    <version>v1.0.2</version>
+</dependency>
 ```
 
 ## API
@@ -106,9 +106,9 @@ In order to generate a grid report use the method build in GridReportService.
 You will need to specify the configuration, the data, the output format (pdf or excel) and for pdf the page size.
 
 ```java
-        GridReportService gridReportService = new GridReportService();
-        GeneralConfiguration.setDefaultNullString("-");
-        File file = gridReportService.build(configuration, dataSource, ReportFormat.PDF, PageFormat.A4);
+GridReportService gridReportService = new GridReportService();
+GeneralConfiguration.setDefaultNullString("-");
+File file = gridReportService.build(configuration, dataSource, ReportFormat.PDF, PageFormat.A4);
 ```
 
 Configuration allows to specify the name of the file to generate, the report header, the footer and the columns to be present.
@@ -122,10 +122,11 @@ Use the builder method in GridReportConfiguration to generate your Configuration
 Data is provided through a class implementing the interface GridPageDataSource, in order to get the data in bursts to minimize memory utilization.
 
 ```java
-public interface GridPageDataSource {
-    void moveFirst();
-    boolean nextPage();
-    List<GridReportRow> getCurrentPageRows();
+public interface GridPageDataSource 
+{
+  void moveFirst();
+  boolean nextPage();
+  List<GridReportRow> getCurrentPageRows();
 }
 ```
 
@@ -136,8 +137,8 @@ In order to generate a form report use the method build in FormReportService.
 You will need to specify the configuration, the data and the page size (pdf will be generated).
 
 ```java
-        FormReportService formReportService = new FormReportService();
-        File file = formReportService.build(configuration, data, PageFormat.A4);
+FormReportService formReportService = new FormReportService();
+File file = formReportService.build(configuration, data, PageFormat.A4);
 ```
 
 Configuration allows to specify the name of the file to generate, the report header and the footer.
