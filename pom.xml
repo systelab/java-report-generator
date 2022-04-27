@@ -55,10 +55,14 @@
     </properties>
 
     <dependencies>
-
         <dependency>
             <groupId>net.sf.jasperreports</groupId>
             <artifactId>jasperreports</artifactId>
+            <version>${jasperrport.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports-fonts</artifactId>
             <version>${jasperrport.version}</version>
         </dependency>
         <dependency>
