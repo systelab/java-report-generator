@@ -18,6 +18,8 @@ public class JasperDesignFactory {
     private static final String STYLE_NAME = "default";
     private static final String STYLE_ENCODING = "UTF-8";
     private static final Float STYLE_FONT_SIZE = 7f;
+    private static final String STYLE_FONTNAME_DEFAULT = "DejaVu Sans";
+    private static final String STYLE_PDFFONTNAME = "Helvetica";
 
     public JasperDesign build(String name, PageFormat pageFormat) {
         if (isNull(pageFormat)) {
@@ -52,6 +54,8 @@ public class JasperDesignFactory {
         JRDesignStyle defaultStyle = new JRDesignStyle();
         defaultStyle.setDefault(true);
         defaultStyle.setName(STYLE_NAME);
+        defaultStyle.setFontName(STYLE_FONTNAME_DEFAULT);
+        defaultStyle.setPdfFontName(STYLE_PDFFONTNAME);
         defaultStyle.setFontSize(STYLE_FONT_SIZE);
         defaultStyle.setPdfEncoding(STYLE_ENCODING);
         defaultStyle.setHorizontalTextAlign(HorizontalTextAlignEnum.CENTER);

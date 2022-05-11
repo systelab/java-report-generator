@@ -16,10 +16,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GridReportTest {
+class GridReportTest {
     public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
-    private static final String COLUMN_PREFIX_NAME = "col";
-    private static final String COLUMN_PREFIX_TRANSLATION = "column ";
+    private static final String COLUMN_PREFIX_NAME = "Cól";
+    private static final String COLUMN_PREFIX_TRANSLATION = "cólumn ";
     private static final String COORDINATES_SEPARATOR = ".";
     private static final String GOLDEN_SUFFIX = "_golden";
     private static final String GOLDEN_PATH = "src/test/resources/golden/";
@@ -43,7 +43,7 @@ public class GridReportTest {
     }
 
     @Test
-    public void generateGridPdfReport() throws IOException, ReportException {
+    void generateGridPdfReport() throws IOException, ReportException {
         String fileName = "grid_report";
 
         GridReportService gridReportService = new GridReportService();
@@ -59,7 +59,7 @@ public class GridReportTest {
     }
 
     @Test
-    public void generateGridPdfReportModifyDefault() throws IOException, ReportException {
+    void generateGridPdfReportModifyDefault() throws IOException, ReportException {
         String fileName = "grid_report_null_values";
         GridReportService gridReportService = new GridReportService();
         GeneralConfiguration.setDefaultNullString("Nop");
@@ -72,7 +72,7 @@ public class GridReportTest {
     }
 
     @Test
-    public void generateGridXlsxReport() throws IOException, ReportException {
+    void generateGridXlsxReport() throws IOException, ReportException {
         String fileName = "grid_report";
 
         GridReportService gridReportService = new GridReportService();
@@ -108,7 +108,7 @@ public class GridReportTest {
                 .title("Grid report")
                 .logoPath("src/main/resources/AF_WERFEN_BLUE_POS_RGB.png")
                 .field1(GridReportField.of("Lab name", "Name"))
-                .field2(GridReportField.of("Second", "Another"))
+                .field2(GridReportField.of("Second", "Número"))
                 .field3(GridReportField.of("Third", "Another one"))
                 .field4(GridReportField.of("Fourth", "Last one"))
                 .build();
