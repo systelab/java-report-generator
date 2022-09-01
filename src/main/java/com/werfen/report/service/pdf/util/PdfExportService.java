@@ -8,6 +8,7 @@ import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 import net.sf.jasperreports.export.SimplePdfReportConfiguration;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 public class PdfExportService {
@@ -21,6 +22,19 @@ public class PdfExportService {
 
         exporter.exportReport();
         return new File(filePath);
+    }
+
+    public ByteArrayOutputStream exportToStream(JasperPrint jasperPrint) throws JRException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        SimpleOutputStreamExporterOutput simpleOutputStreamExporterOutput = new SimpleOutputStreamExporterOutput(outputStream);
+        JRPdfExporter exporter = new JRPdfExporter();
+        exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+        exporter.setExporterOutput(simpleOutputStreamExporterOutput);
+        exporter.setConfiguration(getPdfReportConfiguration());
+        exporter.setConfiguration(getPdfExporterConfiguration());
+
+        exporter.exportReport();
+        return outputStream;
     }
 
     private SimplePdfReportConfiguration getPdfReportConfiguration() {

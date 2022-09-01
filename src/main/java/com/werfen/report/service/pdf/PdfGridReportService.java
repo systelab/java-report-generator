@@ -14,22 +14,29 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.design.JasperDesign;
 
+import java.io.ByteArrayOutputStream;
+
 public class PdfGridReportService {
 
     public void export(String filePath, GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource, PageFormat pageFormat) throws JRException {
+        JasperPrint jasperPrint = generateJasperPrint(gridReportConfiguration, gridPageDataSource, pageFormat);
+
+        new PdfExportService().export(jasperPrint, filePath);
+    }
+
+    public ByteArrayOutputStream exportToStream(GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource, PageFormat pageFormat) throws JRException {
+        JasperPrint jasperPrint = generateJasperPrint(gridReportConfiguration, gridPageDataSource, pageFormat);
+
+        return new PdfExportService().exportToStream(jasperPrint);
+    }
+
+    private JasperPrint generateJasperPrint(GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource, PageFormat pageFormat) throws JRException {
         JasperDesign jasperDesign = new JasperDesignFactory().build("gridReport", pageFormat);
 
         new HeaderReportTemplateBuilder().addHeader(jasperDesign, gridReportConfiguration.getHeaderConfiguration());
         new GridReportTemplateBuilder().addGrid(jasperDesign, gridReportConfiguration.getGridColumnConfigurations());
         new FooterReportTemplateBuilder().addFooter(jasperDesign, gridReportConfiguration.getFooterConfiguration());
 
-        JasperPrint jasperPrint= new PdfFillService().fill(jasperDesign, new GridReportDataSource(gridPageDataSource), gridReportConfiguration.getHeaderConfiguration());
-
-        new PdfExportService().export(jasperPrint, filePath);
-
+        return new PdfFillService().fill(jasperDesign, new GridReportDataSource(gridPageDataSource), gridReportConfiguration.getHeaderConfiguration());
     }
-
-
-
-
 }
