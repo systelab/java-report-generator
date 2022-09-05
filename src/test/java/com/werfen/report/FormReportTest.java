@@ -7,8 +7,9 @@ import com.werfen.report.test.utils.assertions.ComparisonResultAssertions;
 import com.werfen.report.test.utils.pdf.PDFComparator;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -19,7 +20,7 @@ public class FormReportTest {
     public static String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     @Test
-    public void generateFormReport() throws IOException, ReportException {
+    public void generateFileFormReport() throws IOException, ReportException {
         String fileName = "form_report";
 
         FormReportService formReportService = new FormReportService();
@@ -32,7 +33,19 @@ public class FormReportTest {
     }
 
     @Test
-    public void generateFormReportWithLessFields() throws IOException, ReportException {
+    public void generateStreamFormReport() throws IOException, ReportException {
+        String fileName = "form_report";
+
+        FormReportService formReportService = new FormReportService();
+        ByteArrayOutputStream report = formReportService.buildToStream(this.getConfiguration(null), this.getData(), PageFormat.A4);
+
+        InputStream actualStream = new ByteArrayInputStream(report.toByteArray());
+        InputStream expectedStream = Files.newInputStream(Paths.get(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension()));
+        ComparisonResultAssertions.assertEquals(PDFComparator.compareFiles(expectedStream, actualStream));
+    }
+
+    @Test
+    public void generateFileFormReportWithLessFields() throws IOException, ReportException {
         String fileName = "form_report_less_fields";
 
         FormReportService formReportService = new FormReportService();
