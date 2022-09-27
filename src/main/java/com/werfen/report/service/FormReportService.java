@@ -15,7 +15,7 @@ public class FormReportService {
     public File build(FormReportConfiguration formReportConfiguration, FormReportData formReportData, PageFormat pageFormat) throws ReportException {
         try {
             PdfFormReportService pdfFormReportService = new PdfFormReportService();
-            return pdfFormReportService.export(formReportConfiguration, formReportData, pageFormat);
+            return pdfFormReportService.exportToFile(formReportConfiguration, formReportData, pageFormat);
         } catch (JRException ex) {
             throw new ReportException(ex);
         }

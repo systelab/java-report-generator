@@ -16,23 +16,23 @@ import java.io.IOException;
 
 public class GridReportService {
 
-    public File build(GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource, ReportFormat reportFormat, PageFormat pageFormat) throws ReportException, ReportFormatException {
+    public File buildFile(GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource, ReportFormat reportFormat, PageFormat pageFormat) throws ReportException, ReportFormatException {
         if (reportFormat == ReportFormat.PDF) {
-            return buildPDF(gridReportConfiguration, gridPageDataSource, pageFormat);
+            return buildPDFFile(gridReportConfiguration, gridPageDataSource, pageFormat);
         } else {
-            return buildExcel(gridReportConfiguration, gridPageDataSource);
+            return buildExcelFile(gridReportConfiguration, gridPageDataSource);
         }
     }
 
-    public ByteArrayOutputStream buildToStream(GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource, ReportFormat reportFormat, PageFormat pageFormat) throws ReportException, ReportFormatException {
+    public ByteArrayOutputStream buildStream(GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource, ReportFormat reportFormat, PageFormat pageFormat) throws ReportException, ReportFormatException {
         if (reportFormat == ReportFormat.PDF) {
-            return buildPDFToStream(gridReportConfiguration, gridPageDataSource, pageFormat);
+            return buildPDFStream(gridReportConfiguration, gridPageDataSource, pageFormat);
         } else {
-            return buildExcelToStream(gridReportConfiguration, gridPageDataSource);
+            return buildExcelStream(gridReportConfiguration, gridPageDataSource);
         }
     }
 
-    private File buildPDF(GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource, PageFormat pageFormat) throws ReportException {
+    private File buildPDFFile(GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource, PageFormat pageFormat) throws ReportException {
         try {
             String filePath = gridReportConfiguration.getOutputFilePath();
             PdfGridReportService pdfGridReportService = new PdfGridReportService();
@@ -43,7 +43,7 @@ public class GridReportService {
         }
     }
 
-    private ByteArrayOutputStream buildPDFToStream(GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource, PageFormat pageFormat) throws ReportException {
+    private ByteArrayOutputStream buildPDFStream(GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource, PageFormat pageFormat) throws ReportException {
         try {
             PdfGridReportService pdfGridReportService = new PdfGridReportService();
             return pdfGridReportService.exportToStream(gridReportConfiguration, gridPageDataSource, pageFormat);
@@ -52,7 +52,7 @@ public class GridReportService {
         }
     }
 
-    private File buildExcel(GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource) throws ReportException {
+    private File buildExcelFile(GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource) throws ReportException {
         try {
             String filePath = gridReportConfiguration.getOutputFilePath();
             ExcelGridReportService excelGridReportService = new ExcelGridReportService();
@@ -63,7 +63,7 @@ public class GridReportService {
         }
     }
 
-    private ByteArrayOutputStream buildExcelToStream(GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource) throws ReportException {
+    private ByteArrayOutputStream buildExcelStream(GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource) throws ReportException {
         try {
             ExcelGridReportService excelGridReportService = new ExcelGridReportService();
             return excelGridReportService.exportToStream(gridReportConfiguration, gridPageDataSource);

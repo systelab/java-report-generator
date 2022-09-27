@@ -21,7 +21,7 @@ public class PdfGridReportService {
     public void export(String filePath, GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource, PageFormat pageFormat) throws JRException {
         JasperPrint jasperPrint = generateJasperPrint(gridReportConfiguration, gridPageDataSource, pageFormat);
 
-        new PdfExportService().export(jasperPrint, filePath);
+        new PdfExportService().exportToFile(jasperPrint, filePath);
     }
 
     public ByteArrayOutputStream exportToStream(GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource, PageFormat pageFormat) throws JRException {

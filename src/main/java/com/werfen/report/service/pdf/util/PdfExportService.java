@@ -13,12 +13,8 @@ import java.io.File;
 
 public class PdfExportService {
 
-    public File export(JasperPrint jasperPrint, String filePath) throws JRException {
-        JRPdfExporter exporter = new JRPdfExporter();
-        exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
-        exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(filePath));
-        exporter.setConfiguration(getPdfReportConfiguration());
-        exporter.setConfiguration(getPdfExporterConfiguration());
+    public File exportToFile(JasperPrint jasperPrint, String filePath) throws JRException {
+        JRPdfExporter exporter = exportDocument(jasperPrint, new SimpleOutputStreamExporterOutput(filePath));
 
         exporter.exportReport();
         return new File(filePath);
@@ -27,14 +23,19 @@ public class PdfExportService {
     public ByteArrayOutputStream exportToStream(JasperPrint jasperPrint) throws JRException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         SimpleOutputStreamExporterOutput simpleOutputStreamExporterOutput = new SimpleOutputStreamExporterOutput(outputStream);
+        JRPdfExporter exporter = exportDocument(jasperPrint, simpleOutputStreamExporterOutput);
+
+        exporter.exportReport();
+        return outputStream;
+    }
+
+    private JRPdfExporter exportDocument(JasperPrint jasperPrint, SimpleOutputStreamExporterOutput simpleOutputStreamExporterOutput) {
         JRPdfExporter exporter = new JRPdfExporter();
         exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
         exporter.setExporterOutput(simpleOutputStreamExporterOutput);
         exporter.setConfiguration(getPdfReportConfiguration());
         exporter.setConfiguration(getPdfExporterConfiguration());
-
-        exporter.exportReport();
-        return outputStream;
+        return exporter;
     }
 
     private SimplePdfReportConfiguration getPdfReportConfiguration() {

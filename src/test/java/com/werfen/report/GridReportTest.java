@@ -49,7 +49,7 @@ class GridReportTest {
 
         GridReportService gridReportService = new GridReportService();
         GeneralConfiguration.setDefaultNullString("-");
-        File file = gridReportService.build(this.getConfiguration(fileName + ReportFormat.PDF.getFileExtension(), 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
+        File file = gridReportService.buildFile(this.getConfiguration(fileName + ReportFormat.PDF.getFileExtension(), 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
         file.createNewFile();
 
 
@@ -64,7 +64,7 @@ class GridReportTest {
 
         GridReportService gridReportService = new GridReportService();
         GeneralConfiguration.setDefaultNullString("-");
-        ByteArrayOutputStream report = gridReportService.buildToStream(this.getConfiguration(null, 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
+        ByteArrayOutputStream report = gridReportService.buildStream(this.getConfiguration(null, 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
 
         InputStream actualStream = new ByteArrayInputStream(report.toByteArray());
         InputStream expectedStream = Files.newInputStream(Paths.get(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension()));
@@ -77,7 +77,7 @@ class GridReportTest {
         String fileName = "grid_report_null_values";
         GridReportService gridReportService = new GridReportService();
         GeneralConfiguration.setDefaultNullString("Nop");
-        File file = gridReportService.build(this.getConfiguration(fileName + ReportFormat.PDF.getFileExtension(), 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
+        File file = gridReportService.buildFile(this.getConfiguration(fileName + ReportFormat.PDF.getFileExtension(), 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
         file.createNewFile();
 
         File expectedFile = new File(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension());
@@ -90,7 +90,7 @@ class GridReportTest {
         String fileName = "grid_report";
 
         GridReportService gridReportService = new GridReportService();
-        File file = gridReportService.build(this.getConfiguration(fileName + ReportFormat.EXCEL.getFileExtension(), 12), this.getDataSource(), ReportFormat.EXCEL, PageFormat.A4);
+        File file = gridReportService.buildFile(this.getConfiguration(fileName + ReportFormat.EXCEL.getFileExtension(), 12), this.getDataSource(), ReportFormat.EXCEL, PageFormat.A4);
         file.createNewFile();
 
         File expectedFile = new File(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.EXCEL.getFileExtension());
@@ -103,7 +103,7 @@ class GridReportTest {
         String fileName = "grid_report";
 
         GridReportService gridReportService = new GridReportService();
-        ByteArrayOutputStream report = gridReportService.buildToStream(this.getConfiguration(null, 12), this.getDataSource(), ReportFormat.EXCEL, PageFormat.A4);
+        ByteArrayOutputStream report = gridReportService.buildStream(this.getConfiguration(null, 12), this.getDataSource(), ReportFormat.EXCEL, PageFormat.A4);
 
 
         InputStream expectedStream = Files.newInputStream(Paths.get(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.EXCEL.getFileExtension()));
