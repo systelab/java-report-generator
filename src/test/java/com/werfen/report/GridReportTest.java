@@ -24,24 +24,7 @@ class GridReportTest {
     private static final String COORDINATES_SEPARATOR = ".";
     private static final String GOLDEN_SUFFIX = "_golden";
     private static final String GOLDEN_PATH = "src/test/resources/golden/";
-
-    private static List<GridReportRow> getListReportData(int columnCount, int rowCount) {
-
-
-        List<GridReportRow> gridReportRows = new ArrayList<>();
-        for (int row = 1; row <= rowCount; row++) {
-            List<GridReportField> gridReportFields = new ArrayList<>();
-            for (int column = 1; column <= columnCount - 2; column++) {
-                gridReportFields.add(GridReportField.of(COLUMN_PREFIX_NAME + column, column + COORDINATES_SEPARATOR + row));
-            }
-            gridReportFields.add(GridReportField.of(COLUMN_PREFIX_NAME + (columnCount - 1), null));
-            gridReportFields.add(GridReportField.of(COLUMN_PREFIX_NAME + columnCount, null, "N/A"));
-
-            gridReportRows.add(GridReportRow.builder().values(gridReportFields).build());
-        }
-
-        return gridReportRows;
-    }
+    private static final String TEST_PATH = "test_reports/";
 
     @Test
     void generateFileGridPdfReport() throws IOException, ReportException {
@@ -49,12 +32,12 @@ class GridReportTest {
 
         GridReportService gridReportService = new GridReportService();
         GeneralConfiguration.setDefaultNullString("-");
-        File file = gridReportService.buildFile(this.getConfiguration(fileName + ReportFormat.PDF.getFileExtension(), 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
+        File file = gridReportService.buildFile(this.getConfiguration(TEST_PATH + fileName + ReportFormat.PDF.getFileExtension(), 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
         file.createNewFile();
 
 
         File expectedFile = new File(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension());
-        File actualFile = new File(fileName + ReportFormat.PDF.getFileExtension());
+        File actualFile = new File(TEST_PATH + fileName + ReportFormat.PDF.getFileExtension());
         ComparisonResultAssertions.assertEquals(PDFComparator.compareFiles(expectedFile, actualFile));
     }
 
@@ -77,11 +60,11 @@ class GridReportTest {
         String fileName = "grid_report_null_values";
         GridReportService gridReportService = new GridReportService();
         GeneralConfiguration.setDefaultNullString("Nop");
-        File file = gridReportService.buildFile(this.getConfiguration(fileName + ReportFormat.PDF.getFileExtension(), 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
+        File file = gridReportService.buildFile(this.getConfiguration(TEST_PATH + fileName + ReportFormat.PDF.getFileExtension(), 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
         file.createNewFile();
 
         File expectedFile = new File(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension());
-        File actualFile = new File(fileName + ReportFormat.PDF.getFileExtension());
+        File actualFile = new File(TEST_PATH + fileName + ReportFormat.PDF.getFileExtension());
         ComparisonResultAssertions.assertEquals(PDFComparator.compareFiles(expectedFile, actualFile));
     }
 
@@ -90,11 +73,11 @@ class GridReportTest {
         String fileName = "grid_report";
 
         GridReportService gridReportService = new GridReportService();
-        File file = gridReportService.buildFile(this.getConfiguration(fileName + ReportFormat.EXCEL.getFileExtension(), 12), this.getDataSource(), ReportFormat.EXCEL, PageFormat.A4);
+        File file = gridReportService.buildFile(this.getConfiguration(TEST_PATH + fileName + ReportFormat.EXCEL.getFileExtension(), 12), this.getDataSource(), ReportFormat.EXCEL, PageFormat.A4);
         file.createNewFile();
 
         File expectedFile = new File(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.EXCEL.getFileExtension());
-        File actualFile = new File(fileName + ReportFormat.EXCEL.getFileExtension());
+        File actualFile = new File(TEST_PATH + fileName + ReportFormat.EXCEL.getFileExtension());
         ComparisonResultAssertions.assertEquals(ExcelComparator.compareFiles(expectedFile, actualFile));
     }
 
@@ -113,6 +96,24 @@ class GridReportTest {
 
     private GridPageDataSource getDataSource() {
         return new ListGridPageDataSource(10, GridReportTest.getListReportData(12, 50));
+    }
+
+    private static List<GridReportRow> getListReportData(int columnCount, int rowCount) {
+
+
+        List<GridReportRow> gridReportRows = new ArrayList<>();
+        for (int row = 1; row <= rowCount; row++) {
+            List<GridReportField> gridReportFields = new ArrayList<>();
+            for (int column = 1; column <= columnCount - 2; column++) {
+                gridReportFields.add(GridReportField.of(COLUMN_PREFIX_NAME + column, column + COORDINATES_SEPARATOR + row));
+            }
+            gridReportFields.add(GridReportField.of(COLUMN_PREFIX_NAME + (columnCount - 1), null));
+            gridReportFields.add(GridReportField.of(COLUMN_PREFIX_NAME + columnCount, null, "N/A"));
+
+            gridReportRows.add(GridReportRow.builder().values(gridReportFields).build());
+        }
+
+        return gridReportRows;
     }
 
     private GridReportConfiguration getConfiguration(String fileName, int columnCount) {

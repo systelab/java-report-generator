@@ -5,6 +5,7 @@ import com.werfen.report.model.*;
 import com.werfen.report.service.FormReportService;
 import com.werfen.report.test.utils.assertions.ComparisonResultAssertions;
 import com.werfen.report.test.utils.pdf.PDFComparator;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
@@ -16,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 
 public class FormReportTest {
     private static final String GOLDEN_PATH = "src/test/resources/golden/";
+    private static final String TEST_PATH = "test_reports/";
     private static final String GOLDEN_SUFFIX = "_golden";
     public static String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
@@ -24,11 +26,11 @@ public class FormReportTest {
         String fileName = "form_report";
 
         FormReportService formReportService = new FormReportService();
-        File file = formReportService.build(this.getConfiguration(fileName + ReportFormat.PDF.getFileExtension()), this.getData(), PageFormat.A4);
+        File file = formReportService.build(this.getConfiguration(TEST_PATH + fileName + ReportFormat.PDF.getFileExtension()), this.getData(), PageFormat.A4);
         file.createNewFile();
 
         File expectedFile = new File(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension());
-        File actualFile = new File(fileName + ReportFormat.PDF.getFileExtension());
+        File actualFile = new File(TEST_PATH + fileName + ReportFormat.PDF.getFileExtension());
         ComparisonResultAssertions.assertEquals(PDFComparator.compareFiles(expectedFile, actualFile));
     }
 
@@ -49,11 +51,11 @@ public class FormReportTest {
         String fileName = "form_report_less_fields";
 
         FormReportService formReportService = new FormReportService();
-        File file = formReportService.build(this.getLessFieldsConfiguration(fileName + ReportFormat.PDF.getFileExtension()), this.getData(), PageFormat.A4);
+        File file = formReportService.build(this.getLessFieldsConfiguration(TEST_PATH + fileName + ReportFormat.PDF.getFileExtension()), this.getData(), PageFormat.A4);
         file.createNewFile();
 
         File expectedFile = new File(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension());
-        File actualFile = new File(fileName + ReportFormat.PDF.getFileExtension());
+        File actualFile = new File(TEST_PATH + fileName + ReportFormat.PDF.getFileExtension());
         ComparisonResultAssertions.assertEquals(PDFComparator.compareFiles(expectedFile, actualFile));
     }
 
