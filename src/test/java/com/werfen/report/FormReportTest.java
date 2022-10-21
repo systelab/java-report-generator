@@ -43,7 +43,7 @@ public class FormReportTest {
 
         InputStream actualStream = new ByteArrayInputStream(report.toByteArray());
         InputStream expectedStream = Files.newInputStream(Paths.get(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension()));
-        ComparisonResultAssertions.assertEquals(PDFComparator.compareFiles(expectedStream, actualStream));
+        ComparisonResultAssertions.assertEquals(PDFComparator.compareStreams(expectedStream, actualStream));
     }
 
     @Test
