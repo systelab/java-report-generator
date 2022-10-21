@@ -6,10 +6,12 @@ import com.werfen.report.service.GridReportService;
 import com.werfen.report.test.utils.assertions.ComparisonResultAssertions;
 import com.werfen.report.test.utils.excel.ExcelComparator;
 import com.werfen.report.test.utils.pdf.PDFComparator;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -23,6 +25,87 @@ class GridReportTest {
     private static final String COORDINATES_SEPARATOR = ".";
     private static final String GOLDEN_SUFFIX = "_golden";
     private static final String GOLDEN_PATH = "src/test/resources/golden/";
+    private static final String TEST_PATH = "test_reports/";
+
+    @BeforeEach
+    void beforeEach() {
+        File directory = new File(TEST_PATH);
+        if(!directory.exists()){
+            directory.mkdirs();
+        }
+    }
+
+    @Test
+    void generateFileGridPdfReport() throws IOException, ReportException {
+        String fileName = "grid_report";
+
+        GridReportService gridReportService = new GridReportService();
+        GeneralConfiguration.setDefaultNullString("-");
+        File file = gridReportService.buildFile(this.getConfiguration(TEST_PATH + fileName + ReportFormat.PDF.getFileExtension(), 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
+        file.createNewFile();
+
+
+        File expectedFile = new File(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension());
+        File actualFile = new File(TEST_PATH + fileName + ReportFormat.PDF.getFileExtension());
+        ComparisonResultAssertions.assertEquals(PDFComparator.compareFiles(expectedFile, actualFile));
+    }
+
+    @Test
+    void generateStreamGridPdfReport() throws IOException, ReportException {
+        String fileName = "grid_report";
+
+        GridReportService gridReportService = new GridReportService();
+        GeneralConfiguration.setDefaultNullString("-");
+        ByteArrayOutputStream report = gridReportService.buildStream(this.getConfiguration(null, 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
+
+        InputStream actualStream = new ByteArrayInputStream(report.toByteArray());
+        InputStream expectedStream = Files.newInputStream(Paths.get(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension()));
+
+        ComparisonResultAssertions.assertEquals(PDFComparator.compareStreams(expectedStream, actualStream));
+    }
+
+    @Test
+    void generateFileGridPdfReportModifyDefault() throws IOException, ReportException {
+        String fileName = "grid_report_null_values";
+        GridReportService gridReportService = new GridReportService();
+        GeneralConfiguration.setDefaultNullString("Nop");
+        File file = gridReportService.buildFile(this.getConfiguration(TEST_PATH + fileName + ReportFormat.PDF.getFileExtension(), 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
+        file.createNewFile();
+
+        File expectedFile = new File(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension());
+        File actualFile = new File(TEST_PATH + fileName + ReportFormat.PDF.getFileExtension());
+        ComparisonResultAssertions.assertEquals(PDFComparator.compareFiles(expectedFile, actualFile));
+    }
+
+    @Test
+    void generateFileGridXlsxReport() throws IOException, ReportException {
+        String fileName = "grid_report";
+
+        GridReportService gridReportService = new GridReportService();
+        File file = gridReportService.buildFile(this.getConfiguration(TEST_PATH + fileName + ReportFormat.EXCEL.getFileExtension(), 12), this.getDataSource(), ReportFormat.EXCEL, PageFormat.A4);
+        file.createNewFile();
+
+        File expectedFile = new File(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.EXCEL.getFileExtension());
+        File actualFile = new File(TEST_PATH + fileName + ReportFormat.EXCEL.getFileExtension());
+        ComparisonResultAssertions.assertEquals(ExcelComparator.compareFiles(expectedFile, actualFile));
+    }
+
+    @Test
+    void generateStreamGridXlsxReport() throws IOException, ReportException {
+        String fileName = "grid_report";
+
+        GridReportService gridReportService = new GridReportService();
+        ByteArrayOutputStream report = gridReportService.buildStream(this.getConfiguration(null, 12), this.getDataSource(), ReportFormat.EXCEL, PageFormat.A4);
+
+
+        InputStream expectedStream = Files.newInputStream(Paths.get(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.EXCEL.getFileExtension()));
+        ByteArrayInputStream actualStream = new ByteArrayInputStream(report.toByteArray());
+        ComparisonResultAssertions.assertEquals(ExcelComparator.compareStreams(expectedStream, actualStream));
+    }
+
+    private GridPageDataSource getDataSource() {
+        return new ListGridPageDataSource(10, GridReportTest.getListReportData(12, 50));
+    }
 
     private static List<GridReportRow> getListReportData(int columnCount, int rowCount) {
 
@@ -40,53 +123,6 @@ class GridReportTest {
         }
 
         return gridReportRows;
-    }
-
-    @Test
-    void generateGridPdfReport() throws IOException, ReportException {
-        String fileName = "grid_report";
-
-        GridReportService gridReportService = new GridReportService();
-        GeneralConfiguration.setDefaultNullString("-");
-        File file = gridReportService.build(this.getConfiguration(fileName + ReportFormat.PDF.getFileExtension(), 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
-        file.createNewFile();
-
-
-        File expectedFile = new File(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension());
-        File actualFile = new File(fileName + ReportFormat.PDF.getFileExtension());
-        ComparisonResultAssertions.assertEquals(PDFComparator.compareFiles(expectedFile, actualFile));
-
-    }
-
-    @Test
-    void generateGridPdfReportModifyDefault() throws IOException, ReportException {
-        String fileName = "grid_report_null_values";
-        GridReportService gridReportService = new GridReportService();
-        GeneralConfiguration.setDefaultNullString("Nop");
-        File file = gridReportService.build(this.getConfiguration(fileName + ReportFormat.PDF.getFileExtension(), 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4);
-        file.createNewFile();
-
-        File expectedFile = new File(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension());
-        File actualFile = new File(fileName + ReportFormat.PDF.getFileExtension());
-        ComparisonResultAssertions.assertEquals(PDFComparator.compareFiles(expectedFile, actualFile));
-    }
-
-    @Test
-    void generateGridXlsxReport() throws IOException, ReportException {
-        String fileName = "grid_report";
-
-        GridReportService gridReportService = new GridReportService();
-        File file = gridReportService.build(this.getConfiguration(fileName + ReportFormat.EXCEL.getFileExtension(), 12), this.getDataSource(), ReportFormat.EXCEL, PageFormat.A4);
-        file.createNewFile();
-
-
-        File expectedFile = new File(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.EXCEL.getFileExtension());
-        File actualFile = new File(fileName + ReportFormat.EXCEL.getFileExtension());
-        ComparisonResultAssertions.assertEquals(ExcelComparator.compareFiles(expectedFile, actualFile));
-    }
-
-    private GridPageDataSource getDataSource() {
-        return new ListGridPageDataSource(10, GridReportTest.getListReportData(12, 50));
     }
 
     private GridReportConfiguration getConfiguration(String fileName, int columnCount) {

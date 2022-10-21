@@ -14,20 +14,32 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.design.JasperDesign;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 public class PdfFormReportService {
 
-    public File export(FormReportConfiguration formReportConfiguration, FormReportData formReportData, PageFormat pageFormat) throws JRException {
+    public File exportToFile(FormReportConfiguration formReportConfiguration, FormReportData formReportData, PageFormat pageFormat) throws JRException {
 
+        JasperPrint jasperPrint = buildJasperPrint(formReportConfiguration, formReportData, pageFormat);
+
+        return new PdfExportService().exportToFile(jasperPrint, formReportConfiguration.getOutputFilePath());
+    }
+
+    public ByteArrayOutputStream exportToStream(FormReportConfiguration formReportConfiguration, FormReportData formReportData, PageFormat pageFormat) throws JRException {
+
+        JasperPrint jasperPrint = buildJasperPrint(formReportConfiguration, formReportData, pageFormat);
+
+        return new PdfExportService().exportToStream(jasperPrint);
+    }
+
+    private JasperPrint buildJasperPrint(FormReportConfiguration formReportConfiguration, FormReportData formReportData, PageFormat pageFormat) throws JRException {
         JasperDesign jasperDesign = new JasperDesignFactory().build("formReport", pageFormat);
 
         new HeaderReportTemplateBuilder().addHeader(jasperDesign, formReportConfiguration.getHeaderConfiguration());
         new FormReportTemplateBuilder().addForm(jasperDesign, formReportData);
         new FooterReportTemplateBuilder().addFooter(jasperDesign, formReportConfiguration.getFooterConfiguration());
 
-        JasperPrint jasperPrint= new PdfFillService().fill(jasperDesign,  new JREmptyDataSource(), formReportConfiguration.getHeaderConfiguration());
-
-        return new PdfExportService().export(jasperPrint, formReportConfiguration.getOutputFilePath());
+        return new PdfFillService().fill(jasperDesign, new JREmptyDataSource(), formReportConfiguration.getHeaderConfiguration());
     }
 }

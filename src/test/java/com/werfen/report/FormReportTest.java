@@ -5,42 +5,64 @@ import com.werfen.report.model.*;
 import com.werfen.report.service.FormReportService;
 import com.werfen.report.test.utils.assertions.ComparisonResultAssertions;
 import com.werfen.report.test.utils.pdf.PDFComparator;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class FormReportTest {
     private static final String GOLDEN_PATH = "src/test/resources/golden/";
+    private static final String TEST_PATH = "test_reports/";
     private static final String GOLDEN_SUFFIX = "_golden";
     public static String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
+    @BeforeEach
+    void beforeEach() {
+        File directory = new File(TEST_PATH);
+        if(!directory.exists()){
+            directory.mkdirs();
+        }
+    }
     @Test
-    public void generateFormReport() throws IOException, ReportException {
+    public void generateFileFormReport() throws IOException, ReportException {
         String fileName = "form_report";
 
         FormReportService formReportService = new FormReportService();
-        File file = formReportService.build(this.getConfiguration(fileName + ReportFormat.PDF.getFileExtension()), this.getData(), PageFormat.A4);
+        File file = formReportService.build(this.getConfiguration(TEST_PATH + fileName + ReportFormat.PDF.getFileExtension()), this.getData(), PageFormat.A4);
         file.createNewFile();
 
         File expectedFile = new File(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension());
-        File actualFile = new File(fileName + ReportFormat.PDF.getFileExtension());
+        File actualFile = new File(TEST_PATH + fileName + ReportFormat.PDF.getFileExtension());
         ComparisonResultAssertions.assertEquals(PDFComparator.compareFiles(expectedFile, actualFile));
     }
 
     @Test
-    public void generateFormReportWithLessFields() throws IOException, ReportException {
+    public void generateStreamFormReport() throws IOException, ReportException {
+        String fileName = "form_report";
+
+        FormReportService formReportService = new FormReportService();
+        ByteArrayOutputStream report = formReportService.buildToStream(this.getConfiguration(null), this.getData(), PageFormat.A4);
+
+        InputStream actualStream = new ByteArrayInputStream(report.toByteArray());
+        InputStream expectedStream = Files.newInputStream(Paths.get(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension()));
+        ComparisonResultAssertions.assertEquals(PDFComparator.compareStreams(expectedStream, actualStream));
+    }
+
+    @Test
+    public void generateFileFormReportWithLessFields() throws IOException, ReportException {
         String fileName = "form_report_less_fields";
 
         FormReportService formReportService = new FormReportService();
-        File file = formReportService.build(this.getLessFieldsConfiguration(fileName + ReportFormat.PDF.getFileExtension()), this.getData(), PageFormat.A4);
+        File file = formReportService.build(this.getLessFieldsConfiguration(TEST_PATH + fileName + ReportFormat.PDF.getFileExtension()), this.getData(), PageFormat.A4);
         file.createNewFile();
 
         File expectedFile = new File(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension());
-        File actualFile = new File(fileName + ReportFormat.PDF.getFileExtension());
+        File actualFile = new File(TEST_PATH + fileName + ReportFormat.PDF.getFileExtension());
         ComparisonResultAssertions.assertEquals(PDFComparator.compareFiles(expectedFile, actualFile));
     }
 
