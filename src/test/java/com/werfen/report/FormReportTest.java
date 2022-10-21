@@ -21,6 +21,13 @@ public class FormReportTest {
     private static final String GOLDEN_SUFFIX = "_golden";
     public static String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
+    @BeforeEach
+    void beforeEach() {
+        File directory = new File(TEST_PATH);
+        if(!directory.exists()){
+            directory.mkdirs();
+        }
+    }
     @Test
     public void generateFileFormReport() throws IOException, ReportException {
         String fileName = "form_report";

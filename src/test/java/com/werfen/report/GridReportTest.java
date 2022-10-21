@@ -6,6 +6,7 @@ import com.werfen.report.service.GridReportService;
 import com.werfen.report.test.utils.assertions.ComparisonResultAssertions;
 import com.werfen.report.test.utils.excel.ExcelComparator;
 import com.werfen.report.test.utils.pdf.PDFComparator;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
@@ -25,6 +26,14 @@ class GridReportTest {
     private static final String GOLDEN_SUFFIX = "_golden";
     private static final String GOLDEN_PATH = "src/test/resources/golden/";
     private static final String TEST_PATH = "test_reports/";
+
+    @BeforeEach
+    void beforeEach() {
+        File directory = new File(TEST_PATH);
+        if(!directory.exists()){
+            directory.mkdirs();
+        }
+    }
 
     @Test
     void generateFileGridPdfReport() throws IOException, ReportException {
