@@ -11,30 +11,38 @@ import net.sf.jasperreports.export.SimplePdfReportConfiguration;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 
+import static java.util.Objects.nonNull;
+
 public class PdfExportService {
 
     public File exportToFile(JasperPrint jasperPrint, String filePath) throws JRException {
-        JRPdfExporter exporter = exportDocument(jasperPrint, new SimpleOutputStreamExporterOutput(filePath));
+        return exportToFile(jasperPrint, filePath, null);
+    }
+    public File exportToFile(JasperPrint jasperPrint, String filePath, String password) throws JRException {
+        JRPdfExporter exporter = exportDocument(jasperPrint, new SimpleOutputStreamExporterOutput(filePath), password);
 
         exporter.exportReport();
         return new File(filePath);
     }
 
     public ByteArrayOutputStream exportToStream(JasperPrint jasperPrint) throws JRException {
+        return exportToStream(jasperPrint, null);
+    }
+    public ByteArrayOutputStream exportToStream(JasperPrint jasperPrint, String password) throws JRException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         SimpleOutputStreamExporterOutput simpleOutputStreamExporterOutput = new SimpleOutputStreamExporterOutput(outputStream);
-        JRPdfExporter exporter = exportDocument(jasperPrint, simpleOutputStreamExporterOutput);
+        JRPdfExporter exporter = exportDocument(jasperPrint, simpleOutputStreamExporterOutput, password);
 
         exporter.exportReport();
         return outputStream;
     }
 
-    private JRPdfExporter exportDocument(JasperPrint jasperPrint, SimpleOutputStreamExporterOutput simpleOutputStreamExporterOutput) {
+    private JRPdfExporter exportDocument(JasperPrint jasperPrint, SimpleOutputStreamExporterOutput simpleOutputStreamExporterOutput, String password) {
         JRPdfExporter exporter = new JRPdfExporter();
         exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
         exporter.setExporterOutput(simpleOutputStreamExporterOutput);
         exporter.setConfiguration(getPdfReportConfiguration());
-        exporter.setConfiguration(getPdfExporterConfiguration());
+        exporter.setConfiguration(getPdfExporterConfiguration(password));
         return exporter;
     }
 
@@ -45,10 +53,13 @@ public class PdfExportService {
         return reportConfig;
     }
 
-    private SimplePdfExporterConfiguration getPdfExporterConfiguration() {
+    private SimplePdfExporterConfiguration getPdfExporterConfiguration(String password) {
         SimplePdfExporterConfiguration exportConfig = new SimplePdfExporterConfiguration();
         exportConfig.setEncrypted(true);
         exportConfig.setAllowedPermissionsHint("PRINTING");
+        if(nonNull(password)){
+            exportConfig.setOwnerPassword(password);
+        }
         return exportConfig;
     }
 
