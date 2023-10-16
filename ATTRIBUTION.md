@@ -5,6 +5,7 @@ The Java-Report-Generator includes code from the following third parties:
 
 * [JitPack](https://jitpack.io) (MIT License)
 * [JasperReports](https://community.jaspersoft.com/project/jasperreports-library) (MIT License)
+* [BouncyCastle](https://www.bouncycastle.org/) (MIT License)
 * [Lombok](https://projectlombok.org/) (MIT License)
 * [Apache POI](https://poi.apache.org/) (MIT License)
 * [JUnit 5](https://junit.org/junit5/) (MIT License)
