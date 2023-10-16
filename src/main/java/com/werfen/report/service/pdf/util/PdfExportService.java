@@ -47,9 +47,7 @@ public class PdfExportService {
 
     private SimplePdfExporterConfiguration getPdfExporterConfiguration() {
         SimplePdfExporterConfiguration exportConfig = new SimplePdfExporterConfiguration();
-        exportConfig.setEncrypted(true);
         exportConfig.setAllowedPermissionsHint("PRINTING");
         return exportConfig;
     }
-
 }
