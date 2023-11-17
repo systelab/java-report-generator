@@ -16,6 +16,14 @@ import java.io.IOException;
 
 public class GridReportService {
 
+    public File buildFile(GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource, ReportFormat reportFormat, PageFormat pageFormat, String password) throws ReportException, ReportFormatException {
+        if (reportFormat == ReportFormat.PDF) {
+            return buildPDFFile(gridReportConfiguration, gridPageDataSource, pageFormat, password);
+        } else {
+            return buildExcelFile(gridReportConfiguration, gridPageDataSource);
+        }
+    }
+
     public File buildFile(GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource, ReportFormat reportFormat, PageFormat pageFormat) throws ReportException, ReportFormatException {
         if (reportFormat == ReportFormat.PDF) {
             return buildPDFFile(gridReportConfiguration, gridPageDataSource, pageFormat);
@@ -33,10 +41,14 @@ public class GridReportService {
     }
 
     private File buildPDFFile(GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource, PageFormat pageFormat) throws ReportException {
+        return buildPDFFile(gridReportConfiguration, gridPageDataSource, pageFormat, null);
+    }
+
+    private File buildPDFFile(GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource, PageFormat pageFormat, String password) throws ReportException {
         try {
             String filePath = gridReportConfiguration.getOutputFilePath();
             PdfGridReportService pdfGridReportService = new PdfGridReportService();
-            pdfGridReportService.export(filePath, gridReportConfiguration, gridPageDataSource, pageFormat);
+            pdfGridReportService.export(filePath, gridReportConfiguration, gridPageDataSource, pageFormat, password);
             return new File(filePath);
         } catch (JRException ex) {
             throw new ReportException(ex);

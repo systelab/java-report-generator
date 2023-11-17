@@ -17,11 +17,11 @@ import net.sf.jasperreports.engine.design.JasperDesign;
 import java.io.ByteArrayOutputStream;
 
 public class PdfGridReportService {
-
-    public void export(String filePath, GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource, PageFormat pageFormat) throws JRException {
+    
+    public void export(String filePath, GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource, PageFormat pageFormat, String password) throws JRException {
         JasperPrint jasperPrint = generateJasperPrint(gridReportConfiguration, gridPageDataSource, pageFormat);
 
-        new PdfExportService().exportToFile(jasperPrint, filePath);
+        new PdfExportService().exportToFile(jasperPrint, filePath, password);
     }
 
     public ByteArrayOutputStream exportToStream(GridReportConfiguration gridReportConfiguration, GridPageDataSource gridPageDataSource, PageFormat pageFormat) throws JRException {

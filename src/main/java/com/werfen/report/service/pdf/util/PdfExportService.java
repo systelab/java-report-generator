@@ -15,9 +15,6 @@ import static java.util.Objects.nonNull;
 
 public class PdfExportService {
 
-    public File exportToFile(JasperPrint jasperPrint, String filePath) throws JRException {
-        return exportToFile(jasperPrint, filePath, null);
-    }
     public File exportToFile(JasperPrint jasperPrint, String filePath, String password) throws JRException {
         JRPdfExporter exporter = exportDocument(jasperPrint, new SimpleOutputStreamExporterOutput(filePath), password);
 
@@ -58,6 +55,8 @@ public class PdfExportService {
         exportConfig.setAllowedPermissionsHint("PRINTING");
         if(nonNull(password)){
             exportConfig.setOwnerPassword(password);
+            exportConfig.setUserPassword(password);
+            exportConfig.setEncrypted(true);
         }
         return exportConfig;
     }

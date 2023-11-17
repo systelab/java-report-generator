@@ -19,11 +19,11 @@ import java.io.File;
 
 public class PdfFormReportService {
 
-    public File exportToFile(FormReportConfiguration formReportConfiguration, FormReportData formReportData, PageFormat pageFormat) throws JRException {
+    public File exportToFile(FormReportConfiguration formReportConfiguration, FormReportData formReportData, PageFormat pageFormat, String password) throws JRException {
 
         JasperPrint jasperPrint = buildJasperPrint(formReportConfiguration, formReportData, pageFormat);
 
-        return new PdfExportService().exportToFile(jasperPrint, formReportConfiguration.getOutputFilePath());
+        return new PdfExportService().exportToFile(jasperPrint, formReportConfiguration.getOutputFilePath(), password);
     }
 
     public ByteArrayOutputStream exportToStream(FormReportConfiguration formReportConfiguration, FormReportData formReportData, PageFormat pageFormat) throws JRException {
