@@ -9,6 +9,4 @@ public class GeneralConfiguration {
     @Getter
     @Setter
     private static String defaultNullString = "-";
-
-
 }
