@@ -55,12 +55,10 @@ public class PdfExportService {
 
     private SimplePdfExporterConfiguration getPdfExporterConfiguration(String password) {
         SimplePdfExporterConfiguration exportConfig = new SimplePdfExporterConfiguration();
-        exportConfig.setEncrypted(true);
         exportConfig.setAllowedPermissionsHint("PRINTING");
         if(nonNull(password)){
             exportConfig.setOwnerPassword(password);
         }
         return exportConfig;
     }
-
 }
