@@ -6,6 +6,8 @@ import com.werfen.report.service.GridReportService;
 import com.werfen.report.test.utils.assertions.ComparisonResultAssertions;
 import com.werfen.report.test.utils.excel.ExcelComparator;
 import com.werfen.report.test.utils.pdf.PDFComparator;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,6 +19,8 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class GridReportTest {
     public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
@@ -48,6 +52,21 @@ class GridReportTest {
         File expectedFile = new File(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension());
         File actualFile = new File(TEST_PATH + fileName + ReportFormat.PDF.getFileExtension());
         ComparisonResultAssertions.assertEquals(PDFComparator.compareFiles(expectedFile, actualFile));
+    }
+
+    @Test
+    void generateFileGridPdfReportWithPassword() throws IOException, ReportException {
+        String fileName = "grid_report_with_password";
+
+        GridReportService gridReportService = new GridReportService();
+        GeneralConfiguration.setDefaultNullString("-");
+        File file = gridReportService.buildFile(this.getConfiguration(TEST_PATH + fileName + ReportFormat.PDF.getFileExtension(), 12), this.getDataSource(), ReportFormat.PDF, PageFormat.A4, "password");
+        file.createNewFile();
+
+
+        assertThrows(InvalidPasswordException.class, () -> PDDocument.load(file));
+        assertThrows(InvalidPasswordException.class, () -> PDDocument.load(file, "wrong_password"));
+        assertDoesNotThrow(() -> PDDocument.load(file, "password"));
     }
 
     @Test
