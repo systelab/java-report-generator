@@ -3,8 +3,11 @@ package com.werfen.report;
 import com.werfen.report.exception.ReportException;
 import com.werfen.report.model.*;
 import com.werfen.report.service.FormReportService;
+import com.werfen.report.service.GridReportService;
 import com.werfen.report.test.utils.assertions.ComparisonResultAssertions;
 import com.werfen.report.test.utils.pdf.PDFComparator;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,6 +17,9 @@ import java.nio.file.Paths;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class FormReportTest {
     private static final String GOLDEN_PATH = "src/test/resources/golden/";
@@ -39,6 +45,20 @@ public class FormReportTest {
         File expectedFile = new File(GOLDEN_PATH + fileName + GOLDEN_SUFFIX + ReportFormat.PDF.getFileExtension());
         File actualFile = new File(TEST_PATH + fileName + ReportFormat.PDF.getFileExtension());
         ComparisonResultAssertions.assertEquals(PDFComparator.compareFiles(expectedFile, actualFile));
+    }
+
+    @Test
+    void generateFileFormReportWithPassword() throws IOException, ReportException {
+        String fileName = "form_report_with_password";
+
+        FormReportService formReportService = new FormReportService();
+        File file = formReportService.build(this.getConfiguration(TEST_PATH + fileName + ReportFormat.PDF.getFileExtension()), this.getData(), PageFormat.A4, "password");
+        file.createNewFile();
+
+
+        assertThrows(InvalidPasswordException.class, () -> PDDocument.load(file));
+        assertThrows(InvalidPasswordException.class, () -> PDDocument.load(file, "wrong_password"));
+        assertDoesNotThrow(() -> PDDocument.load(file, "password"));
     }
 
     @Test
