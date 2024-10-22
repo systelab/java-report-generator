@@ -48,6 +48,7 @@
         <jasperrport.version>6.20.6</jasperrport.version>
         <lombok.version>1.18.30</lombok.version>
         <poi.version>5.2.4</poi.version>
+        <jasperrport.version>7.0.1</jasperrport.version>
         <java.version>1.8</java.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <java-report-test-utilities.version>1.3.0</java-report-test-utilities.version>
@@ -63,6 +64,11 @@
         <dependency>
             <groupId>net.sf.jasperreports</groupId>
             <artifactId>jasperreports-fonts</artifactId>
+            <version>${jasperrport.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports-pdf</artifactId>
             <version>${jasperrport.version}</version>
         </dependency>
         <dependency>
