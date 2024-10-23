@@ -20,7 +20,7 @@
         <url>https://svn.apache.org/viewvc/maven</url>
     </scm>
     <prerequisites>
-        <maven>3.6.3</maven>
+        <maven>2.2.0</maven>
     </prerequisites>
     <profiles>
         <profile>
@@ -49,11 +49,11 @@
         <jasperrport.version>7.0.1</jasperrport.version>
         <lombok.version>1.18.34</lombok.version>
         <poi.version>5.3.0</poi.version>
-        <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
         <junit.version>5.11.3</junit.version>
         <junit-platform-surefire-provider.version>1.3.2</junit-platform-surefire-provider.version>
-        <java-report-test-utilities.version>1.3.3</java-report-test-utilities.version>
+        <java-report-test-utilities.version>v1.3.4</java-report-test-utilities.version>
     </properties>
 
     <dependencies>
