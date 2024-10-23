@@ -11,7 +11,7 @@
 
     <groupId>com.systelab</groupId>
     <artifactId>java-report-generator</artifactId>
-    <version>1.9.2</version>
+    <version>1.9.3</version>
     <packaging>jar</packaging>
     <name>java-report-generator</name>
     <url>https://github.com/systelab/java-report-generator</url>
@@ -43,15 +43,17 @@
     </licenses>
 
     <properties>
+        <java.version>21</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <jasperrport.version>7.0.1</jasperrport.version>
-        <lombok.version>1.18.30</lombok.version>
-        <poi.version>5.2.4</poi.version>
-        <java.version>1.8</java.version>
+        <lombok.version>1.18.34</lombok.version>
+        <poi.version>5.3.0</poi.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-        <java-report-test-utilities.version>1.3.0</java-report-test-utilities.version>
-        <junit.version>5.10.0</junit.version>
+        <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+        <junit.version>5.11.3</junit.version>
+        <junit-platform-surefire-provider.version>1.3.2</junit-platform-surefire-provider.version>
+        <java-report-test-utilities.version>v1.3.4</java-report-test-utilities.version>
     </properties>
 
     <dependencies>
@@ -70,7 +72,6 @@
             <artifactId>jasperreports-pdf</artifactId>
             <version>${jasperrport.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
@@ -110,17 +111,17 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.19.1</version>
+                <version>${maven-surefire-plugin.version}</version>
                 <dependencies>
                     <dependency>
                         <groupId>org.junit.platform</groupId>
                         <artifactId>junit-platform-surefire-provider</artifactId>
-                        <version>1.1.0</version>
+                        <version>${junit-platform-surefire-provider.version}</version>
                     </dependency>
                     <dependency>
                         <groupId>org.junit.jupiter</groupId>
                         <artifactId>junit-jupiter-engine</artifactId>
-                        <version>5.1.0</version>
+                        <version>${junit.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -129,8 +130,9 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <source>9</source>
-                    <target>9</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <release>${java.version}</release>
                     <encoding>UTF-8</encoding>
                     <annotationProcessorPaths>
                         <path>
