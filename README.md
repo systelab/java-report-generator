@@ -11,7 +11,7 @@ To get you started you can simply clone the `java-report-generator` repository a
 
 You need [git][git] to clone the `java-report-generator` repository.
 
-You will need [Java™ SE Development Kit 8][jdk-download] and [Maven][maven].
+You will need [Java™ SE Development Kit 11][jdk-download] and [Maven][maven].
 
 ### Clone
 
@@ -156,7 +156,7 @@ Use the builder method in FormReportData to generate your data structure.
 [git]: https://git-scm.com/
 [archunit]: https://www.archunit.org/
 [maven]: https://maven.apache.org/download.cgi
-[jdk-download]: http://www.oracle.com/technetwork/java/javase/downloads
+[jdk-download]: https://adoptium.net/es/temurin/releases/?version=11
 [JEE]: http://www.oracle.com/technetwork/java/javaee/tech/index.html
 [junit]: https://junit.org/junit5/
 
