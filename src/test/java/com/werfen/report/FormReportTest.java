@@ -15,7 +15,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class FormReportTest {
+class FormReportTest {
     private static final String GOLDEN_PATH = "src/test/resources/golden/";
     private static final String TEST_PATH = "test_reports/";
     private static final String GOLDEN_SUFFIX = "_golden";
@@ -29,7 +29,7 @@ public class FormReportTest {
         }
     }
     @Test
-    public void generateFileFormReport() throws IOException, ReportException {
+    void generateFileFormReport() throws IOException, ReportException {
         String fileName = "form_report";
 
         FormReportService formReportService = new FormReportService();
@@ -42,7 +42,7 @@ public class FormReportTest {
     }
 
     @Test
-    public void generateStreamFormReport() throws IOException, ReportException {
+    void generateStreamFormReport() throws IOException, ReportException {
         String fileName = "form_report";
 
         FormReportService formReportService = new FormReportService();
@@ -54,7 +54,7 @@ public class FormReportTest {
     }
 
     @Test
-    public void generateFileFormReportWithLessFields() throws IOException, ReportException {
+    void generateFileFormReportWithLessFields() throws IOException, ReportException {
         String fileName = "form_report_less_fields";
 
         FormReportService formReportService = new FormReportService();
