@@ -45,7 +45,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <jasperrport.version>7.0.1</jasperrport.version>
+        <jasperrport.version>7.0.3</jasperrport.version>
         <lombok.version>1.18.30</lombok.version>
         <poi.version>5.2.4</poi.version>
         <java.version>1.8</java.version>
