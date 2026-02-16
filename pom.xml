@@ -11,7 +11,7 @@
 
     <groupId>com.systelab</groupId>
     <artifactId>java-report-generator</artifactId>
-    <version>2.0.1</version>
+    <version>3.0.0</version>
     <packaging>jar</packaging>
     <name>java-report-generator</name>
     <url>https://github.com/systelab/java-report-generator</url>
@@ -52,7 +52,7 @@
         <maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
         <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
         <junit.version>6.0.2</junit.version>
-        <java-report-test-utilities.version>v.2.0.2</java-report-test-utilities.version>
+        <java-report-test-utilities.version>v.3.0.0</java-report-test-utilities.version>
     </properties>
 
     <dependencies>
