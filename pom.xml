@@ -3,6 +3,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <repositories>
+      <repository>
+        <id>central</id>
+        <url>https://repo.maven.apache.org/maven2</url>
+      </repository>
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
@@ -11,7 +15,7 @@
 
     <groupId>com.systelab</groupId>
     <artifactId>java-report-generator</artifactId>
-    <version>3.0.0</version>
+    <version>3.1.0</version>
     <packaging>jar</packaging>
     <name>java-report-generator</name>
     <url>https://github.com/systelab/java-report-generator</url>
@@ -46,30 +50,30 @@
         <java.version>25</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <jasperrport.version>7.0.3</jasperrport.version>
-        <lombok.version>1.18.42</lombok.version>
-        <poi.version>5.5.1</poi.version>
-        <maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
-        <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
-        <junit.version>6.0.2</junit.version>
-        <java-report-test-utilities.version>v.3.0.0</java-report-test-utilities.version>
+        <jasperreports.version>7.1.1</jasperreports.version>
+        <lombok.version>1.18.48</lombok.version>
+        <poi.version>6.0.0</poi.version>
+        <maven-compiler-plugin.version>3.16.0</maven-compiler-plugin.version>
+        <maven-surefire-plugin.version>3.6.1</maven-surefire-plugin.version>
+        <junit-jupiter.version>6.1.3</junit-jupiter.version>
+        <java-report-test-utilities.version>v.3.1.0</java-report-test-utilities.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>net.sf.jasperreports</groupId>
             <artifactId>jasperreports</artifactId>
-            <version>${jasperrport.version}</version>
+            <version>${jasperreports.version}</version>
         </dependency>
         <dependency>
             <groupId>net.sf.jasperreports</groupId>
             <artifactId>jasperreports-fonts</artifactId>
-            <version>${jasperrport.version}</version>
+            <version>${jasperreports.version}</version>
         </dependency>
         <dependency>
             <groupId>net.sf.jasperreports</groupId>
             <artifactId>jasperreports-pdf</artifactId>
-            <version>${jasperrport.version}</version>
+            <version>${jasperreports.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
@@ -91,12 +95,12 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit.version}</version>
+            <version>${junit-jupiter.version}</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit.version}</version>
+            <version>${junit-jupiter.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.systelab</groupId>
